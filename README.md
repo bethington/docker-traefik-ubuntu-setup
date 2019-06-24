@@ -59,3 +59,15 @@ docker network create traefik_proxy
 cd docker
 docker-compose -f ~/docker/docker-compose.yml up -d
 ```
+## Create partion and format (Optional)
+```
+sudo parted /dev/sdb
+(parted) mkpart primary 0GB 5000GB
+(parted) quit
+sudo mkfs.ext4 /dev/sdb1
+```
+## Setup mounts
+```
+sudo mkdir /mnt/backup
+sudo mount /dev/sdb1 /mnt/backup/
+```
