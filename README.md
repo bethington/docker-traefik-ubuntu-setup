@@ -11,4 +11,10 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 cat ~/.ssh/id_rsa.pub
 git config --global user.name "Your Name"
 git config --global user.email your_email@example.com
+echo "Installing docker"
+sudo apt install docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+docker --version
+echo "Cloning gits"
 git clone git@github.com:bethington/docker-traefik-ubuntu-setup.git docker
