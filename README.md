@@ -52,9 +52,9 @@ exit
 sudo netstat -tulpn | grep LISTEN
 git clone git@github.com:bethington/docker-traefik-ubuntu-setup.git docker
 sudo setfacl -Rdm g:docker:rwx ~/docker
+sudo touch ~/docker/traefik/rules.toml
 sudo chmod -R 775 ~/docker
 chmod 600 ${USERDIR}/docker/traefik/acme/acme.json
-sudo touch ~/docker/traefik/rules.toml
 docker network create traefik_proxy
 cd docker
 docker-compose -f ~/docker/docker-compose.yml up -d
