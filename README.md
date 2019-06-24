@@ -26,6 +26,11 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 exit
 ```
+## Setting up .htpasswd
+```
+sudo touch ~/docker/shared/.htpasswd
+sudo nano ~/docker/shared/.htpasswd
+```
 ## Adding environment variable
 ```
 sudo su -
