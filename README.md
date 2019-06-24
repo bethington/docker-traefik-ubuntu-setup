@@ -45,6 +45,8 @@ exit
 ## Cloning gits
 ```
 git clone git@github.com:bethington/docker-traefik-ubuntu-setup.git docker
+chmod 600 ${USERDIR}/docker/traefik/acme/acme.json
+sudo touch ~/docker/traefik/rules.toml
 docker network create traefik_proxy
 cd docker
 docker-compose -f ~/docker/docker-compose.yml up -d
