@@ -28,6 +28,8 @@ exit
 ```
 ## Adding environment variable
 ```
+sudo su -
+id
 echo 'PUID=1000' >> /etc/environment
 echo 'PGID=115' >> /etc/environment
 echo 'TZ="America/Denver"' >> /etc/environment
@@ -37,6 +39,8 @@ echo 'HTTP_PASSWORD=mystrongpassword' >> /etc/environment
 echo 'DOMAINNAME=example.com' >> /etc/environment
 echo 'GODADDY_API_KEY=GODADDY_API_KEY' >> /etc/environment
 echo 'GODADDY_API_SECRET=GODADDY_API_SECRET' >> /etc/environment
+exit
+exit
 ```
 ## Cloning gits
 ```
