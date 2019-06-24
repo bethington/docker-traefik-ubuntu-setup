@@ -70,4 +70,8 @@ sudo mkfs.ext4 /dev/sdb1
 ```
 sudo mkdir /mnt/backup
 sudo mount /dev/sdb1 /mnt/backup/
+sudo su -
+echo '/dev/sdb1                    /mnt/backup     ext4    defaults          0       0' >> /etc/fstab
+exit
+reboot
 ```
