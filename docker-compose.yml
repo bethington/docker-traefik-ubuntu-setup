@@ -78,7 +78,7 @@ services:
     restart: always
     image: bethington/bitcoind:latest
     volumes:
-      - ${USERDIR}/docker/bitcoin:/bitcoin
+      - ${USERDIR}/docker/bitcoin/data:/bitcoin
     ports:
       - 8332:8332
       - 8333:8333
@@ -100,7 +100,7 @@ services:
     restart: always
     image: bethington/litecoind:latest
     volumes:
-      - ${USERDIR}/docker/litecoin:/litecoin
+      - ${USERDIR}/docker/litecoin/data:/litecoin
     ports:
       - 9332:9332
       - 9333:9333
