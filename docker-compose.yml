@@ -85,23 +85,15 @@ services:
     environment:
       - TZ=${TZ}
     networks:
+      - default
       - traefik_proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=plexms"
+      - "traefik.backend=bitcoin"
       - "traefik.frontend.rule=Host:bitcoin.${DOMAINNAME}"
       - "traefik.port=8332"
       - "traefik.protocol=http"
       - "traefik.docker.network=traefik_proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.SSLHost=example.com"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=true"
 # Litecoind
   litecoin:
     container_name: litecoin
@@ -118,20 +110,12 @@ services:
       - traefik_proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.backend=plexms"
+      - "traefik.backend=litecoin"
       - "traefik.frontend.rule=Host:litecoin.${DOMAINNAME}"
       - "traefik.port=9332"
       - "traefik.protocol=http"
       - "traefik.docker.network=traefik_proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.SSLHost=example.com"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=true"
+      
   # cardano:
   #   image: bethington/cardano-sl-mainnet
   #   container_name: cardano
