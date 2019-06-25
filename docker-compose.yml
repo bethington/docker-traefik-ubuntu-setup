@@ -41,7 +41,7 @@ services:
       
 # Portainer - WebUI for Containers
   portainer:
-    image: portainer/portainer
+    image: portainer/portainer:latest
     container_name: portainer
     restart: always
     command: -H unix:///var/run/docker.sock
@@ -76,7 +76,7 @@ services:
   bitcoin:
     container_name: bitcoin
     restart: always
-    image: bethington/bitcoind:v0.18.0
+    image: bethington/bitcoind:latest
     volumes:
       - ${USERDIR}/docker/bitcoin:/bitcoin
     ports:
@@ -91,6 +91,36 @@ services:
       - "traefik.backend=plexms"
       - "traefik.frontend.rule=Host:bitcoin.${DOMAINNAME}"
       - "traefik.port=8332"
+      - "traefik.protocol=http"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.SSLHost=example.com"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+# Litecoind
+  litecoin:
+    container_name: litecoin
+    restart: always
+    image: bethington/litecoind:latest
+    volumes:
+      - ${USERDIR}/docker/litecoin:/litecoin
+    ports:
+      - 9332:9332
+      - 9333:9333
+    environment:
+      - TZ=${TZ}
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=plexms"
+      - "traefik.frontend.rule=Host:bitcoin.${DOMAINNAME}"
+      - "traefik.port=9332"
       - "traefik.protocol=http"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
