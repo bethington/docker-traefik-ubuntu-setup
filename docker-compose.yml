@@ -87,7 +87,6 @@ services:
     environment:
       - TZ=${TZ}
     networks:
-      - default
       - traefik_proxy
     labels:
       - "traefik.enable=true"
