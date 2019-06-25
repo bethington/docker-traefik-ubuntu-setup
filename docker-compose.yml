@@ -41,6 +41,7 @@ services:
       
 # Portainer - WebUI for Containers
   portainer:
+    hostname: portainer
     image: portainer/portainer:latest
     container_name: portainer
     restart: always
