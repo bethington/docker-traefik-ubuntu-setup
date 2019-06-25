@@ -119,7 +119,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=plexms"
-      - "traefik.frontend.rule=Host:bitcoin.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:litecoin.${DOMAINNAME}"
       - "traefik.port=9332"
       - "traefik.protocol=http"
       - "traefik.docker.network=traefik_proxy"
