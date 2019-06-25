@@ -74,6 +74,7 @@ services:
 
 # Bitcoind
   bitcoin:
+    hostname: bitcoin
     container_name: bitcoin
     restart: always
     image: bethington/bitcoind:latest
@@ -96,6 +97,7 @@ services:
       - "traefik.docker.network=traefik_proxy"
 # Litecoind
   litecoin:
+    hostname: litecoin
     container_name: litecoin
     restart: always
     image: bethington/litecoind:latest
