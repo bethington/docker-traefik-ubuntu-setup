@@ -84,6 +84,8 @@ services:
     ports:
       - 8332:8332
       - 8333:8333
+    env_file:
+      - variables.env
     environment:
       - TZ=${TZ}
     networks:
@@ -106,6 +108,8 @@ services:
     ports:
       - 9332:9332
       - 9333:9333
+    env_file:
+      - variables.env
     environment:
       - TZ=${TZ}
     networks:
