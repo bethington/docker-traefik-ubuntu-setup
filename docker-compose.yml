@@ -80,7 +80,7 @@ services:
     restart: always
     image: bethington/bitcoind:latest
     volumes:
-      - ${USERDIR}/docker/bitcoin:/root/.bitcoin
+      - ${USERDIR}/docker/bitcoin:/bitcoin
     ports:
       - 8332:8332
       - 8333:8333
