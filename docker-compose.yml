@@ -104,7 +104,7 @@ services:
     restart: always
     image: bethington/litecoind:latest
     volumes:
-      - ${USERDIR}/docker/litecoin:/root/.litecoin
+      - ${USERDIR}/docker/litecoin:/litecoin
     ports:
       - 9332:9332
       - 9333:9333
