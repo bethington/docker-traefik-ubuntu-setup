@@ -86,8 +86,6 @@ services:
       - 8333:8333
     environment:
       - TZ=${TZ}
-      - USER_ID=${USER_ID}
-      - GROUP_ID=${GROUP_ID}
     networks:
       - traefik_proxy
     labels:
@@ -110,8 +108,6 @@ services:
       - 9333:9333
     environment:
       - TZ=${TZ}
-      - USER_ID=${USER_ID}
-      - GROUP_ID=${GROUP_ID}
     networks:
       - traefik_proxy
     labels:
