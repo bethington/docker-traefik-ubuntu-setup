@@ -119,6 +119,29 @@ services:
       - "traefik.protocol=http"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
+# Cardano Jormungandr rust node
+  jormungandr:
+    hostname: jormungandr
+    container_name: jormungandr
+    restart: always
+    image: bethington/jormungandr:latest
+    volumes:
+      - ${USERDIR}/docker/jormungandr/data:/jormungandr
+    ports:
+      - 8299:8229
+      - 8443:8443
+    environment:
+      - TZ=${TZ}
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=jormungandr"
+      - "traefik.frontend.rule=Host:jormungandr.${DOMAINNAME}"
+      - "traefik.port=8443"
+      - "traefik.protocol=http"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
       
   # cardano:
   #   image: bethington/cardano-sl-mainnet
