@@ -95,6 +95,7 @@ services:
       - "traefik.port=8332"
       - "traefik.protocol=http"
       - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
 # Litecoind
   litecoin:
     hostname: litecoin
@@ -117,6 +118,7 @@ services:
       - "traefik.port=9332"
       - "traefik.protocol=http"
       - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
       
   # cardano:
   #   image: bethington/cardano-sl-mainnet
