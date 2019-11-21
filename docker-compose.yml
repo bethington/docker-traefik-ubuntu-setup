@@ -126,10 +126,11 @@ services:
     restart: always
     image: bethington/jormungandr:latest
     volumes:
-      - ${USERDIR}/docker/jormungandr/data:/jormungandr
+      - ~/docker/jormungandr/.node_sec:/app/bin/.node_sec
+      - ~/docker/jormungandr/data:/app/bin/data
     ports:
-      - 8299:8229
-      - 8443:8443
+      - 3000:3000
+      - 3100:3100
     environment:
       - TZ=${TZ}
     networks:
@@ -138,7 +139,7 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=jormungandr"
       - "traefik.frontend.rule=Host:jormungandr.${DOMAINNAME}"
-      - "traefik.port=8443"
+      - "traefik.port=3100"
       - "traefik.protocol=http"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
