@@ -124,7 +124,7 @@ services:
     hostname: jormungandr
     container_name: jormungandr
     restart: always
-    image: bethington/jormungandr:latest
+    image: bethington/jormungandr:v0.7.0
     volumes:
       - ~/docker/jormungandr/.node_sec:/app/bin/.node_sec
       - ~/docker/jormungandr/data:/app/bin/data
