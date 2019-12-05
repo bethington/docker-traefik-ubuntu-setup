@@ -9,3 +9,7 @@ portainer/
 shared/
 terraria/
 traefik/
+bitcoin/
+jormungandr/
+litecoin/
+sandbox/
