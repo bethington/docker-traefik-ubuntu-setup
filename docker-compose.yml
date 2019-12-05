@@ -144,62 +144,44 @@ services:
       - "traefik.docker.network=traefik_proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
       
-  # cardano:
-  #   image: bethington/cardano-sl-mainnet
-  #   container_name: cardano
-  #   restart: always
-  #   ports:
-  #     - "8000:8000"
-  #     - "8100:8100"
-  #     - "8110:8110"
-  #   volumes:
-  #     - ${USERDIR}/docker/cardano/data:/opt/cardano-sl/state-explorer-mainnet
-  #   environment:
-  #     - TZ=${TZ}
-  #   networks:
-  #     - traefik_proxy
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.backend=cardano"
-  #     - "traefik.frontend.rule=Host:cardano.${DOMAINNAME}"
-  #     - "traefik.port=8000"
-  #     - "traefik.docker.network=traefik_proxy"
-  #     - "traefik.frontend.headers.SSLRedirect=true"
-  #     - "traefik.frontend.headers.STSSeconds=315360000"
-  #     - "traefik.frontend.headers.browserXSSFilter=true"
-  #     - "traefik.frontend.headers.contentTypeNosniff=true"
-  #     - "traefik.frontend.headers.forceSTSHeader=true"
-  #     - "traefik.frontend.headers.STSIncludeSubdomains=true"
-  #     - "traefik.frontend.headers.STSPreload=true"
-  #     - "traefik.frontend.headers.frameDeny=true"
-  # cardanotest:
-  #   image: bethington/cardano-sl-testnet
-  #   container_name: cardanotest
-  #   restart: always
-  #   ports:
-  #     - "8001:8000"
-  #     - "8101:8100"
-  #     - "8111:8110"
-  #   volumes:
-  #     - ${USERDIR}/docker/cardano/datatest:/opt/cardano-sl/state-explorer-testnet
-  #   environment:
-  #     - TZ=${TZ}
-  #   networks:
-  #     - traefik_proxy
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.backend=cardanotest"
-  #     - "traefik.frontend.rule=Host:cardanotest.${DOMAINNAME}"
-  #     - "traefik.port=8000"
-  #     - "traefik.docker.network=traefik_proxy"
-  #     - "traefik.frontend.headers.SSLRedirect=true"
-  #     - "traefik.frontend.headers.STSSeconds=315360000"
-  #     - "traefik.frontend.headers.browserXSSFilter=true"
-  #     - "traefik.frontend.headers.contentTypeNosniff=true"
-  #     - "traefik.frontend.headers.forceSTSHeader=true"
-  #     - "traefik.frontend.headers.STSIncludeSubdomains=true"
-  #     - "traefik.frontend.headers.STSPreload=true"
-  #     - "traefik.frontend.headers.frameDeny=true"
+# NextCloud – Your Own Cloud Storage
+  nextcloud:
+    image: linuxserver/nextcloud
+    container_name: nextcloud
+    hostname: nextcloud
+    restart: always
+    networks:
+      - traefik_proxy
+#    ports:
+#      - "XXXX:443"
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/nextcloud:/config
+      - /mnt/backup:/data
+      - ${USERDIR}/docker/shared:/shared
+    labels:
+      traefik.enable: "true"
+      traefik.backend: nextcloud
+      traefik.protocol: https
+      traefik.port: 443
+      traefik.frontend.rule: Host:nextcloud.${DOMAINNAME}
+      traefik.frontend.headers.SSLHost: nextcloud.${DOMAINNAME}
+      traefik.docker.network: traefik_proxy
+      traefik.frontend.passHostHeader: "true"
+      traefik.frontend.headers.SSLForceHost: "true"
+      traefik.frontend.headers.SSLRedirect: "true"
+      traefik.frontend.headers.browserXSSFilter: "true"
+      traefik.frontend.headers.contentTypeNosniff: "true"
+      traefik.frontend.headers.forceSTSHeader: "true"
+      traefik.frontend.headers.STSSeconds: 315360000
+      traefik.frontend.headers.STSIncludeSubdomains: "true"
+      traefik.frontend.headers.STSPreload: "true"
+      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
+      traefik.frontend.headers.frameDeny: "true"
+      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}' 
+      
   # mineos:
   #   image: hexparrot/mineos:node-crux
   #   container_name: mineos
