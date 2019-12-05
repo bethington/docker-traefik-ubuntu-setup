@@ -182,80 +182,49 @@ services:
       traefik.frontend.headers.frameDeny: "true"
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}' 
       
-  # mineos:
-  #   image: hexparrot/mineos:node-crux
-  #   container_name: mineos
-  #   restart: always
-  #   ports:
-  #     - "8180:8080"
-  #     - "8123:8123"
-  #     - "25560-25570:25560-25570"
-  #   volumes:
-  #     - ${USERDIR}/docker/mineos/data:/var/games/minecraft
-  #   environment:
-  #     - TZ=${TZ}
-  #     - USER_NAME=bethington
-  #     - USER_PASSWORD=goodyx12
-  #   networks:
-  #     - traefik_proxy
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.backend=mineos"
-  #     - "traefik.frontend.rule=Host:mineos.${DOMAINNAME}"
-  #     - "traefik.port=8080"
-  #     - "traefik.docker.network=traefik_proxy"
-  #     - "traefik.frontend.headers.SSLRedirect=true"
-  #     - "traefik.frontend.headers.STSSeconds=315360000"
-  #     - "traefik.frontend.headers.browserXSSFilter=true"
-  #     - "traefik.frontend.headers.contentTypeNosniff=true"
-  #     - "traefik.frontend.headers.forceSTSHeader=true"
-  #     - "traefik.frontend.headers.STSIncludeSubdomains=true"
-  #     - "traefik.frontend.headers.STSPreload=true"
-  #     - "traefik.frontend.headers.frameDeny=true"
-  # getbitbox:
-  #   image: bethington/mean:latest
-  #   container_name: getbitbox
-  #   restart: always
-  #   ports:
-  #     - "4040:4040"
-  #   volumes:
-  #     - ${USERDIR}/docker/getbitbox/Development:/Development
-  #   environment:
-  #     - TZ=${TZ}
-  #     - NODE_ENV=production
-  #     - SERVER_PORT=4040
-  #     - JWT_SECRET=0a6b944d-d2fb-46fc-a85e-0295c986cd9f
-  #     - MONGO_HOST="mongodb://mongo/odmp"
-  #   networks:
-  #     - traefik_proxy
-  #   depends_on:
-  #     - mongo
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.backend=getbitbox"
-  #     - "traefik.frontend.rule=Host:getbitbox.${DOMAINNAME}, getbitbox.org, getbitbox.net, getbitbox.xyz, getbitbox.info, getbitbox.us, reesservices.com"  
-  #     - "traefik.port=4040"
-  #     - "traefik.docker.network=traefik_proxy"
-  #     - "traefik.frontend.headers.SSLRedirect=true"
-  #     - "traefik.frontend.headers.STSSeconds=315360000"
-  #     - "traefik.frontend.headers.browserXSSFilter=true"
-  #     - "traefik.frontend.headers.contentTypeNosniff=true"
-  #     - "traefik.frontend.headers.forceSTSHeader=true"
-  #     - "traefik.frontend.headers.STSIncludeSubdomains=true"
-  #     - "traefik.frontend.headers.STSPreload=true"
-  #     - "traefik.frontend.headers.frameDeny=true" 
-  # mongo:
-  #   image: mongo:3.6
-  #   container_name: mongodb
-  #   restart: always
-  #   ports:
-  #     - "27017:27017"
-  #   # volumes:
-  #   #   - ${USERDIR}/docker/getbitbox/data/db:/data/db
-  #   #   - ${USERDIR}/docker/getbitbox/data/mongodb:/var/lib/mongodb
-  #   #   - ${USERDIR}/docker/getbitbox/data/mongodb/log:/var/log/mongodb
-  #   networks:
-  #     - traefik_proxy
+   mineos:
+     image: hexparrot/mineos:node-crux
+     container_name: mineos
+     restart: always
+     ports:
+       - "8180:8080"
+       - "8123:8123"
+       - "25560-25570:25560-25570"
+     volumes:
+       - ${USERDIR}/docker/mineos/data:/var/games/minecraft
+     environment:
+       - TZ=${TZ}
+       - USER_NAME=bethington
+       - USER_PASSWORD=${MC_USER_PASSWORD}
+     networks:
+       - traefik_proxy
+     labels:
+       - "traefik.enable=true"
+       - "traefik.backend=mineos"
+       - "traefik.frontend.rule=Host:mineos.${DOMAINNAME}"
+       - "traefik.port=8080"
+       - "traefik.docker.network=traefik_proxy"
+       - "traefik.frontend.headers.SSLRedirect=true"
+       - "traefik.frontend.headers.STSSeconds=315360000"
+       - "traefik.frontend.headers.browserXSSFilter=true"
+       - "traefik.frontend.headers.contentTypeNosniff=true"
+       - "traefik.frontend.headers.forceSTSHeader=true"
+       - "traefik.frontend.headers.STSIncludeSubdomains=true"
+       - "traefik.frontend.headers.STSPreload=true"
+       - "traefik.frontend.headers.frameDeny=true"
+  
+######### DOCKER RELATED ##########
+
+# Watchtower - Automatic Update of Containers/Apps
+  watchtower:
+    image: v2tec/watchtower
+    container_name: watchtower
+    hostname: watchtower
+    restart: unless-stopped
+    command: --schedule "0 0 23 * * SUN" --cleanup
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      
 networks:
   traefik_proxy:
     external:
