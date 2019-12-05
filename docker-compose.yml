@@ -182,36 +182,36 @@ services:
       traefik.frontend.headers.frameDeny: "true"
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}' 
       
-   mineos:
-     image: hexparrot/mineos:node-crux
-     container_name: mineos
-     restart: always
-     ports:
-       - "8180:8080"
-       - "8123:8123"
-       - "25560-25570:25560-25570"
-     volumes:
-       - ${USERDIR}/docker/mineos/data:/var/games/minecraft
-     environment:
-       - TZ=${TZ}
-       - USER_NAME=bethington
-       - USER_PASSWORD=${MC_USER_PASSWORD}
-     networks:
-       - traefik_proxy
-     labels:
-       - "traefik.enable=true"
-       - "traefik.backend=mineos"
-       - "traefik.frontend.rule=Host:mineos.${DOMAINNAME}"
-       - "traefik.port=8080"
-       - "traefik.docker.network=traefik_proxy"
-       - "traefik.frontend.headers.SSLRedirect=true"
-       - "traefik.frontend.headers.STSSeconds=315360000"
-       - "traefik.frontend.headers.browserXSSFilter=true"
-       - "traefik.frontend.headers.contentTypeNosniff=true"
-       - "traefik.frontend.headers.forceSTSHeader=true"
-       - "traefik.frontend.headers.STSIncludeSubdomains=true"
-       - "traefik.frontend.headers.STSPreload=true"
-       - "traefik.frontend.headers.frameDeny=true"
+  mineos:
+    image: hexparrot/mineos:node-crux
+    container_name: mineos
+    restart: always
+    ports:
+      - "8180:8080"
+      - "8123:8123"
+      - "25560-25570:25560-25570"
+    volumes:
+      - ${USERDIR}/docker/mineos/data:/var/games/minecraft
+    environment:
+      - TZ=${TZ}
+      - USER_NAME=bethington
+      - USER_PASSWORD=${MC_USER_PASSWORD}
+    networks:
+      - traefik_proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=mineos"
+      - "traefik.frontend.rule=Host:mineos.${DOMAINNAME}"
+      - "traefik.port=8080"
+      - "traefik.docker.network=traefik_proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
   
 ######### DOCKER RELATED ##########
 
