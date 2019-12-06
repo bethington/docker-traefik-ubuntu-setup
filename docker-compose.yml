@@ -195,8 +195,11 @@ services:
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
+      PASSWORD: ${PASSWORD}
     volumes:
       - ${USERDIR}/docker/code:/config
+      - ${PWD}:/home/coder/project
+      - ${HOME}/.local/share/code-server:/home/coder/.local/share/code-server
     labels:
       traefik.enable: "true"
       traefik.backend: code
