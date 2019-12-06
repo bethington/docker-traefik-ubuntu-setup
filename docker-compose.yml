@@ -45,7 +45,6 @@ services:
     image: portainer/portainer:latest
     container_name: portainer
     restart: always
-    command: -H unix:///var/run/docker.sock
     ports:
       - "9000:9000"
     volumes:
@@ -188,7 +187,6 @@ services:
     container_name: code
     hostname: code
     restart: always
-    command: -H unix:///var/run/docker.sock
     networks:
       - traefik_proxy
 #    ports:
