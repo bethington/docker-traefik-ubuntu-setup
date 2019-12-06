@@ -188,6 +188,7 @@ services:
     container_name: code
     hostname: code
     restart: always
+    command: -H unix:///var/run/docker.sock
     networks:
       - traefik_proxy
 #    ports:
@@ -197,6 +198,7 @@ services:
       PGID: ${PGID}
       PASSWORD: ${PASSWORD}
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
       - ${USERDIR}/docker/code:/config
     labels:
       traefik.enable: "true"
