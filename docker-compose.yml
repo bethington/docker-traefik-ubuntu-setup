@@ -196,7 +196,7 @@ services:
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
-      PASSWORD: ${PASSWORD}
+      PASSWORD: ${PASS}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${USERDIR}/docker/code:/config
@@ -234,7 +234,7 @@ services:
     environment:
       - TZ=${TZ}
       - USER_NAME=bethington
-      - USER_PASSWORD=${PASSWORD}
+      - USER_PASSWORD=${PASS}
     networks:
       - traefik_proxy
     labels:
