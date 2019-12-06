@@ -180,6 +180,42 @@ services:
       traefik.frontend.headers.STSPreload: "true"
       traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
       traefik.frontend.headers.frameDeny: "true"
+      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
+      
+# code-server – VS Code running on a remote server, accessible through the browser.
+  code:
+    image: linuxserver/code-server
+    container_name: code
+    hostname: code
+    restart: always
+    networks:
+      - traefik_proxy
+#    ports:
+#      - 8443:8443
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/code:/config
+    labels:
+      traefik.enable: "true"
+      traefik.backend: code
+      traefik.protocol: https
+      traefik.port: 8443
+      traefik.frontend.rule: Host:code.${DOMAINNAME}
+      traefik.frontend.headers.SSLHost: code.${DOMAINNAME}
+      traefik.docker.network: traefik_proxy
+      traefik.frontend.passHostHeader: "true"
+      traefik.frontend.headers.SSLForceHost: "true"
+      traefik.frontend.headers.SSLRedirect: "true"
+      traefik.frontend.headers.browserXSSFilter: "true"
+      traefik.frontend.headers.contentTypeNosniff: "true"
+      traefik.frontend.headers.forceSTSHeader: "true"
+      traefik.frontend.headers.STSSeconds: 315360000
+      traefik.frontend.headers.STSIncludeSubdomains: "true"
+      traefik.frontend.headers.STSPreload: "true"
+      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
+      traefik.frontend.headers.frameDeny: "true"
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}' 
       
   mineos:
