@@ -194,7 +194,10 @@ services:
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
+      TZ: ${TZ}
       PASSWORD: ${PASS}
+      SUDO_PASSWORD: ${PASS}
+
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${USERDIR}/docker/code:/config
