@@ -6,7 +6,7 @@ services:
 # Traefik Reverse Proxy
   traefik:
     hostname: traefik
-    image: traefik:v2.0
+    image: traefik:v1.7.16
     container_name: traefik
     restart: always
     domainname: ${DOMAINNAME}
