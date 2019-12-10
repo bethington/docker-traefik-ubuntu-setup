@@ -183,7 +183,7 @@ services:
       
 # code-server – VS Code running on a remote server, accessible through the browser.
   code:
-    image: bethington/code-server
+    image: codercom/code-server
     container_name: code
     hostname: code
     restart: always
