@@ -183,7 +183,7 @@ services:
       
 # code-server – VS Code running on a remote server, accessible through the browser.
   code:
-    image: linuxserver/code-server
+    image: bethington/code-server
     container_name: code
     hostname: code
     restart: always
@@ -196,16 +196,16 @@ services:
       PGID: ${PGID}
       TZ: ${TZ}
       PASSWORD: ${PASS}
-      SUDO_PASSWORD: ${PASS}
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${USERDIR}/docker/code:/config
+      - "${USERDIR}:/home/coder/project"
+      - "${USERDIR}/docker/code:/home/coder/.local/share/code-server"
     labels:
       traefik.enable: "true"
       traefik.backend: code
       traefik.protocol: http
-      traefik.port: 8443
+      traefik.port: 8080
       traefik.frontend.rule: Host:code.${DOMAINNAME}
       traefik.frontend.headers.SSLHost: code.${DOMAINNAME}
       traefik.docker.network: traefik_proxy
@@ -223,12 +223,10 @@ services:
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}' 
       
   mineos:
-    image: hexparrot/mineos:node-crux
+    image: bethington/mineos
     container_name: mineos
     restart: always
     ports:
-      - "8180:8080"
-      - "8123:8123"
       - "25560-25570:25560-25570"
     volumes:
       - ${USERDIR}/docker/mineos/data:/var/games/minecraft
