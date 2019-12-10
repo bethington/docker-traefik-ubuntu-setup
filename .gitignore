@@ -1,15 +1,3 @@
+# Ignore all directories, and all sub-directories, and it's contents:
+*/*
 variables.env
-cardano/
-getbitbox/
-mean/
-meanjs/
-mineos/
-ownCloud/
-portainer/
-shared/
-terraria/
-traefik/
-bitcoin/
-jormungandr/
-litecoin/
-sandbox/
