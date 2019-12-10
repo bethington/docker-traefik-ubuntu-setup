@@ -189,18 +189,16 @@ services:
     restart: always
     networks:
       - traefik_proxy
-#    ports:
-#      - 8443:8443
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
       PASSWORD: ${PASS}
+      SUDO_PASSWORD: ${PASS}
 
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - "${USERDIR}:/home/coder/project"
-      - "${USERDIR}/docker/code:/home/coder/.local/share/code-server"
+      - "${USERDIR}:/home/coder"
     labels:
       traefik.enable: "true"
       traefik.backend: code
