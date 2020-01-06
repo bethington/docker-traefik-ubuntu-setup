@@ -218,7 +218,42 @@ services:
       traefik.frontend.headers.STSPreload: "true"
       traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
       traefik.frontend.headers.frameDeny: "true"
-      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}' 
+      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
+      
+# GitLab Community Edition docker image based on the Omnibus package
+  gitlab:
+    image: gitlab/gitlab-ce
+    container_name: gitlab
+    hostname: gitlab
+    restart: always
+    ports:
+      - "22:22"
+    networks:
+      - traefik_proxy
+    volumes:
+      - ${USERDIR}/gitlab/config:/etc/gitlab
+      - ${USERDIR}/gitlab/logs:/var/log/gitlab
+      - ${USERDIR}/gitlab/data:/var/opt/gitlab
+    labels:
+      traefik.enable: "true"
+      traefik.backend: gitlab
+      traefik.protocol: http
+      traefik.port: 80
+      traefik.frontend.rule: Host:gitlab.${DOMAINNAME}
+      traefik.frontend.headers.SSLHost: gitlab.${DOMAINNAME}
+      traefik.docker.network: traefik_proxy
+      traefik.frontend.passHostHeader: "true"
+      traefik.frontend.headers.SSLForceHost: "true"
+      traefik.frontend.headers.SSLRedirect: "true"
+      traefik.frontend.headers.browserXSSFilter: "true"
+      traefik.frontend.headers.contentTypeNosniff: "true"
+      traefik.frontend.headers.forceSTSHeader: "true"
+      traefik.frontend.headers.STSSeconds: 315360000
+      traefik.frontend.headers.STSIncludeSubdomains: "true"
+      traefik.frontend.headers.STSPreload: "true"
+      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
+      traefik.frontend.headers.frameDeny: "true"
+      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
   mineos:
     image: bethington/mineos
