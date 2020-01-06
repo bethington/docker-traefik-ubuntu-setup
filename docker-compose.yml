@@ -229,9 +229,9 @@ services:
     networks:
       - traefik_proxy
     volumes:
-      - ${USERDIR}/gitlab/config:/etc/gitlab
-      - ${USERDIR}/gitlab/logs:/var/log/gitlab
-      - ${USERDIR}/gitlab/data:/var/opt/gitlab
+      - ${USERDIR}/docker/gitlab/config:/etc/gitlab
+      - ${USERDIR}/docker/gitlab/logs:/var/log/gitlab
+      - ${USERDIR}/docker/gitlab/data:/var/opt/gitlab
     labels:
       traefik.enable: "true"
       traefik.backend: gitlab
