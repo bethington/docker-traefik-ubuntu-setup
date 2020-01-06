@@ -226,8 +226,6 @@ services:
     container_name: gitlab
     hostname: gitlab
     restart: always
-    ports:
-      - "22:22"
     networks:
       - traefik_proxy
     volumes:
