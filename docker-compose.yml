@@ -286,6 +286,43 @@ services:
       traefik.frontend.headers.frameDeny: "true"
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
+# Eclipse Mosquitto - An open source message broker which implements MQTT version 5, 3.1.1 and 3.1
+  mqtt:
+    image: eclipse-mosquitto
+    container_name: mqtt
+    hostname: mqtt
+    restart: always
+    networks:
+      - traefik_proxy
+    ports:
+      - 1883:1883
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${USERDIR}/docker/mqtt/config:/mosquitto/config
+      - ${USERDIR}/docker/mqtt/data:/mosquitto/data
+      - ${USERDIR}/docker/mqtt/log:/mosquitto/log
+    labels:
+      traefik.enable: "true"
+      traefik.backend: mqtt
+      traefik.protocol: http
+      traefik.port: 9001
+      traefik.frontend.rule: Host:mqtt.${DOMAINNAME}
+      traefik.frontend.headers.SSLHost: mqtt.${DOMAINNAME}
+      traefik.docker.network: traefik_proxy
+      traefik.frontend.passHostHeader: "true"
+      traefik.frontend.headers.SSLForceHost: "true"
+      traefik.frontend.headers.SSLRedirect: "true"
+      traefik.frontend.headers.browserXSSFilter: "true"
+      traefik.frontend.headers.contentTypeNosniff: "true"
+      traefik.frontend.headers.forceSTSHeader: "true"
+      traefik.frontend.headers.STSSeconds: 315360000
+      traefik.frontend.headers.STSIncludeSubdomains: "true"
+      traefik.frontend.headers.STSPreload: "true"
+      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
+      traefik.frontend.headers.frameDeny: "true"
+      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
+      
 # GitLab Community Edition docker image based on the Omnibus package
   gitlab:
     image: gitlab/gitlab-ce
