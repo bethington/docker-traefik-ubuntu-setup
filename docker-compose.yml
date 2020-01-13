@@ -298,7 +298,7 @@ services:
       - traefik_proxy
     ports:
       - 1883:1883
-      - 9001:9002
+      - 9002:9001
     environment:
       - TZ=${TZ}
     volumes:
