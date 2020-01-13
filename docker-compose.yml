@@ -253,6 +253,39 @@ services:
       traefik.frontend.headers.frameDeny: "true"
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
+# Node-RED - Low-code programming for event-driven applications.
+  red:
+    image: nodered/node-red
+    container_name: red
+    hostname: red
+    restart: always
+    networks:
+      - traefik_proxy
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${USERDIR}/docker/home:/config
+    labels:
+      traefik.enable: "true"
+      traefik.backend: red
+      traefik.protocol: http
+      traefik.port: 1880
+      traefik.frontend.rule: Host:red.${DOMAINNAME}
+      traefik.frontend.headers.SSLHost: red.${DOMAINNAME}
+      traefik.docker.network: traefik_proxy
+      traefik.frontend.passHostHeader: "true"
+      traefik.frontend.headers.SSLForceHost: "true"
+      traefik.frontend.headers.SSLRedirect: "true"
+      traefik.frontend.headers.browserXSSFilter: "true"
+      traefik.frontend.headers.contentTypeNosniff: "true"
+      traefik.frontend.headers.forceSTSHeader: "true"
+      traefik.frontend.headers.STSSeconds: 315360000
+      traefik.frontend.headers.STSIncludeSubdomains: "true"
+      traefik.frontend.headers.STSPreload: "true"
+      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
+      traefik.frontend.headers.frameDeny: "true"
+      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
+      
 # GitLab Community Edition docker image based on the Omnibus package
   gitlab:
     image: gitlab/gitlab-ce
