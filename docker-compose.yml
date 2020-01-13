@@ -228,6 +228,8 @@ services:
     restart: always
     networks:
       - traefik_proxy
+    links:
+      - mqtt:broker
     environment:
       - TZ=${TZ}
     volumes:
