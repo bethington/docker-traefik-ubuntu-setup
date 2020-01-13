@@ -12,7 +12,7 @@ services:
     domainname: ${DOMAINNAME}
     networks:
       - default
-      - traefik_proxy
+      - proxy
     ports:
       - "80:80"
       - "443:443"
@@ -25,7 +25,7 @@ services:
       - "traefik.backend=traefik"
       - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"
       - "traefik.port=8080"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -54,13 +54,13 @@ services:
     environment:
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.backend=portainer"
       - "traefik.frontend.rule=Host:portainer.${DOMAINNAME}"  
       - "traefik.port=9000"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
@@ -86,14 +86,14 @@ services:
     environment:
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.backend=bitcoin"
       - "traefik.frontend.rule=Host:bitcoin.${DOMAINNAME}"
       - "traefik.port=8332"
       - "traefik.protocol=http"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
 # Litecoind
   litecoin:
@@ -109,14 +109,14 @@ services:
     environment:
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.backend=litecoin"
       - "traefik.frontend.rule=Host:litecoin.${DOMAINNAME}"
       - "traefik.port=9332"
       - "traefik.protocol=http"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
 # Cardano Jormungandr rust node
   jormungandr:
@@ -133,14 +133,14 @@ services:
     environment:
       - TZ=${TZ}
     networks:
-      - traefik_proxy
+      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.backend=jormungandr"
       - "traefik.frontend.rule=Host:jormungandr.${DOMAINNAME}"
       - "traefik.port=3100"
       - "traefik.protocol=http"
-      - "traefik.docker.network=traefik_proxy"
+      - "traefik.docker.network=proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
       
 # NextCloud – Your Own Cloud Storage
@@ -150,7 +150,7 @@ services:
     hostname: nextcloud
     restart: always
     networks:
-      - traefik_proxy
+      - proxy
 #    ports:
 #      - "XXXX:443"
     environment:
@@ -167,7 +167,7 @@ services:
       traefik.port: 443
       traefik.frontend.rule: Host:nextcloud.${DOMAINNAME}
       traefik.frontend.headers.SSLHost: nextcloud.${DOMAINNAME}
-      traefik.docker.network: traefik_proxy
+      traefik.docker.network: proxy
       traefik.frontend.passHostHeader: "true"
       traefik.frontend.headers.SSLForceHost: "true"
       traefik.frontend.headers.SSLRedirect: "true"
@@ -188,7 +188,7 @@ services:
     hostname: code
     restart: always
     networks:
-      - traefik_proxy
+      - proxy
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
@@ -206,7 +206,7 @@ services:
       traefik.port: 8080
       traefik.frontend.rule: Host:code.${DOMAINNAME}
       traefik.frontend.headers.SSLHost: code.${DOMAINNAME}
-      traefik.docker.network: traefik_proxy
+      traefik.docker.network: proxy
       traefik.frontend.passHostHeader: "true"
       traefik.frontend.headers.SSLForceHost: "true"
       traefik.frontend.headers.SSLRedirect: "true"
@@ -227,7 +227,7 @@ services:
     hostname: home
     restart: always
     networks:
-      - traefik_proxy
+      - proxy
     links:
       - mqtt:broker
     environment:
@@ -241,7 +241,7 @@ services:
       traefik.port: 8123
       traefik.frontend.rule: Host:home.${DOMAINNAME}
       traefik.frontend.headers.SSLHost: home.${DOMAINNAME}
-      traefik.docker.network: traefik_proxy
+      traefik.docker.network: proxy
       traefik.frontend.passHostHeader: "true"
       traefik.frontend.headers.SSLForceHost: "true"
       traefik.frontend.headers.SSLRedirect: "true"
@@ -262,7 +262,7 @@ services:
     hostname: red
     restart: always
     networks:
-      - traefik_proxy
+      - proxy
     links:
       - mqtt:broker
     environment:
@@ -276,7 +276,7 @@ services:
       traefik.port: 1880
       traefik.frontend.rule: Host:red.${DOMAINNAME}
       traefik.frontend.headers.SSLHost: red.${DOMAINNAME}
-      traefik.docker.network: traefik_proxy
+      traefik.docker.network: proxy
       traefik.frontend.passHostHeader: "true"
       traefik.frontend.headers.SSLForceHost: "true"
       traefik.frontend.headers.SSLRedirect: "true"
@@ -297,7 +297,7 @@ services:
     hostname: mqtt
     restart: always
     networks:
-      - traefik_proxy
+      - proxy
     ports:
       - 1883:1883
       - 9002:9001
@@ -315,7 +315,7 @@ services:
     hostname: gitlab
     restart: always
     networks:
-      - traefik_proxy
+      - proxy
     environment:
       - TZ=${TZ}
     volumes:
@@ -329,7 +329,7 @@ services:
       traefik.port: 80
       traefik.frontend.rule: Host:gitlab.${DOMAINNAME}
       traefik.frontend.headers.SSLHost: gitlab.${DOMAINNAME}
-      traefik.docker.network: traefik_proxy
+      traefik.docker.network: proxy
       traefik.frontend.passHostHeader: "true"
       traefik.frontend.headers.SSLForceHost: "true"
       traefik.frontend.headers.SSLRedirect: "true"
@@ -356,7 +356,7 @@ services:
       - USER_NAME=bethington
       - USER_PASSWORD=${PASS}
     networks:
-      - traefik_proxy
+      - proxy
     labels:
       traefik.enable: "true"
       traefik.backend: mineos
@@ -364,7 +364,7 @@ services:
       traefik.port: 8080
       traefik.frontend.rule: Host:mineos.${DOMAINNAME}
       traefik.frontend.headers.SSLHost: mineos.${DOMAINNAME}
-      traefik.docker.network: traefik_proxy
+      traefik.docker.network: proxy
       traefik.frontend.passHostHeader: "true"
       traefik.frontend.headers.SSLForceHost: "true"
       traefik.frontend.headers.SSLRedirect: "true"
@@ -391,8 +391,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       
 networks:
-  traefik_proxy:
+  proxy:
     external:
-      name: traefik_proxy
+      name: proxy
   default:
     driver: bridge
