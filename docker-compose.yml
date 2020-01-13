@@ -264,7 +264,7 @@ services:
     environment:
       - TZ=${TZ}
     volumes:
-      - ${USERDIR}/docker/home:/config
+      - ${USERDIR}/docker/red:/data
     labels:
       traefik.enable: "true"
       traefik.backend: red
