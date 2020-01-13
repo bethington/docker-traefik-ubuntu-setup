@@ -228,8 +228,6 @@ services:
     restart: always
     networks:
       - proxy
-    links:
-      - mqtt:broker
     environment:
       - TZ=${TZ}
     volumes:
@@ -263,8 +261,6 @@ services:
     restart: always
     networks:
       - proxy
-    links:
-      - mqtt:broker
     environment:
       - TZ=${TZ}
     volumes:
