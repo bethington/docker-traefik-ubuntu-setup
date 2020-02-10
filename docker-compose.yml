@@ -123,13 +123,10 @@ services:
     hostname: jormungandr
     container_name: jormungandr
     restart: always
-    image: bethington/jormungandr:v0.7.0
+    image: bethington/jormungandr
     volumes:
       - ~/docker/jormungandr/.node_sec:/app/bin/.node_sec
       - ~/docker/jormungandr/data:/app/bin/data
-    ports:
-      - 3000:3000
-      - 3100:3100
     environment:
       - TZ=${TZ}
     networks:
@@ -138,7 +135,7 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=jormungandr"
       - "traefik.frontend.rule=Host:jormungandr.${DOMAINNAME}"
-      - "traefik.port=3100"
+      - "traefik.port=8448"
       - "traefik.protocol=http"
       - "traefik.docker.network=proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
