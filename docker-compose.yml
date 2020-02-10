@@ -128,6 +128,8 @@ services:
       - ~/docker/jormungandr/cfg:/app/cfg
       - ~/docker/jormungandr/secret:/app/secret
       - ~/docker/jormungandr/data:/app/bin/data
+    ports:
+      - 3000:3000
     environment:
       - TZ=${TZ}
     networks:
