@@ -129,7 +129,7 @@ services:
       - ~/docker/jormungandr/secret:/app/secret
       - ~/docker/jormungandr/data:/app/bin/data
     ports:
-      - 3000:3000
+      - 8299:8299
     environment:
       - TZ=${TZ}
     networks:
