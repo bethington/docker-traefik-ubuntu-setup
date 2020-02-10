@@ -125,7 +125,8 @@ services:
     restart: always
     image: bethington/jormungandr:v0.8.9
     volumes:
-      - ~/docker/jormungandr/.node_sec:/app/bin/.node_sec
+      - ~/docker/jormungandr/cfg:/app/cfg
+      - ~/docker/jormungandr/secret:/app/secret
       - ~/docker/jormungandr/data:/app/bin/data
     environment:
       - TZ=${TZ}
