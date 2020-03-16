@@ -339,6 +339,37 @@ services:
       traefik.frontend.headers.frameDeny: "true"
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
+# noVNC - the open source VNC client
+  vncmac:
+    image: dougw/novnc
+    container_name: vncmac
+    hostname: vncmac
+    restart: always
+    networks:
+      - proxy
+    environment:
+      - TZ=${TZ}
+    labels:
+      traefik.enable: "true"
+      traefik.backend: vncmac
+      traefik.protocol: http
+      traefik.port: 6080
+      traefik.frontend.rule: Host:vncmac.${DOMAINNAME}
+      traefik.frontend.headers.SSLHost: vncmac.${DOMAINNAME}
+      traefik.docker.network: proxy
+      traefik.frontend.passHostHeader: "true"
+      traefik.frontend.headers.SSLForceHost: "true"
+      traefik.frontend.headers.SSLRedirect: "true"
+      traefik.frontend.headers.browserXSSFilter: "true"
+      traefik.frontend.headers.contentTypeNosniff: "true"
+      traefik.frontend.headers.forceSTSHeader: "true"
+      traefik.frontend.headers.STSSeconds: 315360000
+      traefik.frontend.headers.STSIncludeSubdomains: "true"
+      traefik.frontend.headers.STSPreload: "true"
+      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
+      traefik.frontend.headers.frameDeny: "true"
+      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
+      
   mineos:
     image: bethington/mineos
     container_name: mineos
