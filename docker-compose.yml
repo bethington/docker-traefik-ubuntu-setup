@@ -355,7 +355,7 @@ services:
       traefik.enable: "true"
       traefik.backend: vncmac
       traefik.protocol: http
-      traefik.port: 6080
+      traefik.port: 8081
       traefik.frontend.rule: Host:vncmac.${DOMAINNAME}
       traefik.frontend.headers.SSLHost: vncmac.${DOMAINNAME}
       traefik.docker.network: proxy
