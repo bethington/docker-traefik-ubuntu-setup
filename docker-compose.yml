@@ -349,6 +349,8 @@ services:
       - proxy
     environment:
       - TZ=${TZ}
+      - REMOTE_HOST=10.0.0.122
+      - REMOTE_PORT=5900
     labels:
       traefik.enable: "true"
       traefik.backend: vncmac
