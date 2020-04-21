@@ -407,6 +407,44 @@ services:
       traefik.frontend.headers.frameDeny: "true"
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
+# gwbcd – Guidewire Billing Center Docs
+  gwbcd:
+    image: httpd:2.4
+    container_name: gwbcd
+    hostname: gwbcd
+    restart: always
+    networks:
+      - proxy
+    volumes:
+      - ${USERDIR}/docker/gwbcd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ${USERDIR}/docker/gwbcd/data:/usr/local/apache2/htdocs/
+      - ${USERDIR}/docker/shared:/shared
+    labels:
+      traefik.enable: "true"
+      traefik.backend: gwbcd
+      traefik.port: 80
+      traefik.frontend.rule: Host:gwbcd.${DOMAINNAME}
+      traefik.docker.network: proxy
+
+# gwccd – Guidewire Claims Center Docs
+  gwccd:
+    image: httpd:2.4
+    container_name: gwccd
+    hostname: gwccd
+    restart: always
+    networks:
+      - proxy
+    volumes:
+      - ${USERDIR}/docker/gwccd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ${USERDIR}/docker/gwccd/data:/usr/local/apache2/htdocs/
+      - ${USERDIR}/docker/shared:/shared
+    labels:
+      traefik.enable: "true"
+      traefik.backend: gwccd
+      traefik.port: 80
+      traefik.frontend.rule: Host:gwccd.${DOMAINNAME}
+      traefik.docker.network: proxy
+
 # gwpcd – Guidewire Policy Center Docs
   gwpcd:
     image: httpd:2.4
