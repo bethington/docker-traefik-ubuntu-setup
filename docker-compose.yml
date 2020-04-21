@@ -405,7 +405,26 @@ services:
       traefik.frontend.headers.STSPreload: "true"
       traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
       traefik.frontend.headers.frameDeny: "true"
-      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}' 
+      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
+      
+# gwpcd – Guidewire Policy Center Docs
+  gwpcd:
+    image: httpd:2.4
+    container_name: gwpcd
+    hostname: gwpcd
+    restart: always
+    networks:
+      - proxy
+    volumes:
+      - ${USERDIR}/docker/gwpcd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ${USERDIR}/docker/gwpcd/data:/usr/local/apache2/htdocs/
+      - ${USERDIR}/docker/shared:/shared
+    labels:
+      traefik.enable: "true"
+      traefik.backend: gwpcd
+      traefik.port: 80
+      traefik.frontend.rule: Host:gwpcd.${DOMAINNAME}
+      traefik.docker.network: proxy
   
 ######### DOCKER RELATED ##########
 
