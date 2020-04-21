@@ -458,11 +458,42 @@ services:
       - ${USERDIR}/docker/gwpcd/data:/usr/local/apache2/htdocs/
       - ${USERDIR}/docker/shared:/shared
     labels:
-      traefik.enable: "true"
+      traefik.enable: true
       traefik.backend: gwpcd
       traefik.port: 80
       traefik.frontend.rule: Host:gwpcd.${DOMAINNAME}
       traefik.docker.network: proxy
+      
+# search – Elasticsearch powerful open source search
+  search:
+    image: elasticsearch:7.6.2
+    container_name: search
+    hostname: search
+    restart: always
+    networks:
+      - proxy
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ${USERDIR}/docker/search/:/usr/share/elasticsearch/config/
+      - ${USERDIR}/docker/search/data:/usr/share/elasticsearch/data
+      - ${USERDIR}/docker/shared:/shared
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    labels:
+      traefik.enable: true
+      traefik.backend: search
+      traefik.port: 9200
+      traefik.frontend.rule: Host:search.${DOMAINNAME}
+      traefik.docker.network: proxy
+      
   
 ######### DOCKER RELATED ##########
 
