@@ -464,9 +464,9 @@ services:
       traefik.frontend.rule: Host:gwpcd.${DOMAINNAME}
       traefik.docker.network: proxy
       
-# search – Elasticsearch powerful open source search
+# search – Solr powerful open source search
   search:
-    image: elasticsearch:7.6.2
+    image: solr:8
     container_name: search
     hostname: search
     restart: always
@@ -477,16 +477,15 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - ${USERDIR}/docker/search/:/usr/share/elasticsearch/config/
-      - ${USERDIR}/docker/search/data:/usr/share/elasticsearch/data
+      - ${USERDIR}/docker/search:/var/solr
       - ${USERDIR}/docker/shared:/shared
     ports:
-      - 9200:9200
-      - 9300:9300
+      - 8983:8983
     environment:
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - SOLR_JAVA_MEM="-Xms1g -Xmx10g"
+    command:
+      - solr-precreate
+      - gettingstarted
     labels:
       traefik.enable: true
       traefik.backend: search
