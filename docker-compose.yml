@@ -479,8 +479,6 @@ services:
     volumes:
       - ${USERDIR}/docker/search:/var/solr
       - ${USERDIR}/docker/shared:/shared
-    ports:
-      - 8983:8983
     environment:
       SOLR_JAVA_MEM: "-Xms1g -Xmx10g"
       TZ: ${TZ}
@@ -490,7 +488,7 @@ services:
     labels:
       traefik.enable: true
       traefik.backend: search
-      traefik.port: 9200
+      traefik.port: 8983
       traefik.frontend.rule: Host:search.${DOMAINNAME}
       traefik.docker.network: proxy
       
