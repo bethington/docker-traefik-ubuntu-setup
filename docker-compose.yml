@@ -73,76 +73,76 @@ services:
 ######### BLOCKCHAIN SERVICES ##########
 
 # Bitcoind
-  bitcoin:
-    hostname: bitcoin
-    container_name: bitcoin
-    restart: always
-    image: bethington/bitcoind:latest
-    volumes:
-      - ${USERDIR}/docker/bitcoin/data:/bitcoin
-    ports:
-      - 8332:8332
-      - 8333:8333
-    environment:
-      - TZ=${TZ}
-    networks:
-      - proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=bitcoin"
-      - "traefik.frontend.rule=Host:bitcoin.${DOMAINNAME}"
-      - "traefik.port=8332"
-      - "traefik.protocol=http"
-      - "traefik.docker.network=proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
+#  bitcoin:
+#    hostname: bitcoin
+#    container_name: bitcoin
+#    restart: always
+#    image: bethington/bitcoind:latest
+#    volumes:
+#      - ${USERDIR}/docker/bitcoin/data:/bitcoin
+#    ports:
+#      - 8332:8332
+#      - 8333:8333
+#    environment:
+#      - TZ=${TZ}
+#    networks:
+#      - proxy
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.backend=bitcoin"
+#      - "traefik.frontend.rule=Host:bitcoin.${DOMAINNAME}"
+#      - "traefik.port=8332"
+#      - "traefik.protocol=http"
+#      - "traefik.docker.network=proxy"
+#      - "traefik.frontend.headers.SSLRedirect=true"
 # Litecoind
-  litecoin:
-    hostname: litecoin
-    container_name: litecoin
-    restart: always
-    image: bethington/litecoind:latest
-    volumes:
-      - ${USERDIR}/docker/litecoin/data:/litecoin
-    ports:
-      - 9332:9332
-      - 9333:9333
-    environment:
-      - TZ=${TZ}
-    networks:
-      - proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=litecoin"
-      - "traefik.frontend.rule=Host:litecoin.${DOMAINNAME}"
-      - "traefik.port=9332"
-      - "traefik.protocol=http"
-      - "traefik.docker.network=proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
+#  litecoin:
+#    hostname: litecoin
+#    container_name: litecoin
+#    restart: always
+#    image: bethington/litecoind:latest
+#    volumes:
+#      - ${USERDIR}/docker/litecoin/data:/litecoin
+#    ports:
+#      - 9332:9332
+#      - 9333:9333
+#    environment:
+#      - TZ=${TZ}
+#    networks:
+#      - proxy
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.backend=litecoin"
+#      - "traefik.frontend.rule=Host:litecoin.${DOMAINNAME}"
+#      - "traefik.port=9332"
+#      - "traefik.protocol=http"
+#      - "traefik.docker.network=proxy"
+#      - "traefik.frontend.headers.SSLRedirect=true"
 # Cardano Jormungandr rust node
-  jormungandr:
-    hostname: jormungandr
-    container_name: jormungandr
-    restart: always
-    image: bethington/jormungandr:v0.8.9
-    volumes:
-      - ~/docker/jormungandr/cfg:/app/cfg
-      - ~/docker/jormungandr/secret:/app/secret
-      - ~/docker/jormungandr/data:/app/bin/data
-    ports:
-      - 8299:8299
-    environment:
-      - TZ=${TZ}
-    networks:
-      - proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=jormungandr"
-      - "traefik.frontend.rule=Host:jormungandr.${DOMAINNAME}"
-      - "traefik.port=8448"
-      - "traefik.protocol=http"
-      - "traefik.docker.network=proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      
+#  jormungandr:
+#    hostname: jormungandr
+#    container_name: jormungandr
+#    restart: always
+#    image: bethington/jormungandr:v0.8.9
+#    volumes:
+#      - ~/docker/jormungandr/cfg:/app/cfg
+#      - ~/docker/jormungandr/secret:/app/secret
+#      - ~/docker/jormungandr/data:/app/bin/data
+#    ports:
+#      - 8299:8299
+#    environment:
+#      - TZ=${TZ}
+#    networks:
+#      - proxy
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.backend=jormungandr"
+#      - "traefik.frontend.rule=Host:jormungandr.${DOMAINNAME}"
+#      - "traefik.port=8448"
+#      - "traefik.protocol=http"
+#      - "traefik.docker.network=proxy"
+#      - "traefik.frontend.headers.SSLRedirect=true"
+#      
 # NextCloud – Your Own Cloud Storage
   nextcloud:
     image: linuxserver/nextcloud
