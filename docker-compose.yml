@@ -142,7 +142,24 @@ services:
 #      - "traefik.protocol=http"
 #      - "traefik.docker.network=proxy"
 #      - "traefik.frontend.headers.SSLRedirect=true"
-#      
+#
+ Cardano node - Images in this repository contain IOHK-managed configuration for the supported public networks
+  cardano:
+    hostname: cardano
+    container_name: cardano
+    restart: always
+    image: inputoutput/cardano-node:latest
+    volumes:
+      - ~/docker/cardano/cfg:/configuration
+      - ~/docker/cardano/data:/app/bin/data
+      - ~/docker/shared/node-ipc:/ipc
+    environment:
+      - TZ=${TZ}
+      - NETWORK=mainnet
+    networks:
+      - proxy
+    entrypoint: run --config /configuration/configuration.yaml --topology /configuration/topology.json --database-path /db
+      
 # NextCloud – Your Own Cloud Storage
   nextcloud:
     image: linuxserver/nextcloud
@@ -423,7 +440,7 @@ services:
       traefik.enable: "true"
       traefik.backend: gwbcd
       traefik.port: 80
-      traefik.frontend.rule: Host:gwbcd.${DOMAINNAME}
+       traefik.frontend.rule: Host:gwbcd.${DOMAINNAME}
       traefik.docker.network: proxy
 
 # gwccd – Guidewire Claims Center Docs
