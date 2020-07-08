@@ -143,7 +143,7 @@ services:
 #      - "traefik.docker.network=proxy"
 #      - "traefik.frontend.headers.SSLRedirect=true"
 #
- Cardano node - Images in this repository contain IOHK-managed configuration for the supported public networks
+# Cardano node - Images in this repository contain IOHK-managed configuration for the supported public networks
   cardano:
     hostname: cardano
     container_name: cardano
