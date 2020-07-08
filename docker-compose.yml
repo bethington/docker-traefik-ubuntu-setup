@@ -440,7 +440,7 @@ services:
       traefik.enable: "true"
       traefik.backend: gwbcd
       traefik.port: 80
-       traefik.frontend.rule: Host:gwbcd.${DOMAINNAME}
+      traefik.frontend.rule: Host:gwbcd.${DOMAINNAME}
       traefik.docker.network: proxy
 
 # gwccd – Guidewire Claims Center Docs
