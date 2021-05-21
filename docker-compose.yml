@@ -144,21 +144,21 @@ services:
 #      - "traefik.frontend.headers.SSLRedirect=true"
 #
 # Cardano node - Images in this repository contain IOHK-managed configuration for the supported public networks
-  cardano:
-    hostname: cardano
-    container_name: cardano
-    restart: always
-    image: inputoutput/cardano-node:latest
-    volumes:
-      - ~/docker/cardano/cfg:/configuration
-      - ~/docker/cardano/data:/app/bin/data
-      - ~/docker/shared/node-ipc:/ipc
-    environment:
-      - TZ=${TZ}
-      - NETWORK=mainnet
-    networks:
-      - proxy
-    entrypoint: run --config /configuration/configuration.yaml --topology /configuration/topology.json --database-path /db
+#   cardano:
+#     hostname: cardano
+#     container_name: cardano
+#     restart: always
+#     image: inputoutput/cardano-node:latest
+#     volumes:
+#       - ~/docker/cardano/cfg:/configuration
+#       - ~/docker/cardano/data:/app/bin/data
+#       - ~/docker/shared/node-ipc:/ipc
+#     environment:
+#       - TZ=${TZ}
+#       - NETWORK=mainnet
+#     networks:
+#       - proxy
+#     entrypoint: run --config /configuration/configuration.yaml --topology /configuration/topology.json --database-path /db
       
 # NextCloud – Your Own Cloud Storage
   nextcloud:
@@ -171,8 +171,9 @@ services:
 #    ports:
 #      - "XXXX:443"
     environment:
-      PUID: ${PUID}
-      PGID: ${PGID}
+      - PUID: ${PUID}
+      - PGID: ${PGID}
+      - TZ: ${TZ}
     volumes:
       - ${USERDIR}/docker/nextcloud:/config
       - /mnt/backup:/data
