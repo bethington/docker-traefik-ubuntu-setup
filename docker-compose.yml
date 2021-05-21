@@ -162,7 +162,7 @@ services:
       
 # NextCloud – Your Own Cloud Storage
   nextcloud:
-    image: linuxserver/nextcloud
+    image: ghcr.io/linuxserver/nextcloud
     container_name: nextcloud
     hostname: nextcloud
     restart: always
