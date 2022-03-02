@@ -14,48 +14,48 @@ services:
       - default
       - proxy
     ports:
-      - "80:80"
-      - "443:443"
-      - "9001:8080"
+      - 80:80
+      - 9001:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${USERDIR}/docker/traefik:/etc/traefik
+      - ${USERDIR}/docker/shared:/shared
     environment:
       - GODADDY_API_KEY=${GODADDY_API_KEY}
       - GODADDY_API_SECRET=${GODADDY_API_SECRET}
     labels:
       - "traefik.enable=true"
       - "traefik.backend=traefik"
-      - "traefik.port=8080"
+      - "traefik.port=80"
       - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"
+      - "traefik.admin.frontend.rule=Host:admin-traefik.${DOMAINNAME}"
+      - "traefik.admin.port=8080"
       - "traefik.docker.network=proxy"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${USERDIR}/docker/traefik:/etc/traefik
-      - ${USERDIR}/docker/shared:/shared
       
 # ghost - Ghost is a free and open source blogging platform
   ghost:
     image: ghost:4-alpine
     depends_on:
-      - mysql
+      - ghost-mysql
     container_name: ghost
     restart: always
     networks:
       - proxy
-      - default
     volumes:
       - ${USERDIR}/docker/ghost/data:/data
       - ${USERDIR}/docker/shared:/shared
     environment:
       # see https://ghost.org/docs/config/#configuration-options
-      - TZ=${TZ}
-      - database__client=mysql
-      - database__connection__host=mysql
-      - database__connection__user=root
-      - database__connection__password=${PASS}
-      - database__connection__database=ghost
-      # this url value is just an example, and is likely wrong for your environment!
-      - url=https://ghost.${DOMAINNAME}
-      # contrary to the default mentioned in the linked documentation, this image defaults to NODE_ENV=production (so development mode needs to be explicitly specified if desired)
-      #NODE_ENV=development
+      TZ=${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      database__client: mysql
+      database__connection__host: ghost-mysql
+      database__connection__port: 3306
+      database__connection__user: bethington
+      database__connection__password: ${PASS}
+      database__connection__database: ghost
+      url: https://ghost.${DOMAINNAME}
     networks:
       - proxy
     labels:
@@ -64,6 +64,22 @@ services:
       - "traefik.port=2368"
       - "traefik.frontend.rule=Host:ghost.${DOMAINNAME}"  
       - "traefik.docker.network=proxy"
+      
+# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  ghost-mysql:
+    image: mysql:5.7
+    container_name: ghost-mysql
+    restart: always
+    volumes:
+      - ${USERDIR}/docker/ghost-mysql/data:/var/lib/mysql
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      MYSQL_ROOT_PASSWORD: ${PASS}
+      MYSQL_DATABASE: ghost
+      MYSQL_USER: bethington
+      MYSQL_PASSWORD: ${PASS}
       
 # Portainer - WebUI for Containers
   portainer:
@@ -76,7 +92,7 @@ services:
       - ${USERDIR}/docker/portainer/data:/data
       - ${USERDIR}/docker/shared:/shared
     environment:
-      - TZ=${TZ}
+      TZ: ${TZ}
     networks:
       - proxy
     labels:
@@ -85,96 +101,6 @@ services:
       - "traefik.port=9000"
       - "traefik.frontend.rule=Host:portainer.${DOMAINNAME}"  
       - "traefik.docker.network=proxy"
-
-######### BLOCKCHAIN SERVICES ##########
-
-# Bitcoind
-#  bitcoin:
-#    hostname: bitcoin
-#    container_name: bitcoin
-#    restart: always
-#    image: bethington/bitcoind:latest
-#    volumes:
-#      - ${USERDIR}/docker/bitcoin/data:/bitcoin
-#    ports:
-#      - 8332:8332
-#      - 8333:8333
-#    environment:
-#      - TZ=${TZ}
-#    networks:
-#      - proxy
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.backend=bitcoin"
-#      - "traefik.frontend.rule=Host:bitcoin.${DOMAINNAME}"
-#      - "traefik.port=8332"
-#      - "traefik.protocol=http"
-#      - "traefik.docker.network=proxy"
-#      - "traefik.frontend.headers.SSLRedirect=true"
-# Litecoind
-#  litecoin:
-#    hostname: litecoin
-#    container_name: litecoin
-#    restart: always
-#    image: bethington/litecoind:latest
-#    volumes:
-#      - ${USERDIR}/docker/litecoin/data:/litecoin
-#    ports:
-#      - 9332:9332
-#      - 9333:9333
-#    environment:
-#      - TZ=${TZ}
-#    networks:
-#      - proxy
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.backend=litecoin"
-#      - "traefik.frontend.rule=Host:litecoin.${DOMAINNAME}"
-#      - "traefik.port=9332"
-#      - "traefik.protocol=http"
-#      - "traefik.docker.network=proxy"
-#      - "traefik.frontend.headers.SSLRedirect=true"
-# Cardano Jormungandr rust node
-#  jormungandr:
-#    hostname: jormungandr
-#    container_name: jormungandr
-#    restart: always
-#    image: bethington/jormungandr:v0.8.9
-#    volumes:
-#      - ~/docker/jormungandr/cfg:/app/cfg
-#      - ~/docker/jormungandr/secret:/app/secret
-#      - ~/docker/jormungandr/data:/app/bin/data
-#    ports:
-#      - 8299:8299
-#    environment:
-#      - TZ=${TZ}
-#    networks:
-#      - proxy
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.backend=jormungandr"
-#      - "traefik.frontend.rule=Host:jormungandr.${DOMAINNAME}"
-#      - "traefik.port=8448"
-#      - "traefik.protocol=http"
-#      - "traefik.docker.network=proxy"
-#      - "traefik.frontend.headers.SSLRedirect=true"
-#
-# Cardano node - Images in this repository contain IOHK-managed configuration for the supported public networks
-#   cardano:
-#     hostname: cardano
-#     container_name: cardano
-#     restart: always
-#     image: inputoutput/cardano-node:latest
-#     volumes:
-#       - ~/docker/cardano/cfg:/configuration
-#       - ~/docker/cardano/data:/app/bin/data
-#       - ~/docker/shared/node-ipc:/ipc
-#     environment:
-#       - TZ=${TZ}
-#       - NETWORK=mainnet
-#     networks:
-#       - proxy
-#     entrypoint: run --config /configuration/configuration.yaml --topology /configuration/topology.json --database-path /db
       
 # NextCloud – Your Own Cloud Storage
   nextcloud:
@@ -185,12 +111,15 @@ services:
     networks:
       - proxy
     environment:
-      - MYSQL_PASSWORD=${PASS}
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=root
-      - MYSQL_HOST=mysql
-      - NEXTCLOUD_ADMIN_USER=bethington
-      - NEXTCLOUD_ADMIN_PASSWORD=${PASS}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      MYSQL_PASSWORD: ${PASS}
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: root
+      MYSQL_HOST: mysql
+      NEXTCLOUD_ADMIN_USER: bethington
+      NEXTCLOUD_ADMIN_PASSWORD: ${PASS}
     volumes:
       - ${USERDIR}/docker/nextcloud:/var/www/html
     labels:
@@ -252,7 +181,7 @@ services:
     networks:
       - proxy
     environment:
-      - TZ=${TZ}
+      TZ: ${TZ}
     volumes:
       - ${USERDIR}/docker/red:/data
     labels:
@@ -260,6 +189,21 @@ services:
       traefik.backend: red
       traefik.port: 1880
       traefik.frontend.rule: Host:red.${DOMAINNAME}
+      traefik.docker.network: proxy
+      
+# adminer - Database management in a single PHP file.
+  adminer:
+    image: adminer
+    container_name: adminer
+    hostname: adminer
+    restart: always
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.backend: adminer
+      traefik.port: 8080
+      traefik.frontend.rule: Host:adminer.${DOMAINNAME}
       traefik.docker.network: proxy
       
 # Eclipse Mosquitto - An open source message broker which implements MQTT version 5, 3.1.1 and 3.1
@@ -489,31 +433,95 @@ services:
 #       traefik.frontend.rule: Host:search.${DOMAINNAME}
 #       traefik.docker.network: proxy
       
-# adminer - Database management in a single PHP file.
-  adminer:
-    image: adminer
-    container_name: adminer
-    hostname: adminer
-    restart: always
-    networks:
-      - proxy
-    labels:
-      traefik.enable: true
-      traefik.backend: adminer
-      traefik.port: 8080
-      traefik.frontend.rule: Host:adminer.${DOMAINNAME}
-      traefik.docker.network: proxy
-      
-# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
-  mysql:
-    image: mysql:5.7
-    container_name: mysql
-    restart: always
-    volumes:
-      - ${USERDIR}/docker/mysql/data:/var/lib/mysql
-      - ${USERDIR}/docker/shared:/shared
-    environment:
-      MYSQL_ROOT_PASSWORD: ${PASS}
+######### BLOCKCHAIN SERVICES ##########
+
+# Bitcoind
+#  bitcoin:
+#    hostname: bitcoin
+#    container_name: bitcoin
+#    restart: always
+#    image: bethington/bitcoind:latest
+#    volumes:
+#      - ${USERDIR}/docker/bitcoin/data:/bitcoin
+#    ports:
+#      - 8332:8332
+#      - 8333:8333
+#    environment:
+#      - TZ=${TZ}
+#    networks:
+#      - proxy
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.backend=bitcoin"
+#      - "traefik.frontend.rule=Host:bitcoin.${DOMAINNAME}"
+#      - "traefik.port=8332"
+#      - "traefik.protocol=http"
+#      - "traefik.docker.network=proxy"
+#      - "traefik.frontend.headers.SSLRedirect=true"
+# Litecoind
+#  litecoin:
+#    hostname: litecoin
+#    container_name: litecoin
+#    restart: always
+#    image: bethington/litecoind:latest
+#    volumes:
+#      - ${USERDIR}/docker/litecoin/data:/litecoin
+#    ports:
+#      - 9332:9332
+#      - 9333:9333
+#    environment:
+#      - TZ=${TZ}
+#    networks:
+#      - proxy
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.backend=litecoin"
+#      - "traefik.frontend.rule=Host:litecoin.${DOMAINNAME}"
+#      - "traefik.port=9332"
+#      - "traefik.protocol=http"
+#      - "traefik.docker.network=proxy"
+#      - "traefik.frontend.headers.SSLRedirect=true"
+# Cardano Jormungandr rust node
+#  jormungandr:
+#    hostname: jormungandr
+#    container_name: jormungandr
+#    restart: always
+#    image: bethington/jormungandr:v0.8.9
+#    volumes:
+#      - ~/docker/jormungandr/cfg:/app/cfg
+#      - ~/docker/jormungandr/secret:/app/secret
+#      - ~/docker/jormungandr/data:/app/bin/data
+#    ports:
+#      - 8299:8299
+#    environment:
+#      - TZ=${TZ}
+#    networks:
+#      - proxy
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.backend=jormungandr"
+#      - "traefik.frontend.rule=Host:jormungandr.${DOMAINNAME}"
+#      - "traefik.port=8448"
+#      - "traefik.protocol=http"
+#      - "traefik.docker.network=proxy"
+#      - "traefik.frontend.headers.SSLRedirect=true"
+#
+# Cardano node - Images in this repository contain IOHK-managed configuration for the supported public networks
+#   cardano:
+#     hostname: cardano
+#     container_name: cardano
+#     restart: always
+#     image: inputoutput/cardano-node:latest
+#     volumes:
+#       - ~/docker/cardano/cfg:/configuration
+#       - ~/docker/cardano/data:/app/bin/data
+#       - ~/docker/shared/node-ipc:/ipc
+#     environment:
+#       - TZ=${TZ}
+#       - NETWORK=mainnet
+#     networks:
+#       - proxy
+#     entrypoint: run --config /configuration/configuration.yaml --topology /configuration/topology.json --database-path /db
   
 ######### DOCKER RELATED ##########
 
