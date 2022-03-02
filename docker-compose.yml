@@ -54,12 +54,12 @@ services:
       database__connection__user: bethington
       database__connection__password: ${PASS}
       database__connection__database: ghost
-      url: https://ghost.${DOMAINNAME}
+      url: https://${DOMAINNAME}
     labels:
       - "traefik.enable=true"
       - "traefik.backend=ghost"
       - "traefik.port=2368"
-      - "traefik.frontend.rule=Host:ghost.${DOMAINNAME}"  
+      - "traefik.frontend.rule=Host:${DOMAINNAME}"  
       - "traefik.docker.network=proxy"
       
 # mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
