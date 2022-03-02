@@ -39,6 +39,51 @@ services:
       - ${USERDIR}/docker/traefik:/etc/traefik
       - ${USERDIR}/docker/shared:/shared
       
+# ghost - Ghost is a free and open source blogging platform
+  ghost:
+    image: ghost:4-alpine
+    depends_on:
+      db:
+        condition: service_healthy
+    container_name: ghost
+    restart: always
+    networks:
+      - proxy
+      - default
+    ports:
+      - 2368:2368
+    volumes:
+      - ${USERDIR}/docker/ghost/data:/data
+      - ${USERDIR}/docker/shared:/shared
+    environment:
+      # see https://ghost.org/docs/config/#configuration-options
+      - TZ=${TZ}
+      - database__client: mysql
+      - database__connection__host: db
+      - database__connection__user: root
+      - database__connection__password: ${PASS}
+      - database__connection__database: ghost
+      # this url value is just an example, and is likely wrong for your environment!
+      - url: http://localhost:2368
+      # contrary to the default mentioned in the linked documentation, this image defaults to NODE_ENV=production (so development mode needs to be explicitly specified if desired)
+      #NODE_ENV: development
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=ghost"
+      - "traefik.frontend.rule=Host:${DOMAINNAME}"  
+      - "traefik.port=2368"
+      - "traefik.docker.network=proxy"
+      - "traefik.frontend.headers.SSLRedirect=true"
+      - "traefik.frontend.headers.STSSeconds=315360000"
+      - "traefik.frontend.headers.browserXSSFilter=true"
+      - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.forceSTSHeader=true"
+      - "traefik.frontend.headers.STSIncludeSubdomains=true"
+      - "traefik.frontend.headers.STSPreload=true"
+      - "traefik.frontend.headers.frameDeny=true"
+      
 # Portainer - WebUI for Containers
   portainer:
     hostname: portainer
@@ -162,27 +207,29 @@ services:
       
 # NextCloud – Your Own Cloud Storage
   nextcloud:
-    image: ghcr.io/linuxserver/nextcloud
+    image: nextcloud
     container_name: nextcloud
     hostname: nextcloud
     restart: always
     networks:
       - proxy
-#    ports:
-#      - "XXXX:443"
+    ports:
+      - 8083:80
     environment:
-      - PUID: ${PUID}
-      - PGID: ${PGID}
+      - MYSQL_PASSWORD: ${PASS}
+      - MYSQL_DATABASE: nextcloud
+      - MYSQL_USER: root
+      - MYSQL_HOST: db
       - TZ: ${TZ}
     volumes:
-      - ${USERDIR}/docker/nextcloud:/config
-      - /mnt/backup:/data
+      - ${USERDIR}/docker/nextcloud:/var/www/html
+      - /mnt/backup:/var/www/html/data
       - ${USERDIR}/docker/shared:/shared
     labels:
       traefik.enable: "true"
       traefik.backend: nextcloud
       traefik.protocol: https
-      traefik.port: 443
+      traefik.port: 8083
       traefik.frontend.rule: Host:nextcloud.${DOMAINNAME}
       traefik.frontend.headers.SSLHost: nextcloud.${DOMAINNAME}
       traefik.docker.network: proxy
@@ -510,6 +557,33 @@ services:
       traefik.frontend.rule: Host:search.${DOMAINNAME}
       traefik.docker.network: proxy
       
+# adminer - Database management in a single PHP file.
+adminer:
+    image: adminer
+    container_name: adminer
+    hostname: adminer
+    restart: always
+    ports:
+      - 8082:8080
+    networks:
+      - proxy
+    labels:
+      traefik.enable: true
+      traefik.backend: adminer
+      traefik.port: 8082
+      traefik.frontend.rule: Host:adminer.${DOMAINNAME}
+      traefik.docker.network: proxy
+      
+# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    volumes:
+      - ${USERDIR}/docker/mysql/data:/var/lib/mysql
+      - ${USERDIR}/docker/shared:/shared
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PASS}
   
 ######### DOCKER RELATED ##########
 
