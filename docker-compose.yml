@@ -71,7 +71,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=ghost"
-      - "traefik.frontend.rule=Host:${DOMAINNAME}"  
+      - "traefik.frontend.rule=Host:www.${DOMAINNAME}"  
       - "traefik.port=2368"
       - "traefik.docker.network=proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
