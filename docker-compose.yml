@@ -188,7 +188,9 @@ services:
       - MYSQL_PASSWORD=${PASS}
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=root
-      - MYSQL_HOST=db
+      - MYSQL_HOST=mysql
+      - NEXTCLOUD_ADMIN_USER=bethington
+      - NEXTCLOUD_ADMIN_PASSWORD=${PASS}
     volumes:
       - ${USERDIR}/docker/nextcloud:/var/www/html
       - /mnt/backup:/var/www/html/data
