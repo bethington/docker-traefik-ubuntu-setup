@@ -34,27 +34,26 @@ services:
   ghost:
     image: ghost:4-alpine
     depends_on:
-      - mysql
+      - ghost-mysql
     container_name: ghost
     restart: always
     networks:
       - proxy
-      - default
     volumes:
       - ${USERDIR}/docker/ghost/data:/data
       - ${USERDIR}/docker/shared:/shared
     environment:
       # see https://ghost.org/docs/config/#configuration-options
-      - TZ=${TZ}
-      - database__client=mysql
-      - database__connection__host=mysql
-      - database__connection__user=root
-      - database__connection__password=${PASS}
-      - database__connection__database=ghost
-      # this url value is just an example, and is likely wrong for your environment!
-      - url=https://ghost.${DOMAINNAME}
-      # contrary to the default mentioned in the linked documentation, this image defaults to NODE_ENV=production (so development mode needs to be explicitly specified if desired)
-      #NODE_ENV=development
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      database__client: mysql
+      database__connection__host: ghost-mysql
+      database__connection__port: 3306
+      database__connection__user: bethington
+      database__connection__password: ${PASS}
+      database__connection__database: ghost
+      url: https://ghost.${DOMAINNAME}
     networks:
       - proxy
     labels:
@@ -63,6 +62,22 @@ services:
       - "traefik.port=2368"
       - "traefik.frontend.rule=Host:ghost.${DOMAINNAME}"  
       - "traefik.docker.network=proxy"
+      
+# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  ghost-mysql:
+    image: mysql:5.7
+    container_name: ghost-mysql
+    restart: always
+    volumes:
+      - ${USERDIR}/docker/ghost-mysql/data:/var/lib/mysql
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      MYSQL_ROOT_PASSWORD: ${PASS}
+      MYSQL_DATABASE: ghost
+      MYSQL_USER: bethington
+      MYSQL_PASSWORD: ${PASS}
       
 # Portainer - WebUI for Containers
   portainer:
