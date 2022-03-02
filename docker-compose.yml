@@ -43,7 +43,7 @@ services:
   ghost:
     image: ghost:4-alpine
     depends_on:
-      db:
+      mysql:
         condition: service_healthy
     container_name: ghost
     restart: always
@@ -59,7 +59,7 @@ services:
       # see https://ghost.org/docs/config/#configuration-options
       - TZ=${TZ}
       - database__client=mysql
-      - database__connection__host=db
+      - database__connection__host=mysql
       - database__connection__user=root
       - database__connection__password=${PASS}
       - database__connection__database=ghost
