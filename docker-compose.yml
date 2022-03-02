@@ -472,7 +472,7 @@ services:
       traefik.frontend.headers.frameDeny: "true"
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
-minecraft-isaac:
+  minecraft-isaac:
     image: itzg/minecraft-server
     hostname: minecraft-isaac
     container_name: minecraft-isaac
@@ -621,7 +621,7 @@ minecraft-isaac:
 #       traefik.docker.network: proxy
       
 # adminer - Database management in a single PHP file.
-adminer:
+  adminer:
     image: adminer
     container_name: adminer
     hostname: adminer
