@@ -92,7 +92,7 @@ services:
       - ${USERDIR}/docker/portainer/data:/data
       - ${USERDIR}/docker/shared:/shared
     environment:
-      TZ: ${TZ}
+      -TZ=${TZ}
     networks:
       - proxy
     labels:
