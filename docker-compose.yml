@@ -38,6 +38,7 @@ services:
     container_name: ghost
     restart: always
     networks:
+      - default
       - proxy
     volumes:
       - ${USERDIR}/docker/ghost/data:/data
@@ -54,8 +55,6 @@ services:
       database__connection__password: ${PASS}
       database__connection__database: ghost
       url: https://ghost.${DOMAINNAME}
-    networks:
-      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.backend=ghost"
@@ -68,6 +67,8 @@ services:
     image: mysql:5.7
     container_name: ghost-mysql
     restart: always
+    networks:
+      - default
     volumes:
       - ${USERDIR}/docker/ghost-mysql/data:/var/lib/mysql
     environment:
