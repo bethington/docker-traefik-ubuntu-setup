@@ -23,17 +23,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=traefik"
-      - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"
       - "traefik.port=8080"
+      - "traefik.frontend.rule=Host:traefik.${DOMAINNAME}"
       - "traefik.docker.network=proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${USERDIR}/docker/traefik:/etc/traefik
@@ -49,8 +41,6 @@ services:
     networks:
       - proxy
       - default
-    ports:
-      - 2368:2368
     volumes:
       - ${USERDIR}/docker/ghost/data:/data
       - ${USERDIR}/docker/shared:/shared
@@ -71,17 +61,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=ghost"
-      - "traefik.frontend.rule=Host:www.${DOMAINNAME}"  
       - "traefik.port=2368"
+      - "traefik.frontend.rule=Host:www.${DOMAINNAME}"  
       - "traefik.docker.network=proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=true"
       
 # Portainer - WebUI for Containers
   portainer:
@@ -89,8 +71,6 @@ services:
     image: portainer/portainer:latest
     container_name: portainer
     restart: always
-    ports:
-      - "9000:9000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${USERDIR}/docker/portainer/data:/data
@@ -102,17 +82,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.backend=portainer"
-      - "traefik.frontend.rule=Host:portainer.${DOMAINNAME}"  
       - "traefik.port=9000"
+      - "traefik.frontend.rule=Host:portainer.${DOMAINNAME}"  
       - "traefik.docker.network=proxy"
-      - "traefik.frontend.headers.SSLRedirect=true"
-      - "traefik.frontend.headers.STSSeconds=315360000"
-      - "traefik.frontend.headers.browserXSSFilter=true"
-      - "traefik.frontend.headers.contentTypeNosniff=true"
-      - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.STSIncludeSubdomains=true"
-      - "traefik.frontend.headers.STSPreload=true"
-      - "traefik.frontend.headers.frameDeny=true"
 
 ######### BLOCKCHAIN SERVICES ##########
 
@@ -212,8 +184,6 @@ services:
     restart: always
     networks:
       - proxy
-    ports:
-      - 8083:80
     environment:
       - MYSQL_PASSWORD=${PASS}
       - MYSQL_DATABASE=nextcloud
@@ -226,23 +196,9 @@ services:
     labels:
       traefik.enable: "true"
       traefik.backend: nextcloud
-      traefik.protocol: https
-      traefik.port: 8083
+      traefik.port: 80
       traefik.frontend.rule: Host:nextcloud.${DOMAINNAME}
-      traefik.frontend.headers.SSLHost: nextcloud.${DOMAINNAME}
       traefik.docker.network: proxy
-      traefik.frontend.passHostHeader: "true"
-      traefik.frontend.headers.SSLForceHost: "true"
-      traefik.frontend.headers.SSLRedirect: "true"
-      traefik.frontend.headers.browserXSSFilter: "true"
-      traefik.frontend.headers.contentTypeNosniff: "true"
-      traefik.frontend.headers.forceSTSHeader: "true"
-      traefik.frontend.headers.STSSeconds: 315360000
-      traefik.frontend.headers.STSIncludeSubdomains: "true"
-      traefik.frontend.headers.STSPreload: "true"
-      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
-      traefik.frontend.headers.frameDeny: "true"
-      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
 # code-server – VS Code running on a remote server, accessible through the browser.
   code:
@@ -258,30 +214,15 @@ services:
       TZ: ${TZ}
       PASSWORD: ${PASS}
       SUDO_PASSWORD: ${PASS}
-
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - "${USERDIR}:/home/coder"
     labels:
       traefik.enable: "true"
       traefik.backend: code
-      traefik.protocol: http
       traefik.port: 8080
       traefik.frontend.rule: Host:code.${DOMAINNAME}
-      traefik.frontend.headers.SSLHost: code.${DOMAINNAME}
       traefik.docker.network: proxy
-      traefik.frontend.passHostHeader: "true"
-      traefik.frontend.headers.SSLForceHost: "true"
-      traefik.frontend.headers.SSLRedirect: "true"
-      traefik.frontend.headers.browserXSSFilter: "true"
-      traefik.frontend.headers.contentTypeNosniff: "true"
-      traefik.frontend.headers.forceSTSHeader: "true"
-      traefik.frontend.headers.STSSeconds: 315360000
-      traefik.frontend.headers.STSIncludeSubdomains: "true"
-      traefik.frontend.headers.STSPreload: "true"
-      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
-      traefik.frontend.headers.frameDeny: "true"
-      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
 # Home Assistant - Open source home automation that puts local control and privacy first.
   home:
@@ -298,23 +239,9 @@ services:
     labels:
       traefik.enable: "true"
       traefik.backend: home
-      traefik.protocol: http
       traefik.port: 8123
       traefik.frontend.rule: Host:home.${DOMAINNAME}
-      traefik.frontend.headers.SSLHost: home.${DOMAINNAME}
       traefik.docker.network: proxy
-      traefik.frontend.passHostHeader: "true"
-      traefik.frontend.headers.SSLForceHost: "true"
-      traefik.frontend.headers.SSLRedirect: "true"
-      traefik.frontend.headers.browserXSSFilter: "true"
-      traefik.frontend.headers.contentTypeNosniff: "true"
-      traefik.frontend.headers.forceSTSHeader: "true"
-      traefik.frontend.headers.STSSeconds: 315360000
-      traefik.frontend.headers.STSIncludeSubdomains: "true"
-      traefik.frontend.headers.STSPreload: "true"
-      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
-      traefik.frontend.headers.frameDeny: "true"
-      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
 # Node-RED - Low-code programming for event-driven applications.
   red:
@@ -331,23 +258,9 @@ services:
     labels:
       traefik.enable: "true"
       traefik.backend: red
-      traefik.protocol: http
       traefik.port: 1880
       traefik.frontend.rule: Host:red.${DOMAINNAME}
-      traefik.frontend.headers.SSLHost: red.${DOMAINNAME}
       traefik.docker.network: proxy
-      traefik.frontend.passHostHeader: "true"
-      traefik.frontend.headers.SSLForceHost: "true"
-      traefik.frontend.headers.SSLRedirect: "true"
-      traefik.frontend.headers.browserXSSFilter: "true"
-      traefik.frontend.headers.contentTypeNosniff: "true"
-      traefik.frontend.headers.forceSTSHeader: "true"
-      traefik.frontend.headers.STSSeconds: 315360000
-      traefik.frontend.headers.STSIncludeSubdomains: "true"
-      traefik.frontend.headers.STSPreload: "true"
-      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
-      traefik.frontend.headers.frameDeny: "true"
-      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
 # Eclipse Mosquitto - An open source message broker which implements MQTT version 5, 3.1.1 and 3.1
 #   mqtt:
@@ -384,23 +297,9 @@ services:
 #     labels:
 #       traefik.enable: "true"
 #       traefik.backend: gitlab
-#       traefik.protocol: http
 #       traefik.port: 80
 #       traefik.frontend.rule: Host:gitlab.${DOMAINNAME}
-#       traefik.frontend.headers.SSLHost: gitlab.${DOMAINNAME}
 #       traefik.docker.network: proxy
-#       traefik.frontend.passHostHeader: "true"
-#       traefik.frontend.headers.SSLForceHost: "true"
-#       traefik.frontend.headers.SSLRedirect: "true"
-#       traefik.frontend.headers.browserXSSFilter: "true"
-#       traefik.frontend.headers.contentTypeNosniff: "true"
-#       traefik.frontend.headers.forceSTSHeader: "true"
-#       traefik.frontend.headers.STSSeconds: 315360000
-#       traefik.frontend.headers.STSIncludeSubdomains: "true"
-#       traefik.frontend.headers.STSPreload: "true"
-#       traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
-#       traefik.frontend.headers.frameDeny: "true"
-#       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
 # noVNC - the open source VNC client
   vncmac:
@@ -417,23 +316,9 @@ services:
     labels:
       traefik.enable: "true"
       traefik.backend: vncmac
-      traefik.protocol: http
       traefik.port: 8081
       traefik.frontend.rule: Host:vncmac.${DOMAINNAME}
-      traefik.frontend.headers.SSLHost: vncmac.${DOMAINNAME}
       traefik.docker.network: proxy
-      traefik.frontend.passHostHeader: "true"
-      traefik.frontend.headers.SSLForceHost: "true"
-      traefik.frontend.headers.SSLRedirect: "true"
-      traefik.frontend.headers.browserXSSFilter: "true"
-      traefik.frontend.headers.contentTypeNosniff: "true"
-      traefik.frontend.headers.forceSTSHeader: "true"
-      traefik.frontend.headers.STSSeconds: 315360000
-      traefik.frontend.headers.STSIncludeSubdomains: "true"
-      traefik.frontend.headers.STSPreload: "true"
-      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
-      traefik.frontend.headers.frameDeny: "true"
-      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
   mineos:
     image: bethington/mineos
@@ -452,23 +337,9 @@ services:
     labels:
       traefik.enable: "true"
       traefik.backend: mineos
-      traefik.protocol: http
       traefik.port: 8080
       traefik.frontend.rule: Host:mineos.${DOMAINNAME}
-      traefik.frontend.headers.SSLHost: mineos.${DOMAINNAME}
       traefik.docker.network: proxy
-      traefik.frontend.passHostHeader: "true"
-      traefik.frontend.headers.SSLForceHost: "true"
-      traefik.frontend.headers.SSLRedirect: "true"
-      traefik.frontend.headers.browserXSSFilter: "true"
-      traefik.frontend.headers.contentTypeNosniff: "true"
-      traefik.frontend.headers.forceSTSHeader: "true"
-      traefik.frontend.headers.STSSeconds: 315360000
-      traefik.frontend.headers.STSIncludeSubdomains: "true"
-      traefik.frontend.headers.STSPreload: "true"
-      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
-      traefik.frontend.headers.frameDeny: "true"
-      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
   minecraft-isaac:
     image: itzg/minecraft-server
@@ -624,14 +495,12 @@ services:
     container_name: adminer
     hostname: adminer
     restart: always
-    ports:
-      - 8082:8080
     networks:
       - proxy
     labels:
       traefik.enable: true
       traefik.backend: adminer
-      traefik.port: 8082
+      traefik.port: 8080
       traefik.frontend.rule: Host:adminer.${DOMAINNAME}
       traefik.docker.network: proxy
       
