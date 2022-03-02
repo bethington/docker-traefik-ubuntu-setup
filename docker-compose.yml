@@ -43,8 +43,7 @@ services:
   ghost:
     image: ghost:4-alpine
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     container_name: ghost
     restart: always
     networks:
