@@ -193,8 +193,6 @@ services:
       - NEXTCLOUD_ADMIN_PASSWORD=${PASS}
     volumes:
       - ${USERDIR}/docker/nextcloud:/var/www/html
-      - /mnt/backup:/var/www/html/data
-      - ${USERDIR}/docker/shared:/shared
     labels:
       traefik.enable: "true"
       traefik.backend: nextcloud
