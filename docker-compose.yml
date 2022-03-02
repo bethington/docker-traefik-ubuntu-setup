@@ -46,7 +46,7 @@ services:
       - ${USERDIR}/docker/shared:/shared
     environment:
       # see https://ghost.org/docs/config/#configuration-options
-      TZ=${TZ}
+      TZ: ${TZ}
       PUID: ${PUID}
       PGID: ${PGID}
       database__client: mysql
