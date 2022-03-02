@@ -352,57 +352,57 @@ services:
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
 # Eclipse Mosquitto - An open source message broker which implements MQTT version 5, 3.1.1 and 3.1
-  mqtt:
-    image: eclipse-mosquitto
-    container_name: mqtt
-    hostname: mqtt
-    restart: always
-    networks:
-      - proxy
-    ports:
-      - 1883:1883
-      - 9002:9001
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - ${USERDIR}/docker/mqtt/config:/mosquitto/config
-      - ${USERDIR}/docker/mqtt/data:/mosquitto/data
-      - ${USERDIR}/docker/mqtt/log:/mosquitto/log
+#   mqtt:
+#     image: eclipse-mosquitto
+#     container_name: mqtt
+#     hostname: mqtt
+#     restart: always
+#     networks:
+#       - proxy
+#     ports:
+#       - 1883:1883
+#       - 9002:9001
+#     environment:
+#       - TZ=${TZ}
+#     volumes:
+#       - ${USERDIR}/docker/mqtt/config:/mosquitto/config
+#       - ${USERDIR}/docker/mqtt/data:/mosquitto/data
+#       - ${USERDIR}/docker/mqtt/log:/mosquitto/log
       
 # GitLab Community Edition docker image based on the Omnibus package
-  gitlab:
-    image: gitlab/gitlab-ce
-    container_name: gitlab
-    hostname: gitlab
-    restart: always
-    networks:
-      - proxy
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - ${USERDIR}/docker/gitlab/config:/etc/gitlab
-      - ${USERDIR}/docker/gitlab/logs:/var/log/gitlab
-      - ${USERDIR}/docker/gitlab/data:/var/opt/gitlab
-    labels:
-      traefik.enable: "true"
-      traefik.backend: gitlab
-      traefik.protocol: http
-      traefik.port: 80
-      traefik.frontend.rule: Host:gitlab.${DOMAINNAME}
-      traefik.frontend.headers.SSLHost: gitlab.${DOMAINNAME}
-      traefik.docker.network: proxy
-      traefik.frontend.passHostHeader: "true"
-      traefik.frontend.headers.SSLForceHost: "true"
-      traefik.frontend.headers.SSLRedirect: "true"
-      traefik.frontend.headers.browserXSSFilter: "true"
-      traefik.frontend.headers.contentTypeNosniff: "true"
-      traefik.frontend.headers.forceSTSHeader: "true"
-      traefik.frontend.headers.STSSeconds: 315360000
-      traefik.frontend.headers.STSIncludeSubdomains: "true"
-      traefik.frontend.headers.STSPreload: "true"
-      traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
-      traefik.frontend.headers.frameDeny: "true"
-      traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
+#   gitlab:
+#     image: gitlab/gitlab-ce
+#     container_name: gitlab
+#     hostname: gitlab
+#     restart: always
+#     networks:
+#       - proxy
+#     environment:
+#       - TZ=${TZ}
+#     volumes:
+#       - ${USERDIR}/docker/gitlab/config:/etc/gitlab
+#       - ${USERDIR}/docker/gitlab/logs:/var/log/gitlab
+#       - ${USERDIR}/docker/gitlab/data:/var/opt/gitlab
+#     labels:
+#       traefik.enable: "true"
+#       traefik.backend: gitlab
+#       traefik.protocol: http
+#       traefik.port: 80
+#       traefik.frontend.rule: Host:gitlab.${DOMAINNAME}
+#       traefik.frontend.headers.SSLHost: gitlab.${DOMAINNAME}
+#       traefik.docker.network: proxy
+#       traefik.frontend.passHostHeader: "true"
+#       traefik.frontend.headers.SSLForceHost: "true"
+#       traefik.frontend.headers.SSLRedirect: "true"
+#       traefik.frontend.headers.browserXSSFilter: "true"
+#       traefik.frontend.headers.contentTypeNosniff: "true"
+#       traefik.frontend.headers.forceSTSHeader: "true"
+#       traefik.frontend.headers.STSSeconds: 315360000
+#       traefik.frontend.headers.STSIncludeSubdomains: "true"
+#       traefik.frontend.headers.STSPreload: "true"
+#       traefik.frontend.headers.customResponseHeaders: X-Robots-Tag:noindex,nofollow,nosnippet,noarchive,notranslate,noimageindex
+#       traefik.frontend.headers.frameDeny: "true"
+#       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
 # noVNC - the open source VNC client
   vncmac:
@@ -472,6 +472,69 @@ services:
       traefik.frontend.headers.frameDeny: "true"
       traefik.frontend.headers.customFrameOptionsValue: 'allow-from https:${DOMAINNAME}'
       
+minecraft-isaac:
+    image: itzg/minecraft-server
+    hostname: minecraft-isaac
+    container_name: minecraft-isaac
+    restart: always
+    ports:
+    - 25556:25565
+    - 25536:25535
+    volumes:
+    - ${USERDIR}/docker/minecraft/data:/data
+    environment:
+        EULA: "true"
+        TYPE: PAPER
+        OPS: bethington,GamerKid___
+        DIFFICULTY: easy
+        ICON: https://www.whats-your-sign.com/wp-content/uploads/2018/04/RavenCelticTattoo.jpg
+        OVERRIDE_ICON: "true"
+        ENABLE_RCON: "true"
+        RCON_PASSWORD: eth123
+        RCON_PORT: 25535
+        MAX_BUILD_HEIGHT: 300
+        MODE: survival
+        MOTD: "Raven Claw"
+        PVP: "true"
+        LEVEL: "ravenworld"
+        MEMORY: 2G
+        TZ: ${TZ}
+      # tty: true
+      # stdin_open: true
+
+  # minecraft-alex:
+  #   image: itzg/minecraft-server
+  #   hostname: minecraft-alex
+  #   container_name: minecraft-alex
+  #   restart: always
+  #   ports:
+  #   - 25558:25565
+  #   - 25538:25535
+  #   volumes:
+  #   - ${USERDIR}/docker/minecraft-alex/data:/data
+  #   environment:
+  #       EULA: "true"
+  #       TYPE: PAPER
+  #       OPS: bethington,knoalexYT_TTV
+  #       DIFFICULTY: hard
+  #       ICON: https://d3el53au0d7w62.cloudfront.net/wp-content/uploads/2017/04/13/a01_jd_14apr_otter-2.jpg
+  #       OVERRIDE_ICON: "true"
+  #       ENABLE_RCON: "true"
+  #       RCON_PASSWORD: eth123
+  #       RCON_PORT: 25535
+  #       FORCE_GAMEMODE: "true"
+  #       SPAWN_PROTECTION: "15"
+  #       MAX_BUILD_HEIGHT: 300
+  #       MODE: survival
+  #       SERVER_NAME: "Uberleben-merhspieler"
+  #       MOTD: "Be wild stay anarchists"
+  #       PVP: "true"
+  #       LEVEL: "Uberleben-Merhspieler"
+  #       MEMORY: 4G
+  #       TZ: ${TZ}
+  #     tty: true
+  #     stdin_open: true
+      
 # gwbcd – Guidewire Billing Center Docs
   gwbcd:
     image: httpd:2.4
@@ -530,32 +593,32 @@ services:
       traefik.docker.network: proxy
       
 # search – Solr powerful open source search
-  search:
-    image: solr:8
-    container_name: search
-    hostname: search
-    restart: always
-    networks:
-      - proxy
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - ${USERDIR}/docker/search:/var/solr
-      - ${USERDIR}/docker/shared:/shared
-    environment:
-      SOLR_JAVA_MEM: "-Xms1g -Xmx10g"
-      TZ: ${TZ}
-    command:
-      - solr-precreate
-      - gettingstarted
-    labels:
-      traefik.enable: true
-      traefik.backend: search
-      traefik.port: 8983
-      traefik.frontend.rule: Host:search.${DOMAINNAME}
-      traefik.docker.network: proxy
+#   search:
+#     image: solr:8
+#     container_name: search
+#     hostname: search
+#     restart: always
+#     networks:
+#       - proxy
+#     ulimits:
+#       memlock:
+#         soft: -1
+#         hard: -1
+#     volumes:
+#       - ${USERDIR}/docker/search:/var/solr
+#       - ${USERDIR}/docker/shared:/shared
+#     environment:
+#       SOLR_JAVA_MEM: "-Xms1g -Xmx10g"
+#       TZ: ${TZ}
+#     command:
+#       - solr-precreate
+#       - gettingstarted
+#     labels:
+#       traefik.enable: true
+#       traefik.backend: search
+#       traefik.port: 8983
+#       traefik.frontend.rule: Host:search.${DOMAINNAME}
+#       traefik.docker.network: proxy
       
 # adminer - Database management in a single PHP file.
 adminer:
