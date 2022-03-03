@@ -58,7 +58,7 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=ghost"
       - "traefik.port=2368"
-      - "traefik.frontend.rule=Host:${DOMAINNAME},nation.org"  
+      - "traefik.frontend.rule=Host:${DOMAINNAME}"  
       - "traefik.docker.network=proxy"
       
 # mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
@@ -461,7 +461,7 @@ services:
       traefik.enable: "true"
       traefik.backend: gwbcd
       traefik.port: 80
-      traefik.frontend.rule: Host:gwbcd.${DOMAINNAME}
+      traefik.frontend.rule: Host:gwbcd.${DOMAINNAME},nation.org
       traefik.docker.network: proxy
 
 # gwccd – Guidewire Claims Center Docs
