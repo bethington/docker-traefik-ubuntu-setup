@@ -207,6 +207,7 @@ services:
       MYSQL_HOST: cloud-mysql
       NEXTCLOUD_ADMIN_USER: bethington
       NEXTCLOUD_ADMIN_PASSWORD: ${PASS}
+      NEXTCLOUD_TRUSTED_DOMAINS: cloud.${DOMAINNAME}
     volumes:
       - ${USERDIR}/docker/cloud:/var/www/html
     labels:
