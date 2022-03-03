@@ -58,7 +58,7 @@ services:
       - "traefik.enable=true"
       - "traefik.backend=ghost"
       - "traefik.port=2368"
-      - "traefik.frontend.rule=Host:${DOMAINNAME}"  
+      - "traefik.frontend.rule=Host:${DOMAINNAME},nation.org"  
       - "traefik.docker.network=proxy"
       
 # mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
