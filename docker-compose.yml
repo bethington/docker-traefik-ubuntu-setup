@@ -201,12 +201,12 @@ services:
       - default
       - proxy
     environment:
-      MYSQL_PASSWORD=${PASS}
-      MYSQL_DATABASE=cloud
-      MYSQL_USER=root
-      MYSQL_HOST=mysql
-      NEXTCLOUD_ADMIN_USER=bethington
-      NEXTCLOUD_ADMIN_PASSWORD=${PASS}
+      MYSQL_PASSWORD: ${PASS}
+      MYSQL_DATABASE: cloud
+      MYSQL_USER: root
+      MYSQL_HOST: mysql
+      NEXTCLOUD_ADMIN_USER: bethington
+      NEXTCLOUD_ADMIN_PASSWORD: ${PASS}
     volumes:
       - ${USERDIR}/docker/cloud:/var/www/html
     labels:
