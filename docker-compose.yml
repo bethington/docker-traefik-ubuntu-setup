@@ -193,7 +193,7 @@ services:
       
 # NextCloud – Your Own Cloud Storage
   cloud:
-    image: cloud
+    image: nextcloud
     container_name: cloud
     hostname: cloud
     restart: always
