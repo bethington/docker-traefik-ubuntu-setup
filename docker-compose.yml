@@ -267,7 +267,9 @@ services:
     image: homeassistant/home-assistant:stable
     container_name: home
     hostname: home
-    restart: always
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
     networks:
       - default
       - proxy
@@ -277,7 +279,6 @@ services:
       TZ: ${TZ}
     volumes:
       - ${USERDIR}/docker/home:/config
-      - /etc/localtime:/etc/localtime:ro
     labels:
       traefik.enable: "true"
       traefik.backend: home
