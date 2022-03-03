@@ -511,6 +511,7 @@ services:
     hostname: adminer
     restart: always
     networks:
+      - default
       - proxy
     labels:
       traefik.enable: true
