@@ -79,6 +79,56 @@ services:
       MYSQL_USER: bethington
       MYSQL_PASSWORD: ${PASS}
       
+# ghost - Ghost is a free and open source blogging platform
+  adanation:
+    image: ghost:4-alpine
+    depends_on:
+      - adanation-mysql
+    container_name: adanation
+    restart: always
+    networks:
+      - default
+      - proxy
+    volumes:
+      - ${USERDIR}/docker/adanation/data:/data
+      - ${USERDIR}/docker/shared:/shared
+    environment:
+      # see https://ghost.org/docs/config/#configuration-options
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      database__client: mysql
+      database__connection__host: adanation-mysql
+      database__connection__port: 3306
+      database__connection__user: bethington
+      database__connection__password: ${PASS}
+      database__connection__database: adanation
+      url: https://adanation.org
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=adanation"
+      - "traefik.port=2368"
+      - "traefik.frontend.rule=Host:adanation.org"  
+      - "traefik.docker.network=proxy"
+      
+# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  adanation-mysql:
+    image: mysql:5.7
+    container_name: adanation-mysql
+    restart: always
+    networks:
+      - default
+    volumes:
+      - ${USERDIR}/docker/adanation-mysql/data:/var/lib/mysql
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      MYSQL_ROOT_PASSWORD: ${PASS}
+      MYSQL_DATABASE: adanation
+      MYSQL_USER: bethington
+      MYSQL_PASSWORD: ${PASS}
+      
 # Portainer - WebUI for Containers
   portainer:
     hostname: portainer
@@ -461,7 +511,7 @@ services:
       traefik.enable: "true"
       traefik.backend: gwbcd
       traefik.port: 80
-      traefik.frontend.rule: Host:gwbcd.${DOMAINNAME},adanation.org
+      traefik.frontend.rule: Host:gwbcd.${DOMAINNAME}
       traefik.docker.network: proxy
 
 # gwccd – Guidewire Claims Center Docs
