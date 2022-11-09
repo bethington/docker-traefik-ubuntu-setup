@@ -13,8 +13,8 @@ services:
       - default
       - proxy
     ports:
-      - 80:80
-      - 443:443
+      # - 80:80
+      # - 443:443
     environment:
       - GODADDY_API_KEY=${GODADDY_API_KEY}
       - GODADDY_API_SECRET=${GODADDY_API_SECRET}
