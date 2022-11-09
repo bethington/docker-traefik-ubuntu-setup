@@ -152,6 +152,32 @@ services:
 
 ######### BLOCKCHAIN SERVICES ##########
 
+# IPFS - A peer-to-peer hypermedia protocol designed to make the web faster, safer, and more open.
+  ipfs:
+    image: lscr.io/linuxserver/ipfs
+    container_name: ipfs
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=$TZ
+    volumes:
+      - /home/bethington/docker/ipfs/config:/config
+    ports:
+      # - 81:80
+      - 4001:4001 # ipfs swarm - expose if needed/wanted
+      - 5001:5001 # ipfs api - expose if needed/wanted
+      - 8080:8080 # ipfs gateway - expose if needed/wanted
+      # - 443:443 #optional
+    restart: always
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=ipfs"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:ipfs.${DOMAINNAME}"  
+      - "traefik.docker.network=proxy"
+
 # Bitcoind
 #  bitcoin:
 #    hostname: bitcoin
