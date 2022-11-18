@@ -29,7 +29,7 @@ services:
       - ${USERDIR}/docker/traefik:/etc/traefik
       - ${USERDIR}/docker/shared:/shared
       
-# ghost - Ghost is a free and open source blogging platform
+# Ghost - Ghost is a free and open source blogging platform
   ghost:
     image: ghost:4-alpine
     depends_on:
@@ -61,25 +61,7 @@ services:
       - "traefik.frontend.rule=Host:${DOMAINNAME}"  
       - "traefik.docker.network=proxy"
       
-# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
-  ghost-mysql:
-    image: mysql:5.7
-    container_name: ghost-mysql
-    restart: always
-    networks:
-      - default
-    volumes:
-      - ${USERDIR}/docker/ghost-mysql/data:/var/lib/mysql
-    environment:
-      TZ: ${TZ}
-      PUID: ${PUID}
-      PGID: ${PGID}
-      MYSQL_ROOT_PASSWORD: ${PASS}
-      MYSQL_DATABASE: ghost
-      MYSQL_USER: bethington
-      MYSQL_PASSWORD: ${PASS}
-      
-# ghost - Ghost is a free and open source blogging platform
+# Ghost - Ghost is a free and open source blogging platform
   adanation:
     image: ghost:4-alpine
     depends_on:
@@ -111,24 +93,6 @@ services:
       - "traefik.frontend.rule=Host:adanation.org"  
       - "traefik.docker.network=proxy"
       
-# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
-  adanation-mysql:
-    image: mysql:5.7
-    container_name: adanation-mysql
-    restart: always
-    networks:
-      - default
-    volumes:
-      - ${USERDIR}/docker/adanation-mysql/data:/var/lib/mysql
-    environment:
-      TZ: ${TZ}
-      PUID: ${PUID}
-      PGID: ${PGID}
-      MYSQL_ROOT_PASSWORD: ${PASS}
-      MYSQL_DATABASE: adanation
-      MYSQL_USER: bethington
-      MYSQL_PASSWORD: ${PASS}
-      
 # Portainer - WebUI for Containers
   portainer:
     hostname: portainer
@@ -150,122 +114,6 @@ services:
       - "traefik.frontend.rule=Host:portainer.${DOMAINNAME}"  
       - "traefik.docker.network=proxy"
 
-######### BLOCKCHAIN SERVICES ##########
-
-# IPFS - A peer-to-peer hypermedia protocol designed to make the web faster, safer, and more open.
-  ipfs:
-    image: lscr.io/linuxserver/ipfs
-    container_name: ipfs
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=$TZ
-    volumes:
-      - /home/bethington/docker/ipfs/config:/config
-    ports:
-      # - 81:80
-      - 4001:4001 # ipfs swarm - expose if needed/wanted
-      - 5001:5001 # ipfs api - expose if needed/wanted
-      - 8080:8080 # ipfs gateway - expose if needed/wanted
-      # - 443:443 #optional
-    restart: always
-    networks:
-      - proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.backend=ipfs"
-      - "traefik.port=80"
-      - "traefik.frontend.rule=Host:ipfs.${DOMAINNAME}"  
-      - "traefik.docker.network=proxy"
-
-# Bitcoind
-#  bitcoin:
-#    hostname: bitcoin
-#    container_name: bitcoin
-#    restart: always
-#    image: bethington/bitcoind:latest
-#    volumes:
-#      - ${USERDIR}/docker/bitcoin/data:/bitcoin
-#    ports:
-#      - 8332:8332
-#      - 8333:8333
-#    environment:
-#      - TZ=${TZ}
-#    networks:
-#      - proxy
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.backend=bitcoin"
-#      - "traefik.frontend.rule=Host:bitcoin.${DOMAINNAME}"
-#      - "traefik.port=8332"
-#      - "traefik.protocol=http"
-#      - "traefik.docker.network=proxy"
-#      - "traefik.frontend.headers.SSLRedirect=true"
-# Litecoind
-#  litecoin:
-#    hostname: litecoin
-#    container_name: litecoin
-#    restart: always
-#    image: bethington/litecoind:latest
-#    volumes:
-#      - ${USERDIR}/docker/litecoin/data:/litecoin
-#    ports:
-#      - 9332:9332
-#      - 9333:9333
-#    environment:
-#      - TZ=${TZ}
-#    networks:
-#      - proxy
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.backend=litecoin"
-#      - "traefik.frontend.rule=Host:litecoin.${DOMAINNAME}"
-#      - "traefik.port=9332"
-#      - "traefik.protocol=http"
-#      - "traefik.docker.network=proxy"
-#      - "traefik.frontend.headers.SSLRedirect=true"
-# Cardano Jormungandr rust node
-#  jormungandr:
-#    hostname: jormungandr
-#    container_name: jormungandr
-#    restart: always
-#    image: bethington/jormungandr:v0.8.9
-#    volumes:
-#      - ~/docker/jormungandr/cfg:/app/cfg
-#      - ~/docker/jormungandr/secret:/app/secret
-#      - ~/docker/jormungandr/data:/app/bin/data
-#    ports:
-#      - 8299:8299
-#    environment:
-#      - TZ=${TZ}
-#    networks:
-#      - proxy
-#    labels:
-#      - "traefik.enable=true"
-#      - "traefik.backend=jormungandr"
-#      - "traefik.frontend.rule=Host:jormungandr.${DOMAINNAME}"
-#      - "traefik.port=8448"
-#      - "traefik.protocol=http"
-#      - "traefik.docker.network=proxy"
-#      - "traefik.frontend.headers.SSLRedirect=true"
-#
-# Cardano node - Images in this repository contain IOHK-managed configuration for the supported public networks
-#   cardano:
-#     hostname: cardano
-#     container_name: cardano
-#     restart: always
-#     image: inputoutput/cardano-node:latest
-#     volumes:
-#       - ~/docker/cardano/cfg:/configuration
-#       - ~/docker/cardano/data:/app/bin/data
-#       - ~/docker/shared/node-ipc:/ipc
-#     environment:
-#       - TZ=${TZ}
-#       - NETWORK=mainnet
-#     networks:
-#       - proxy
-#     entrypoint: run --config /configuration/configuration.yaml --topology /configuration/topology.json --database-path /db
-      
 # NextCloud – Your Own Cloud Storage
   cloud:
     image: nextcloud
@@ -295,25 +143,7 @@ services:
       traefik.frontend.rule: Host:cloud.${DOMAINNAME}
       traefik.docker.network: proxy
       
-# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
-  cloud-mysql:
-    image: mysql:5.7
-    container_name: cloud-mysql
-    restart: always
-    networks:
-      - default
-    volumes:
-      - ${USERDIR}/docker/cloud-mysql/data:/var/lib/mysql
-    environment:
-      TZ: ${TZ}
-      PUID: ${PUID}
-      PGID: ${PGID}
-      MYSQL_ROOT_PASSWORD: ${PASS}
-      MYSQL_DATABASE: cloud
-      MYSQL_USER: bethington
-      MYSQL_PASSWORD: ${PASS}
-      
-# code-server – VS Code running on a remote server, accessible through the browser.
+# VS code server – VS Code running on a remote server, accessible through the browser.
   code:
     image: bethington/code-server
     container_name: code
@@ -336,107 +166,8 @@ services:
       traefik.port: 8080
       traefik.frontend.rule: Host:code.${DOMAINNAME}
       traefik.docker.network: proxy
-      
-# Home Assistant - Open source home automation that puts local control and privacy first.
-  home:
-    image: homeassistant/home-assistant:stable
-    container_name: home
-    hostname: home
-    restart: unless-stopped
-    privileged: true
-    networks:
-      - default
-      - proxy
-    environment:
-      PUID: ${PUID}
-      PGID: ${PGID}
-      TZ: ${TZ}
-    volumes:
-      - ${USERDIR}/docker/home:/config
-    labels:
-      traefik.enable: "true"
-      traefik.backend: home
-      traefik.port: 8123
-      traefik.frontend.rule: Host:home.${DOMAINNAME}
-      traefik.docker.network: proxy
-      
-# Node-RED - Low-code programming for event-driven applications.
-  red:
-    image: nodered/node-red
-    container_name: red
-    hostname: red
-    restart: always
-    networks:
-      - proxy
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - ${USERDIR}/docker/red:/data
-    labels:
-      traefik.enable: "true"
-      traefik.backend: red
-      traefik.port: 1880
-      traefik.frontend.rule: Host:red.${DOMAINNAME}
-      traefik.docker.network: proxy
-      
-# Eclipse Mosquitto - An open source message broker which implements MQTT version 5, 3.1.1 and 3.1
-#   mqtt:
-#     image: eclipse-mosquitto
-#     container_name: mqtt
-#     hostname: mqtt
-#     restart: always
-#     networks:
-#       - proxy
-#     ports:
-#       - 1883:1883
-#       - 9002:9001
-#     environment:
-#       - TZ=${TZ}
-#     volumes:
-#       - ${USERDIR}/docker/mqtt/config:/mosquitto/config
-#       - ${USERDIR}/docker/mqtt/data:/mosquitto/data
-#       - ${USERDIR}/docker/mqtt/log:/mosquitto/log
-      
-# GitLab Community Edition docker image based on the Omnibus package
-#   gitlab:
-#     image: gitlab/gitlab-ce
-#     container_name: gitlab
-#     hostname: gitlab
-#     restart: always
-#     networks:
-#       - proxy
-#     environment:
-#       - TZ=${TZ}
-#     volumes:
-#       - ${USERDIR}/docker/gitlab/config:/etc/gitlab
-#       - ${USERDIR}/docker/gitlab/logs:/var/log/gitlab
-#       - ${USERDIR}/docker/gitlab/data:/var/opt/gitlab
-#     labels:
-#       traefik.enable: "true"
-#       traefik.backend: gitlab
-#       traefik.port: 80
-#       traefik.frontend.rule: Host:gitlab.${DOMAINNAME}
-#       traefik.docker.network: proxy
-      
-# noVNC - the open source VNC client
-  vncmac:
-    image: dougw/novnc
-    container_name: vncmac
-    hostname: vncmac
-    restart: always
-    networks:
-      - proxy
-    environment:
-      - TZ=${TZ}
-      - REMOTE_HOST=10.0.0.122
-      - REMOTE_PORT=5900
-    labels:
-      traefik.enable: "true"
-      traefik.backend: vncmac
-      traefik.port: 8081
-      traefik.frontend.rule: Host:vncmac.${DOMAINNAME}
-      traefik.docker.network: proxy
-      
+
+# MineOS - MineOS is a web-based server front-end to centralize and simplify Minecraft sysadmin tasks.
   mineos:
     image: bethington/mineos
     container_name: mineos
@@ -457,70 +188,78 @@ services:
       traefik.port: 8080
       traefik.frontend.rule: Host:mineos.${DOMAINNAME}
       traefik.docker.network: proxy
-      
-  minecraft-isaac:
-    image: itzg/minecraft-server
-    hostname: minecraft-isaac
-    container_name: minecraft-isaac
-    restart: always
-    ports:
-    - 25556:25565
-    - 25536:25535
-    volumes:
-    - ${USERDIR}/docker/minecraft/data:/data
-    environment:
-        EULA: "true"
-        TYPE: PAPER
-        OPS: bethington,GamerKid___
-        DIFFICULTY: easy
-        ICON: https://www.whats-your-sign.com/wp-content/uploads/2018/04/RavenCelticTattoo.jpg
-        OVERRIDE_ICON: "true"
-        ENABLE_RCON: "true"
-        RCON_PASSWORD: eth123
-        RCON_PORT: 25535
-        MAX_BUILD_HEIGHT: 300
-        MODE: survival
-        MOTD: "Raven Claw"
-        PVP: "true"
-        LEVEL: "ravenworld"
-        MEMORY: 2G
-        TZ: ${TZ}
-      # tty: true
-      # stdin_open: true
 
-  # minecraft-alex:
-  #   image: itzg/minecraft-server
-  #   hostname: minecraft-alex
-  #   container_name: minecraft-alex
-  #   restart: always
-  #   ports:
-  #   - 25558:25565
-  #   - 25538:25535
-  #   volumes:
-  #   - ${USERDIR}/docker/minecraft-alex/data:/data
-  #   environment:
-  #       EULA: "true"
-  #       TYPE: PAPER
-  #       OPS: bethington,knoalexYT_TTV
-  #       DIFFICULTY: hard
-  #       ICON: https://d3el53au0d7w62.cloudfront.net/wp-content/uploads/2017/04/13/a01_jd_14apr_otter-2.jpg
-  #       OVERRIDE_ICON: "true"
-  #       ENABLE_RCON: "true"
-  #       RCON_PASSWORD: eth123
-  #       RCON_PORT: 25535
-  #       FORCE_GAMEMODE: "true"
-  #       SPAWN_PROTECTION: "15"
-  #       MAX_BUILD_HEIGHT: 300
-  #       MODE: survival
-  #       SERVER_NAME: "Uberleben-merhspieler"
-  #       MOTD: "Be wild stay anarchists"
-  #       PVP: "true"
-  #       LEVEL: "Uberleben-Merhspieler"
-  #       MEMORY: 4G
-  #       TZ: ${TZ}
-  #     tty: true
-  #     stdin_open: true
-      
+########## DATABASE SERVICES ###########
+# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  ghost-mysql:
+    image: mysql:5.7
+    container_name: ghost-mysql
+    restart: always
+    networks:
+      - default
+    volumes:
+      - ${USERDIR}/docker/ghost-mysql/data:/var/lib/mysql
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      MYSQL_ROOT_PASSWORD: ${PASS}
+      MYSQL_DATABASE: ghost
+      MYSQL_USER: bethington
+      MYSQL_PASSWORD: ${PASS}
+
+# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  adanation-mysql:
+    image: mysql:5.7
+    container_name: adanation-mysql
+    restart: always
+    networks:
+      - default
+    volumes:
+      - ${USERDIR}/docker/adanation-mysql/data:/var/lib/mysql
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      MYSQL_ROOT_PASSWORD: ${PASS}
+      MYSQL_DATABASE: adanation
+      MYSQL_USER: bethington
+      MYSQL_PASSWORD: ${PASS}
+
+# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  cloud-mysql:
+    image: mysql:5.7
+    container_name: cloud-mysql
+    restart: always
+    networks:
+      - default
+    volumes:
+      - ${USERDIR}/docker/cloud-mysql/data:/var/lib/mysql
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      MYSQL_ROOT_PASSWORD: ${PASS}
+      MYSQL_DATABASE: cloud
+      MYSQL_USER: bethington
+      MYSQL_PASSWORD: ${PASS}
+
+# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    volumes:
+      - ${USERDIR}/docker/mysql/data:/var/lib/mysql
+      - ${USERDIR}/docker/shared:/shared
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PASS}
+
+
+######### BLOCKCHAIN SERVICES ##########
+
+
+######### GUIDEWIRE DOCUMENTATION ##########
 # gwbcd – Guidewire Billing Center Docs
   gwbcd:
     image: httpd:2.4
@@ -577,61 +316,6 @@ services:
       traefik.port: 80
       traefik.frontend.rule: Host:gwpcd.${DOMAINNAME}
       traefik.docker.network: proxy
-      
-# search – Solr powerful open source search
-#   search:
-#     image: solr:8
-#     container_name: search
-#     hostname: search
-#     restart: always
-#     networks:
-#       - proxy
-#     ulimits:
-#       memlock:
-#         soft: -1
-#         hard: -1
-#     volumes:
-#       - ${USERDIR}/docker/search:/var/solr
-#       - ${USERDIR}/docker/shared:/shared
-#     environment:
-#       SOLR_JAVA_MEM: "-Xms1g -Xmx10g"
-#       TZ: ${TZ}
-#     command:
-#       - solr-precreate
-#       - gettingstarted
-#     labels:
-#       traefik.enable: true
-#       traefik.backend: search
-#       traefik.port: 8983
-#       traefik.frontend.rule: Host:search.${DOMAINNAME}
-#       traefik.docker.network: proxy
-      
-# adminer - Database management in a single PHP file.
-  adminer:
-    image: adminer
-    container_name: adminer
-    hostname: adminer
-    restart: always
-    networks:
-      - default
-      - proxy
-    labels:
-      traefik.enable: true
-      traefik.backend: adminer
-      traefik.port: 8080
-      traefik.frontend.rule: Host:adminer.${DOMAINNAME}
-      traefik.docker.network: proxy
-      
-# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
-  mysql:
-    image: mysql:5.7
-    container_name: mysql
-    restart: always
-    volumes:
-      - ${USERDIR}/docker/mysql/data:/var/lib/mysql
-      - ${USERDIR}/docker/shared:/shared
-    environment:
-      MYSQL_ROOT_PASSWORD: ${PASS}
   
 ######### DOCKER RELATED ##########
 
