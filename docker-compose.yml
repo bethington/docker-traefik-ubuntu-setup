@@ -1,6 +1,7 @@
 version: '3.6'
 services:
 
+
 ######### FRONTENDS ##########
 
 # Traefik Reverse Proxy
@@ -28,6 +29,473 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${USERDIR}/docker/traefik:/etc/traefik
       - ${USERDIR}/docker/shared:/shared
+
+  ddclient:
+    hostname: ddclient
+    image: lscr.io/linuxserver/ddclient:latest
+    container_name: ddclient
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/ddclient/data:/config
+
+  smokeping:
+    hostname: smokeping
+    image: lscr.io/linuxserver/smokeping:latest
+    container_name: smokeping
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/smokeping/config:/config
+      - ${USERDIR}/docker/smokeping/data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=smokeping"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:smokeping.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+  # dillinger - A cloud-enabled, mobile-ready, offline-storage, AngularJS powered HTML5 Markdown editor.
+  dillinger:
+    hostname: dillinger
+    image: lscr.io/linuxserver/dillinger:latest
+    container_name: dillinger
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/dillinger/configs:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=dillinger"
+      - "traefik.port=8080"
+      - "traefik.frontend.rule=Host:dillinger.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Dokuwiki - A simple to use and highly versatile Open Source wiki software that doesn't require a database.
+  dokuwiki:
+    hostname: dokuwiki
+    image: lscr.io/linuxserver/dokuwiki:latest
+    container_name: dokuwiki
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/dokuwiki/appdata/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=dokuwiki"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:dokuwiki.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Firefox - A free and open-source web browser that uses the Gecko layout engine.
+  firefox:
+    hostname: firefox
+    image: lscr.io/linuxserver/firefox:latest
+    container_name: firefox
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/firefox/config:/config
+    shm_size: "1gb"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=firefox"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:firefox.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Github desktop - 
+  github-desktop:
+    hostname: github
+    image: lscr.io/linuxserver/github-desktop:latest
+    container_name: github-desktop
+    restart: always
+    cap_add:
+      - IPC_LOCK
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/github-desktop/config:/config
+    shm_size: "1gb"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=github"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:github.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Grav - A Fast, Simple, and Flexible, file-based Web-platform.
+  grav:
+    hostname: grav
+    image: lscr.io/linuxserver/grav:latest
+    container_name: grav
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/grav/appdata/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=grav"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:grav.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Grocy - 
+  grocy:
+    hostname: grocy
+    image: lscr.io/linuxserver/grocy:latest
+    container_name: grocy
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/grocy/data:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=grocy"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:grocy.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# HedgeDoc - A real-time, multi-platform collaborative markdown note editor.
+  hedgedoc:
+    hostname: hedgedoc
+    image: lscr.io/linuxserver/hedgedoc:latest
+    depends_on:
+      - hedgedoc-mysql
+    container_name: hedgedoc
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      DB_HOST: hedgedoc-mysql
+      DB_PORT: 3306
+      DB_USER: bethington
+      DB_PASS: ${PASS}
+      DB_NAME: hedgedoc
+      CMD_DOMAIN: hedgedoc.${DOMAINNAME}
+    volumes:
+      - ${USERDIR}/docker/hedgedoc/appdata:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=hedgedoc"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:hedgedoc.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Heimdall - A way to organise all those links to your most used web sites and web applications in a simple way.
+  heimdall:
+    hostname: heimdall
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/heimdall/appdata/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=heimdall"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:heimdall.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Kasm - A streaming platform for delivering browser-based access to desktops, applications, and web services.
+  kasm:
+    hostname: kasm
+    image: lscr.io/linuxserver/kasm:latest
+    container_name: kasm
+    restart: always
+    privileged: true
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      KASM_PORT: 80
+    volumes:
+      - ${USERDIR}/docker/kasm/data:/opt
+      - ${USERDIR}/docker/kasm/profiles:/profiles #optional
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=kasm"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:kasm.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Libreoffice - 
+  libreoffice:
+    hostname: libreoffice
+    image: lscr.io/linuxserver/libreoffice:latest
+    container_name: libreoffice
+    restart: always
+    shm_size: "1gb"
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/libreoffice/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=libreoffice"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:libreoffice.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Mullvad - 
+  mullvad:
+    hostname: mullvad
+    image: lscr.io/linuxserver/mullvad-browser:latest
+    container_name: mullvad
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    shm_size: "1gb"
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      LOCAL_NET: 10.0.0.0/24 #optional
+    volumes:
+      - ${USERDIR}/docker/mullvad/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=mullvad"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:mullvad.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Mysql Workbench - a unified visual tool for database architects, developers, and DBAs.
+  mysql-workbench:
+    hostname: mysql-workbench
+    image: lscr.io/linuxserver/mysql-workbench:latest
+    container_name: mysql-workbench
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      CUSTOM_USER: "bethington"
+      PASSWORD: ${PASS}
+      TITLE: Mysql Workbench
+    volumes:
+      - ${USERDIR}/docker/mysql-workbench/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=mysql-workbench"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:mysql-workbench.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Obsidian - Docker as a container and access it via your web browser.
+  obsidian:
+    hostname: obsidian
+    image: 'ghcr.io/sytone/obsidian-remote:latest'
+    container_name: obsidian
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID} 
+      TITLE: Obsidian
+    volumes:
+      - ${USERDIR}/docker/obsidian/vaults:/vaults
+      - ${USERDIR}/docker/obsidian/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=obsidian"
+      - "traefik.port=8080"
+      - "traefik.frontend.rule=Host:obsidian.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Openvscode - A version of VS Code that runs a server on a remote machine and allows access through a modern web browser.
+  openvscode-server:
+    hostname: openvscode-server
+    image: lscr.io/linuxserver/openvscode-server:latest
+    container_name: openvscode-server
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      CUSTOM_USER: "bethington"
+      PASSWORD: ${PASS}
+      TITLE: VScode
+    volumes:
+      - /path/to/appdata/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=openvscode-server"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:openvscode-server.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Opera - a multi-platform web browser developed by its namesake company Opera.
+  opera:
+    hostname: opera
+    image: lscr.io/linuxserver/opera:latest
+    container_name: opera
+    restart: always
+    shm_size: "1gb"
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/opera/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=opera"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:opera.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Pod - Docker container for the VSCodium, Chromium, and Obsidian desktop applications
+  pod:
+    hostname: pod
+    image: 'bethington/pod:latest'
+    container_name: pod
+    restart: always
+    shm_size: "1gb"
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/pod/vaults:/vaults
+      - ${USERDIR}/docker/pod/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=pod"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:pod.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# VScodium - A community-driven, freely-licensed binary distribution of Microsoft’s editor VS Code.
+  vscodium:
+    hostname: vscodium
+    image: lscr.io/linuxserver/vscodium:latest
+    container_name: vscodium
+    restart: always
+    cap_add:
+      - IPC_LOCK
+    shm_size: "1gb"
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/vscodium/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=vscodium"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:vscodium.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Webcord - A pack of security and privacy hardenings, Discord features reimplementations, Electron / Chromium / Discord bugs workarounds, stylesheets, internal pages and wrapped https://discord.com page, designed to conform with ToS as much as it is possible (or hide the changes that might violate it from Discord's eyes).
+  webcord:
+    hostname: webcord
+    image: lscr.io/linuxserver/webcord:latest
+    container_name: webcord
+    restart: always
+    shm_size: "1gb"
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/webcord/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=webcord"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:webcord.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Webtop - Alpine, Ubuntu, Fedora, and Arch based containers containing full desktop environments in officially supported flavors accessible via any modern web browser.
+  webtop:
+    hostname: webtop
+    image: lscr.io/linuxserver/webtop:latest
+    container_name: webtop
+    restart: always
+    shm_size: "1gb"
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/webtop/data:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=webtop"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:webtop.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# WPS Office - 
+  wps-office:
+    hostname: wps-office
+    image: lscr.io/linuxserver/wps-office:latest
+    container_name: wps-office
+    restart: always
+    shm_size: "1gb"
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/wps-office/config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=wps"
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:wps.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
+
+# Xbackbone - 
+  xbackbone:
+    hostname: xbackbone
+    image: lscr.io/linuxserver/xbackbone:latest
+    container_name: xbackbone
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    volumes:
+      - ${USERDIR}/docker/xbackbone/data:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=xbb"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:xbb.${DOMAINNAME}"
+      - "traefik.docker.network=proxy"
       
 # Ghost - Ghost is a free and open source blogging platform
   ghost:
@@ -135,7 +603,7 @@ services:
       NEXTCLOUD_TRUSTED_DOMAINS: cloud.${DOMAINNAME}
       APACHE_DISABLE_REWRITE_IP: 1
     volumes:
-      - ${USERDIR}/docker/cloud:/var/www/html
+      - /mnt/backup/cloud:/var/www/html
     labels:
       traefik.enable: "true"
       traefik.backend: cloud
@@ -145,7 +613,7 @@ services:
       
 # VS code server – VS Code running on a remote server, accessible through the browser.
   code:
-    image: bethington/code-server
+    image: lscr.io/linuxserver/code-server:latest
     container_name: code
     hostname: code
     restart: always
@@ -158,13 +626,44 @@ services:
       PASSWORD: ${PASS}
       SUDO_PASSWORD: ${PASS}
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - "${USERDIR}:/home/coder"
+      - "${USERDIR}/docker/code/config:/config"
     labels:
       traefik.enable: "true"
       traefik.backend: code
-      traefik.port: 8080
+      traefik.port: 8443
       traefik.frontend.rule: Host:code.${DOMAINNAME}
+      traefik.docker.network: proxy
+
+# VS code server – VS Code running on a remote server, accessible through the browser.
+  chatgpt:
+    image: chenzhaoyu94/chatgpt-web
+    container_name: chatgpt
+    hostname: chatgpt
+    restart: always
+    networks:
+      - proxy
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      OPENAI_API_KEY: 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
+      # OPENAI_ACCESS_TOKEN:
+      # OPENAI_API_BASE_URL:
+      # OPENAI_API_MODEL:
+      # API_REVERSE_PROXY:
+      # AUTH_SECRET_KEY:
+      # MAX_REQUEST_PER_HOUR: 0
+      # TIMEOUT_MS: 60000
+      # SOCKS_PROXY_HOST:
+      # SOCKS_PROXY_PORT:
+      # SOCKS_PROXY_USERNAME:
+      # SOCKS_PROXY_PASSWORD:
+      # HTTPS_PROXY:
+    labels:
+      traefik.enable: "true"
+      traefik.backend: chatgpt
+      traefik.port: 3002
+      traefik.frontend.rule: Host:chatgpt.${DOMAINNAME}
       traefik.docker.network: proxy
 
 # MineOS - MineOS is a web-based server front-end to centralize and simplify Minecraft sysadmin tasks.
@@ -189,7 +688,27 @@ services:
       traefik.frontend.rule: Host:mineos.${DOMAINNAME}
       traefik.docker.network: proxy
 
+
 ########## DATABASE SERVICES ###########
+
+# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  hedgedoc-mysql:
+    image: mysql:5.7
+    container_name: hedgedoc-mysql
+    restart: always
+    networks:
+      - default
+    volumes:
+      - ${USERDIR}/docker/hedgedoc-mysql/data:/var/lib/mysql
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      MYSQL_ROOT_PASSWORD: ${PASS}
+      MYSQL_DATABASE: hedgedoc
+      MYSQL_USER: bethington
+      MYSQL_PASSWORD: ${PASS}
+
 # mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
   ghost-mysql:
     image: mysql:5.7
@@ -258,8 +777,33 @@ services:
 
 ######### BLOCKCHAIN SERVICES ##########
 
+  ipfs:
+    image: ipfs/kubo
+    container_name: ipfs
+    restart: on-failure
+    networks:
+      - proxy
+    volumes:
+      - ./ipfs/staging:/export
+      - ./ipfs/data:/data/ipfs
+      - ./ipfs/ipfs:/ipfs
+      - ./ipfs/ipns:/ipns
+    ports:
+      # Swarm listens on all interfaces, so is remotely reachable.
+      - 4001:4001
+      # HTTP Gateway
+      - 8080:8080
+      # API port, which includes admin operations, so you probably don't want this remotely accessible.
+      - 5001:5001
+    labels:
+      traefik.enable: "true"
+      traefik.backend: ipfs
+      traefik.port: 5001
+      traefik.docker.network: proxy
+
 
 ######### GUIDEWIRE DOCUMENTATION ##########
+
 # gwbcd – Guidewire Billing Center Docs
   gwbcd:
     image: httpd:2.4
@@ -316,7 +860,8 @@ services:
       traefik.port: 80
       traefik.frontend.rule: Host:gwpcd.${DOMAINNAME}
       traefik.docker.network: proxy
-  
+
+
 ######### DOCKER RELATED ##########
 
 # Watchtower - Automatic Update of Containers/Apps
