@@ -30,10 +30,64 @@ services:
       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
   # ChatGPT Web – A artificial intelligence model which interacts in a conversational way.
-  chatgpt:
-    image: chenzhaoyu94/chatgpt-web
-    container_name: chatgpt
-    hostname: chatgpt
+  brain:
+    build:
+      context: ${USERDIR}/docker/quivr/frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - brain-backend
+    container_name: brain
+    hostname: brain
+    restart: always
+    networks:
+      - proxy
+    env_file:
+      - ${USERDIR}/docker/quivr/frontend/.env
+    labels:
+      traefik.backend: brain
+      traefik.port: 3000
+      traefik.frontend.rule: Host:brain.${DOMAINNAME}
+
+  brain-backend:
+    build:
+      context: ${USERDIR}/docker/quivr/backend/core
+      dockerfile: Dockerfile
+    container_name: brain-backend
+    hostname: brain-backend
+    restart: always
+    networks:
+      - proxy
+    ports:
+      - 5050:5050
+    env_file:
+      - ${USERDIR}/docker/quivr/backend/core/.env
+    volumes:
+      - ${USERDIR}/docker/quivr/backend/core/:/code/
+      - ${USERDIR}/docker/quivr/.config/gcloud:/root/.config/gcloud
+
+  # ChatGPT Web – A artificial intelligence model which interacts in a conversational way.
+  chat:
+    build:
+      context: ${USERDIR}/docker/chatbot-ui
+      dockerfile: Dockerfile
+    container_name: chat
+    hostname: chat
+    restart: always
+    networks:
+      - proxy
+    env_file:
+      - ${USERDIR}/docker/chatbot-ui/.env
+    labels:
+      traefik.backend: chat
+      traefik.port: 3000
+      traefik.frontend.rule: Host:cb.${DOMAINNAME}
+      traefik.frontend.auth.basic.usersFile: /shared/.htpasswd
+
+  # VS code server – VS Code running on a remote server, accessible through the browser.
+  code:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: code
+    hostname: code
     restart: always
     networks:
       - proxy
@@ -41,23 +95,36 @@ services:
       PUID: ${PUID}
       PGID: ${PGID}
       TZ: ${TZ}
-      OPENAI_API_KEY: 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
-      # OPENAI_ACCESS_TOKEN:
-      # OPENAI_API_BASE_URL:
-      # OPENAI_API_MODEL:
-      # API_REVERSE_PROXY:
-      # AUTH_SECRET_KEY:
-      # MAX_REQUEST_PER_HOUR: 0
-      # TIMEOUT_MS: 60000
-      # SOCKS_PROXY_HOST:
-      # SOCKS_PROXY_PORT:
-      # SOCKS_PROXY_USERNAME:
-      # SOCKS_PROXY_PASSWORD:
-      # HTTPS_PROXY:
+      PASSWORD: ${PASS}
+      SUDO_PASSWORD: ${PASS}
+      PROXY_DOMAIN: code.${DOMAINNAME}
+    volumes:
+      - "${USERDIR}/docker/code/config:/config"
     labels:
-      traefik.backend: chatgpt
-      traefik.port: 3002
-      traefik.frontend.rule: Host:chatgpt.${DOMAINNAME}
+      traefik.backend: code
+      traefik.port: 8443
+      traefik.frontend.rule: Host:code.${DOMAINNAME}
+
+  # Calibre – a powerful and easy to use e-book manager.
+  books:
+    image: lscr.io/linuxserver/calibre:latest
+    container_name: books
+    hostname: books
+    restart: always
+    networks:
+      - proxy
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      TITLE: Books
+    volumes:
+      - "${USERDIR}/docker/books/config:/config"
+    labels:
+      traefik.backend: books
+      traefik.port: 8080
+      traefik.frontend.rule: Host:books.${DOMAINNAME}
+      traefik.frontend.auth.basic.usersFile: /shared/.htpasswd
 
   # dillinger - A cloud-enabled, mobile-ready, offline-storage, AngularJS powered HTML5 Markdown editor.
   dillinger:
@@ -77,6 +144,29 @@ services:
       - "traefik.frontend.rule=Host:dillinger.${DOMAINNAME}"
       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
+# Docker – A personal knowledge management and sharing system inspired by Roam Research, built on Visual Studio Code and GitHub.
+  docker:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: docker
+    hostname: docker
+    restart: always
+    networks:
+      - proxy
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      PASSWORD: ${PASS}
+      SUDO_PASSWORD: ${PASS}
+      PROXY_DOMAIN: docker.${DOMAINNAME}
+      DEFAULT_WORKSPACE: ${USERDIR}/docker/docker
+    volumes:
+      - "${USERDIR}/docker/docker/config:/config"
+    labels:
+      traefik.backend: docker
+      traefik.port: 8443
+      traefik.frontend.rule: Host:docker.${DOMAINNAME}
+
 # Dokuwiki - A simple to use and highly versatile Open Source wiki software that doesn't require a database.
   dokuwiki:
     hostname: dokuwiki
@@ -94,6 +184,23 @@ services:
       - "traefik.port=80"
       - "traefik.frontend.rule=Host:dokuwiki.${DOMAINNAME}"
       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+
+# Excalidraw - Virtual whiteboard for sketching hand-drawn like diagrams
+  excalidraw:
+    hostname: excalidraw
+    image: kiliandeca/excalidraw:latest
+    container_name: excalidraw
+    restart: on-failure
+    healthcheck:
+      disable: true
+    environment:
+      LIBRARY_URL: https://libraries.excalidraw.com
+      LIBRARY_BACKEND: https://us-central1-excalidraw-room-persistence.cloudfunctions.net/libraries
+      SOCKET_SERVER_URL: http://localhost:5000/
+    labels:
+      - "traefik.backend=excalidraw"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:excalidraw.${DOMAINNAME}"
 
 # Firefox - A free and open-source web browser that uses the Gecko layout engine.
   firefox:
@@ -163,6 +270,29 @@ services:
       - "traefik.backend=github"
       - "traefik.port=3000"
       - "traefik.frontend.rule=Host:github.${DOMAINNAME}"
+      - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+
+# GitLab -
+  gitlab:
+    hostname: gitlab
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url "https://gitlab.${DOMAINNAME}"
+    volumes:
+      - "${USERDIR}/docker/gitlab/config:/etc/gitlab"
+      - "${USERDIR}/docker/gitlab/logs:/var/log/gitlab"
+      - "${USERDIR}/docker/gitlab/data:/var/opt/gitlab"
+    shm_size: "256m"
+    labels:
+      - "traefik.backend=gitlab"
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:gitlab.${DOMAINNAME}"
       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
 # Grav - A Fast, Simple, and Flexible, file-based Web-platform.
@@ -252,9 +382,9 @@ services:
 # IPFS - A peer-to-peer hypermedia protocol designed to preserve and grow humanity's knowledge by making the web upgradeable, resilient, and more open.
   ipfs:
     hostname: ipfs
-    image: ipfs/kubo
+    image: lscr.io/linuxserver/ipfs
     container_name: ipfs
-    restart: on-failure
+    restart: always
     networks:
       - proxy
     volumes:
@@ -272,7 +402,7 @@ services:
     labels:
       - "traefik.backend=ipfs"
       - "traefik.port=5001"
-      - "traefik.frontend.rule=Host:ipfs.${DOMAINNAME}"
+      - "traefik.frontend.rule=Host:ipfs.${DOMAINNAME}/webui"
       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
 # Kasm - A streaming platform for delivering browser-based access to desktops, applications, and web services.
@@ -315,28 +445,6 @@ services:
       - "traefik.frontend.rule=Host:libreoffice.${DOMAINNAME}"
       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
-# Mullvad -
-  mullvad:
-    hostname: mullvad
-    image: lscr.io/linuxserver/mullvad-browser:latest
-    container_name: mullvad
-    restart: always
-    cap_add:
-      - NET_ADMIN
-    shm_size: "1gb"
-    environment:
-      TZ: ${TZ}
-      PUID: ${PUID}
-      PGID: ${PGID}
-      LOCAL_NET: 10.0.0.0/24 #optional
-    volumes:
-      - ${USERDIR}/docker/mullvad/config:/config
-    labels:
-      - "traefik.backend=mullvad"
-      - "traefik.port=3000"
-      - "traefik.frontend.rule=Host:mullvad.${DOMAINNAME}"
-      - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
-
 # Mysql Workbench - a unified visual tool for database architects, developers, and DBAs.
   mysql-workbench:
     hostname: mysql-workbench
@@ -374,6 +482,29 @@ services:
       - "traefik.backend=nextcloud"
       - "traefik.port=80"
       - "traefik.frontend.rule=Host:cloud.${DOMAINNAME}"
+
+# Note – A personal knowledge management and sharing system inspired by Roam Research, built on Visual Studio Code and GitHub.
+  note:
+    image: lscr.io/linuxserver/code-server:latest
+    container_name: note
+    hostname: note
+    restart: always
+    networks:
+      - proxy
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      PASSWORD: ${PASS}
+      SUDO_PASSWORD: ${PASS}
+      PROXY_DOMAIN: note.${DOMAINNAME}
+      DEFAULT_WORKSPACE: ${USERDIR}/docker/note/workspace
+    volumes:
+      - "${USERDIR}/docker/note/config:/config"
+    labels:
+      traefik.backend: note
+      traefik.port: 8443
+      traefik.frontend.rule: Host:note.${DOMAINNAME}
 
 # Obsidian - Docker as a container and access it via your web browser.
   obsidian:
@@ -498,6 +629,28 @@ services:
       traefik.port: 8080
       traefik.frontend.rule: Host:puffer.${DOMAINNAME}
 
+# Rdesktop - Containers containing full desktop environments in many popular flavors for Alpine, Ubuntu, Arch, and Fedora accessible via RDP.
+  rdesktop:
+    hostname: rdesktop
+    image: lscr.io/linuxserver/rdesktop:latest
+    container_name: rdesktop
+    restart: always
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    ports:
+      - 3389:3389
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${USERDIR}/docker/rdesktop/config:/config
+    shm_size: "1gb"
+    labels:
+      - "traefik.backend=rdesktop"
+      - "traefik.port=3389"
+      - "traefik.frontend.rule=Host:rdesktop.${DOMAINNAME}"
+      - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+
 # SmokePing - A deluxe latency measurement tool.
   smokeping:
     hostname: smokeping
@@ -517,26 +670,23 @@ services:
       - "traefik.frontend.rule=Host:smokeping.${DOMAINNAME}"
       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
-# VS code server – VS Code running on a remote server, accessible through the browser.
-  code:
-    image: lscr.io/linuxserver/code-server:latest
-    container_name: code
-    hostname: code
+# Valheim
+  valheim:
+    hostname: valheim
+    image: ghcr.io/lloesche/valheim-server
+    container_name: valheim
     restart: always
-    networks:
-      - proxy
-    environment:
-      PUID: ${PUID}
-      PGID: ${PGID}
-      TZ: ${TZ}
-      PASSWORD: ${PASS}
-      SUDO_PASSWORD: ${PASS}
-    volumes:
-      - "${USERDIR}/docker/code/config:/config"
-    labels:
-      traefik.backend: code
-      traefik.port: 8443
-      traefik.frontend.rule: Host:code.${DOMAINNAME}
+    stop_grace_period: 2m
+    cap_add:
+      - sys_nice
+    env_file:
+      - ${USERDIR}/docker/valheim/valheim.env
+    volumes: 
+      - ${USERDIR}/docker/valheim/config:/config
+      - ${USERDIR}/docker/valheim/data:/opt/valheim
+    ports: 
+      - "2456-2458:2456-2458/udp"
+      - "9001:9001/tcp"
 
 # VScodium - A community-driven, freely-licensed binary distribution of Microsoft’s editor VS Code.
   vscodium:
@@ -558,6 +708,23 @@ services:
       - "traefik.port=3000"
       - "traefik.frontend.rule=Host:vscodium.${DOMAINNAME}"
       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+
+# ww – Apache HTTP Server is a free and open-source cross-platform web server software
+  ww:
+    image: httpd:2.4
+    container_name: ww
+    hostname: ww
+    restart: always
+    networks:
+      - proxy
+    volumes:
+      - ${USERDIR}/docker/ww/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ${USERDIR}/docker/ww/data:/usr/local/apache2/htdocs/
+      - ${USERDIR}/docker/shared:/shared
+    labels:
+      traefik.backend: ww
+      traefik.port: 80
+      traefik.frontend.rule: Host:ww.${DOMAINNAME}
 
 # Webcord - A pack of security and privacy hardenings, Discord features reimplementations, Electron / Chromium / Discord bugs workarounds, stylesheets, internal pages and wrapped https://discord.com page, designed to conform with ToS as much as it is possible (or hide the changes that might violate it from Discord's eyes).
   webcord:
@@ -701,6 +868,18 @@ services:
       - ${USERDIR}/docker/shared:/shared
     environment:
       MYSQL_ROOT_PASSWORD: ${PASS}
+
+# pvpgn – MySQL is a widely used, open-source relational database management system (RDBMS).
+  pvpgn:
+    image: bethington/pvpgn:latest
+    container_name: pvpgn
+    restart: always
+    ports:
+      - 6112:6112
+      - 4000:4000
+    volumes:
+      - ${USERDIR}/docker/pvpgn/etc:/etc/pvpgn
+      - ${USERDIR}/docker/pvpgn/var:/var/pvpgn
 
 
 ######### GUIDEWIRE DOCUMENTATION ##########
