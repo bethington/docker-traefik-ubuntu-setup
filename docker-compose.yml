@@ -1,37 +1,387 @@
-version: '3.7'
+version: "3.7"
 services:
+  ######### FRONTENDS ##########
 
-
-######### FRONTENDS ##########
-
-# Traefik Reverse Proxy
+  # Traefik Reverse Proxy
   traefik:
     container_name: traefik
     hostname: traefik
-    image: traefik:v2.11
-    restart: always
+    image: traefik:v3.4
+    restart: unless-stopped
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - GODADDY_API_KEY=${GODADDY_API_KEY}
-      - GODADDY_API_SECRET=${GODADDY_API_SECRET}
+      - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
+      - CF_ZONE_API_TOKEN=${CF_ZONE_API_TOKEN}
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080" # The Web UI (enabled by --api.insecure=true)
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ~/traefik:/etc/traefik
+      - ./traefik/certs:/certs:ro
+      - ./traefik/dynamic:/dynamic:ro
+      - ./traefik:/etc/traefik
       - ~/shared:/shared
     networks:
       - proxy
+    command:
+      # EntryPoints
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.websecure.http.tls=true"
+
+      # Attach the static configuration tls.yaml file that contains the tls configuration settings
+      - "--providers.file.filename=/dynamic/tls.yaml"
+
+      # Providers
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=proxy"
+
+      # API & Dashboard
+      - "--api=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=false"
+
+      # Observability
+      - "--log.level=INFO"
+      - "--accesslog=true"
+      - "--metrics.prometheus=true"
+
+      # ACME Let's Encrypt Configuration
+      - "--certificatesresolvers.le.acme.email=benaminde@gmail.com"
+      - "--certificatesresolvers.le.acme.storage=/etc/traefik/acme.json"
+      - "--certificatesresolvers.le.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.le.acme.dnschallenge.delaybeforecheck=60"
+      - "--entrypoints.websecure.http.tls.certresolver=le"
     labels:
-      - "traefik.http.routers.traefik.rule=Host(`traefik.xebyte.com`)"
+      - "traefik.enable=true"
+      # HTTPS router for API/Dashboard
+      - "traefik.http.routers.traefik.rule=Host(`traefik.xebyte.us`) || Host(`traefik.xebyte.com`)"
       - "traefik.http.routers.traefik.entrypoints=websecure"
       - "traefik.http.routers.traefik.tls.certresolver=le"
-      - "traefik.http.routers.traefik.tls.domains[0].main=*.xebyte.com"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
+      - "traefik.http.routers.traefik.tls.domains[0].main=traefik.xebyte.us"
+      - "traefik.http.routers.traefik.tls.domains[1].main=traefik.xebyte.com"
+      - "traefik.http.routers.traefik.service=api@internal"
+      # HTTP router with redirect
+      - "traefik.http.routers.traefik-http.rule=Host(`traefik.xebyte.us`) || Host(`traefik.xebyte.com`)"
+      - "traefik.http.routers.traefik-http.entrypoints=web"
+      - "traefik.http.routers.traefik-http.middlewares=redirect-to-https@file"
 
+  # Whoami application
+  whoami:
+    image: traefik/whoami
+    container_name: whoami
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.whoami.rule=Host(`whoami.xebyte.us`) || Host(`whoami.xebyte.com`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=le"
+      - "traefik.http.routers.whoami.tls.domains[0].main=whoami.xebyte.us"
+      - "traefik.http.routers.whoami.tls.domains[1].main=whoami.xebyte.com"
+      # HTTP router with redirect
+      - "traefik.http.routers.whoami-http.rule=Host(`whoami.xebyte.us`) || Host(`whoami.xebyte.com`)"
+      - "traefik.http.routers.whoami-http.entrypoints=web"
+      - "traefik.http.routers.whoami-http.middlewares=redirect-to-https@file"
+
+  # DevContainer - Development environment for miscellaneous projects including Ghidra MCP integrations
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/universal:latest
+    container_name: devcontainer
+    hostname: devcontainer
+    restart: unless-stopped
+    privileged: true
+    tty: true
+    stdin_open: true
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ~/devcontainer/projects:/workspaces
+      - ~/devcontainer/config:/home/codespace/.config
+      - ~/devcontainer/cache:/home/codespace/.cache
+      - ~/devcontainer/ghidra:/opt/ghidra
+      - ~/shared:/shared
+    ports:
+      - "8090:8090" # Ghidra HTTP API (changed from 8080 due to Traefik conflict)
+      - "8192:8192" # Ghidra CodeBrowser
+      - "8193:8193" # Additional Ghidra instance
+      - "3000:3000" # Development server
+      - "8000:8000" # MCP server
+    working_dir: /workspaces
+    command: sleep infinity
+    tmpfs:
+      - /tmp
+    labels:
+      - "traefik.enable=false"
+
+  # VS Code Server - Web-based VS Code for development projects with Node.js and Claude Code
+  code:
+    image: custom-code-server:latest
+    container_name: code
+    hostname: code
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=${PASS}
+      - SUDO_PASSWORD=${PASS}
+      - DEFAULT_WORKSPACE=/config/workspace/source
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/code/config:/config
+      - ~/source:/config/workspace/source
+      - ~/devcontainer:/config/workspace/devcontainer
+      - ~/shared:/shared
+      - ~/shared/extensions:/config/extensions
+      - ~/.ssh:/config/.ssh:ro
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.code.rule=Host(`code.xebyte.us`) || Host(`code.xebyte.com`)"
+      - "traefik.http.routers.code.entrypoints=websecure"
+      - "traefik.http.routers.code.tls.certresolver=le"
+      - "traefik.http.routers.code.tls.domains[0].main=code.xebyte.us"
+      - "traefik.http.routers.code.tls.domains[1].main=code.xebyte.com"
+      - "traefik.http.services.code.loadbalancer.server.port=8443"
+      # HTTP router with redirect
+      - "traefik.http.routers.code-http.rule=Host(`code.xebyte.us`) || Host(`code.xebyte.com`)"
+      - "traefik.http.routers.code-http.entrypoints=web"
+      - "traefik.http.routers.code-http.middlewares=redirect-to-https@file"
+
+  # VS Code Server cod1 - Web-based VS Code for development projects
+  cod1:
+    image: custom-code-server:latest
+    container_name: cod1
+    hostname: cod1
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=${PASS}
+      - SUDO_PASSWORD=${PASS}
+      - DEFAULT_WORKSPACE=/config/workspace/source
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/cod1/config:/config
+      - ~/source:/config/workspace/source
+      - ~/devcontainer:/config/workspace/devcontainer
+      - ~/shared:/shared
+      - ~/shared/extensions:/config/extensions
+      - ~/.ssh:/config/.ssh:ro
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.cod1.rule=Host(`cod1.xebyte.us`) || Host(`cod1.xebyte.com`)"
+      - "traefik.http.routers.cod1.entrypoints=websecure"
+      - "traefik.http.routers.cod1.tls.certresolver=le"
+      - "traefik.http.routers.cod1.tls.domains[0].main=cod1.xebyte.us"
+      - "traefik.http.routers.cod1.tls.domains[1].main=cod1.xebyte.com"
+      - "traefik.http.services.cod1.loadbalancer.server.port=8443"
+      # HTTP router with redirect
+      - "traefik.http.routers.cod1-http.rule=Host(`cod1.xebyte.us`) || Host(`cod1.xebyte.com`)"
+      - "traefik.http.routers.cod1-http.entrypoints=web"
+      - "traefik.http.routers.cod1-http.middlewares=redirect-to-https@file"
+
+  # VS Code Server vs1 - Web-based VS Code for development projects
+  vs1:
+    image: custom-code-server:latest
+    container_name: vs1
+    hostname: vs1
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=${PASS}
+      - SUDO_PASSWORD=${PASS}
+      - DEFAULT_WORKSPACE=/config/workspace/source
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/vs1/config:/config
+      - ~/source:/config/workspace/source
+      - ~/devcontainer:/config/workspace/devcontainer
+      - ~/shared:/shared
+      - ~/shared/extensions:/config/extensions
+      - ~/.ssh:/config/.ssh:ro
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.vs1.rule=Host(`vs1.xebyte.us`) || Host(`vs1.xebyte.com`)"
+      - "traefik.http.routers.vs1.entrypoints=websecure"
+      - "traefik.http.routers.vs1.tls.certresolver=le"
+      - "traefik.http.routers.vs1.tls.domains[0].main=vs1.xebyte.us"
+      - "traefik.http.routers.vs1.tls.domains[1].main=vs1.xebyte.com"
+      - "traefik.http.services.vs1.loadbalancer.server.port=8443"
+      # HTTP router with redirect
+      - "traefik.http.routers.vs1-http.rule=Host(`vs1.xebyte.us`) || Host(`vs1.xebyte.com`)"
+      - "traefik.http.routers.vs1-http.entrypoints=web"
+      - "traefik.http.routers.vs1-http.middlewares=redirect-to-https@file"
+
+  # VS Code Server vs2 - Web-based VS Code for development projects
+  vs2:
+    image: custom-code-server:latest
+    container_name: vs2
+    hostname: vs2
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=${PASS}
+      - SUDO_PASSWORD=${PASS}
+      - DEFAULT_WORKSPACE=/config/workspace/source
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/vs2/config:/config
+      - ~/source:/config/workspace/source
+      - ~/devcontainer:/config/workspace/devcontainer
+      - ~/shared:/shared
+      - ~/shared/extensions:/config/extensions
+      - ~/.ssh:/config/.ssh:ro
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.vs2.rule=Host(`vs2.xebyte.us`) || Host(`vs2.xebyte.com`)"
+      - "traefik.http.routers.vs2.entrypoints=websecure"
+      - "traefik.http.routers.vs2.tls.certresolver=le"
+      - "traefik.http.routers.vs2.tls.domains[0].main=vs2.xebyte.us"
+      - "traefik.http.routers.vs2.tls.domains[1].main=vs2.xebyte.com"
+      - "traefik.http.services.vs2.loadbalancer.server.port=8443"
+      # HTTP router with redirect
+      - "traefik.http.routers.vs2-http.rule=Host(`vs2.xebyte.us`) || Host(`vs2.xebyte.com`)"
+      - "traefik.http.routers.vs2-http.entrypoints=web"
+      - "traefik.http.routers.vs2-http.middlewares=redirect-to-https@file"
+
+  # VS Code Server vs3 - Web-based VS Code for development projects
+  vs3:
+    image: custom-code-server:latest
+    container_name: vs3
+    hostname: vs3
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=${PASS}
+      - SUDO_PASSWORD=${PASS}
+      - DEFAULT_WORKSPACE=/config/workspace/source
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/vs3/config:/config
+      - ~/source:/config/workspace/source
+      - ~/devcontainer:/config/workspace/devcontainer
+      - ~/shared:/shared
+      - ~/shared/extensions:/config/extensions
+      - ~/.ssh:/config/.ssh:ro
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.vs3.rule=Host(`vs3.xebyte.us`) || Host(`vs3.xebyte.com`)"
+      - "traefik.http.routers.vs3.entrypoints=websecure"
+      - "traefik.http.routers.vs3.tls.certresolver=le"
+      - "traefik.http.routers.vs3.tls.domains[0].main=vs3.xebyte.us"
+      - "traefik.http.routers.vs3.tls.domains[1].main=vs3.xebyte.com"
+      - "traefik.http.services.vs3.loadbalancer.server.port=8443"
+      # HTTP router with redirect
+      - "traefik.http.routers.vs3-http.rule=Host(`vs3.xebyte.us`) || Host(`vs3.xebyte.com`)"
+      - "traefik.http.routers.vs3-http.entrypoints=web"
+      - "traefik.http.routers.vs3-http.middlewares=redirect-to-https@file"
+
+  # VS Code Server vs4 - Web-based VS Code for development projects
+  vs4:
+    image: custom-code-server:latest
+    container_name: vs4
+    hostname: vs4
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=${PASS}
+      - SUDO_PASSWORD=${PASS}
+      - DEFAULT_WORKSPACE=/config/workspace/source
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/vs4/config:/config
+      - ~/source:/config/workspace/source
+      - ~/devcontainer:/config/workspace/devcontainer
+      - ~/shared:/shared
+      - ~/shared/extensions:/config/extensions
+      - ~/.ssh:/config/.ssh:ro
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.vs4.rule=Host(`vs4.xebyte.us`) || Host(`vs4.xebyte.com`)"
+      - "traefik.http.routers.vs4.entrypoints=websecure"
+      - "traefik.http.routers.vs4.tls.certresolver=le"
+      - "traefik.http.routers.vs4.tls.domains[0].main=vs4.xebyte.us"
+      - "traefik.http.routers.vs4.tls.domains[1].main=vs4.xebyte.com"
+      - "traefik.http.services.vs4.loadbalancer.server.port=8443"
+      # HTTP router with redirect
+      - "traefik.http.routers.vs4-http.rule=Host(`vs4.xebyte.us`) || Host(`vs4.xebyte.com`)"
+      - "traefik.http.routers.vs4-http.entrypoints=web"
+      - "traefik.http.routers.vs4-http.middlewares=redirect-to-https@file"
+
+  dd2docs:
+    image: custom-code-server:latest
+    container_name: dd2docs
+    hostname: dd2docs
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PASSWORD=${PASS}
+      - SUDO_PASSWORD=${PASS}
+      - DEFAULT_WORKSPACE=/config/workspace/source
+    networks:
+      - proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/dd2docs/config:/config
+      - ~/re-universe:/config/workspace/source
+      - ~/devcontainer:/config/workspace/devcontainer
+      - ~/shared:/shared
+      - ~/shared/extensions:/config/extensions
+      - ~/.ssh:/config/.ssh:ro
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.dd2docs.rule=Host(`dd2docs.xebyte.us`) || Host(`dd2docs.xebyte.com`)"
+      - "traefik.http.routers.dd2docs.entrypoints=websecure"
+      - "traefik.http.routers.dd2docs.tls.certresolver=le"
+      - "traefik.http.routers.dd2docs.tls.domains[0].main=dd2docs.xebyte.us"
+      - "traefik.http.routers.dd2docs.tls.domains[1].main=dd2docs.xebyte.com"
+      - "traefik.http.services.dd2docs.loadbalancer.server.port=8443"
+      # HTTP router with redirect
+      - "traefik.http.routers.dd2docs-http.rule=Host(`dd2docs.xebyte.us`) || Host(`dd2docs.xebyte.com`)"
+      - "traefik.http.routers.dd2docs-http.entrypoints=web"
+      - "traefik.http.routers.dd2docs-http.middlewares=redirect-to-https@file"
   # Portainer - WebUI for Containers
   portainer:
     container_name: portainer
@@ -49,11 +399,18 @@ services:
       - ~/portainer/data:/data
       - ~/shared:/shared
     labels:
-      - "traefik.http.routers.portainer.rule=Host(`portainer.xebyte.com`)"
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.portainer.rule=Host(`portainer.xebyte.us`) || Host(`portainer.xebyte.com`)"
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.tls.certresolver=le"
-      - "traefik.http.routers.portainer.tls.domains[0].main=*.xebyte.com"
+      - "traefik.http.routers.portainer.tls.domains[0].main=portainer.xebyte.us"
+      - "traefik.http.routers.portainer.tls.domains[1].main=portainer.xebyte.com"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      # HTTP router with redirect
+      - "traefik.http.routers.portainer-http.rule=Host(`portainer.xebyte.us`) || Host(`portainer.xebyte.com`)"
+      - "traefik.http.routers.portainer-http.entrypoints=web"
+      - "traefik.http.routers.portainer-http.middlewares=redirect-to-https@file"
 
   # Watchtower - Automatically update running Docker containers
   watchtower:
@@ -70,59 +427,61 @@ services:
     labels:
       - "traefik.enable=false"
 
-  7dtd:
-    container_name: 7dtd
-    hostname: 7dtd
-    image: vinanrra/7dtd-server:latest
-    restart: unless-stopped # INFO - NEVER USE WITH START_MODE=4 or START_MODE=0
-    ulimits:
-      nofile:
-        soft: "10240"
-        hard: "10240"
-    environment:
-      - SERVER_NAME=7dtd # Change server name
-      - START_MODE=3 #Change between START MODES
-      - VERSION=v2.1 # Change between 7 days to die versions
-      - USER=ben # Remember to use same as your user
-      - PUID=${PUID} # Remember to use same as your user
-      - PGID=${PGID} # Remember to use same as your user
-      - TimeZone=${TZ} # Optional - Change Timezone
-      - TEST_ALERT=NO # Optional - Send a test alert
-      - UPDATE_MODS=NO # Optional - This will allow mods to be update on start, each mod also need to have XXXX_UPDATE=YES to update on start
-      - ALLOC_FIXES=NO # Optional - Install ALLOC FIXES
-      - ALLOC_FIXES_UPDATE=NO # Optional - Update Allocs Fixes before server start
-      - DARKNESS_FALLS=NO # Optional - Install Darkness Falls mod
-      - DARKNESS_FALLS_UPDATE=NO # Optional - Update Darkness Falls mod before server start
-      - DARKNESS_FALLS_URL=False # Optional - Use custom URL for Darkness Falls mod
-      - UNDEAD_LEGACY=NO # Optional - Install Undead Legacy mod
-      - UNDEAD_LEGACY_VERSION=stable # Optional - Undead Legacy version
-      - UNDEAD_LEGACY_UPDATE=NO # Optional - Update Undead Legacy mod before server start
-      - CPM=NO # Optional - CSMM Patron's Mod (CPM)
-      - CPM_UPDATE=NO # Optional - Update BepInEx before server start
-      - BEPINEX=NO # Optional - BepInEx
-      - BEPINEX_UPDATE=NO # Optional - Update BepInEx before server start
-      - BACKUP=YES # Optional - Backup server at 5 AM
-      - MONITOR=NO # Optional - Keeps server up if crash
-    volumes:
-      - ./7dtd/7DaysToDie:/home/sdtdserver/.local/share/7DaysToDie/
-      - ./7dtd/LGSM-Config:/home/sdtdserver/lgsm/config-lgsm/sdtdserver
-      - ./7dtd/ServerFiles:/home/sdtdserver/serverfiles/ # Optional - serverfiles folder
-      - ./7dtd/log:/home/sdtdserver/log/ # Optional - Logs folder
-      - ./7dtd/backups:/home/sdtdserver/lgsm/backup/ # Optional - If BAKCUP=NO, backups folder
-    ports:
-      - 26900:26900/tcp # Default game ports
-      - 26900:26900/udp # Default game ports
-      - 26901:26901/udp # Default game ports
-      - 26902:26902/udp # Default game ports
-      # - 8080:8080/tcp # OPTIONAL - WEBADMIN
-      # - 8081:8081/tcp # OPTIONAL - TELNET
-      # - 8082:8082/tcp # OPTIONAL - WEBSERVER https://7dtd.illy.bz/wiki/Server%20fixes
-    labels:
-      - "traefik.http.routers.7dtd.rule=Host(`7dtd.xebyte.com`)"
-      - "traefik.http.routers.7dtd.entrypoints=websecure"
-      - "traefik.http.routers.7dtd.tls.certresolver=le"
-      - "traefik.http.routers.7dtd.tls.domains[0].main=*.xebyte.com"
-      - "traefik.http.services.7dtd.loadbalancer.server.port=8082"
+  # 7dtd:
+  #   container_name: 7dtd
+  #   hostname: 7dtd
+  #   image: vinanrra/7dtd-server:latest
+  #   restart: unless-stopped # INFO - NEVER USE WITH START_MODE=4 or START_MODE=0
+  #   ulimits:
+  #     nofile:
+  #       soft: "10240"
+  #       hard: "10240"
+  #   environment:
+  #     - SERVER_NAME=7dtd # Change server name
+  #     - START_MODE=3 #Change between START MODES
+  #     - VERSION=v2.1 # Change between 7 days to die versions
+  #     - USER=ben # Remember to use same as your user
+  #     - PUID=${PUID} # Remember to use same as your user
+  #     - PGID=${PGID} # Remember to use same as your user
+  #     - TimeZone=${TZ} # Optional - Change Timezone
+  #     - TEST_ALERT=NO # Optional - Send a test alert
+  #     - UPDATE_MODS=NO # Optional - This will allow mods to be update on start, each mod also need to have XXXX_UPDATE=YES to update on start
+  #     - ALLOC_FIXES=NO # Optional - Install ALLOC FIXES
+  #     - ALLOC_FIXES_UPDATE=NO # Optional - Update Allocs Fixes before server start
+  #     - DARKNESS_FALLS=NO # Optional - Install Darkness Falls mod
+  #     - DARKNESS_FALLS_UPDATE=NO # Optional - Update Darkness Falls mod before server start
+  #     - DARKNESS_FALLS_URL=False # Optional - Use custom URL for Darkness Falls mod
+  #     - UNDEAD_LEGACY=NO # Optional - Install Undead Legacy mod
+  #     - UNDEAD_LEGACY_VERSION=stable # Optional - Undead Legacy version
+  #     - UNDEAD_LEGACY_UPDATE=NO # Optional - Update Undead Legacy mod before server start
+  #     - CPM=NO # Optional - CSMM Patron's Mod (CPM)
+  #     - CPM_UPDATE=NO # Optional - Update BepInEx before server start
+  #     - BEPINEX=NO # Optional - BepInEx
+  #     - BEPINEX_UPDATE=NO # Optional - Update BepInEx before server start
+  #     - BACKUP=YES # Optional - Backup server at 5 AM
+  #     - MONITOR=NO # Optional - Keeps server up if crash
+  #   networks:
+  #     - proxy
+  #   volumes:
+  #     - ./7dtd/7DaysToDie:/home/sdtdserver/.local/share/7DaysToDie/
+  #     - ./7dtd/LGSM-Config:/home/sdtdserver/lgsm/config-lgsm/sdtdserver
+  #     - ./7dtd/ServerFiles:/home/sdtdserver/serverfiles/ # Optional - serverfiles folder
+  #     - ./7dtd/log:/home/sdtdserver/log/ # Optional - Logs folder
+  #     - ./7dtd/backups:/home/sdtdserver/lgsm/backup/ # Optional - If BAKCUP=NO, backups folder
+  #   ports:
+  #     - 26900:26900/tcp # Default game ports
+  #     - 26900:26900/udp # Default game ports
+  #     - 26901:26901/udp # Default game ports
+  #     - 26902:26902/udp # Default game ports
+  #     # - 8080:8080/tcp # OPTIONAL - WEBADMIN
+  #     # - 8081:8081/tcp # OPTIONAL - TELNET
+  #     # - 8082:8082/tcp # OPTIONAL - WEBSERVER https://7dtd.illy.bz/wiki/Server%20fixes
+  #   labels:
+  #     - "traefik.http.routers.7dtd.rule=Host(`7dtd.xebyte.us`)"
+  #     - "traefik.http.routers.7dtd.entrypoints=websecure"
+  #     - "traefik.http.routers.7dtd.tls.certresolver=le"
+  #     - "traefik.http.routers.7dtd.tls.domains[0].main=*.xebyte.us"
+  #     - "traefik.http.services.7dtd.loadbalancer.server.port=8082"
 
   # 7dtd-df:
   #   container_name: 7dtd-df
@@ -172,10 +531,10 @@ services:
   #     # - 8081:8081/tcp # OPTIONAL - TELNET
   #     # - 8082:8082/tcp # OPTIONAL - WEBSERVER https://7dtd.illy.bz/wiki/Server%20fixes
   #   labels:
-  #     - "traefik.http.routers.7dtd-df.rule=Host(`7dtd-df.xebyte.com`)"
+  #     - "traefik.http.routers.7dtd-df.rule=Host(`7dtd-df.xebyte.us`)"
   #     - "traefik.http.routers.7dtd-df.entrypoints=websecure"
   #     - "traefik.http.routers.7dtd-df.tls.certresolver=le"
-  #     - "traefik.http.routers.7dtd-df.tls.domains[0].main=*.xebyte.com"
+  #     - "traefik.http.routers.7dtd-df.tls.domains[0].main=*.xebyte.us"
   #     - "traefik.http.services.7dtd-df.loadbalancer.server.port=8082"
 
   # ChatGPT Web – A artificial intelligence model which interacts in a conversational way.
@@ -262,7 +621,7 @@ services:
   #   volumes:
   #     - "~/books/config:/config"
   #   labels:
-  #     - "traefik.http.routers.books.rule=Host(`books.xebyte.com`)"
+  #     - "traefik.http.routers.books.rule=Host(`books.xebyte.us`)"
   #     - "traefik.http.routers.books.entrypoints=websecure"
   #     - "traefik.http.routers.books.tls.certresolver=le"
   #     - "traefik.http.services.books.loadbalancer.server.port=8080"
@@ -284,14 +643,14 @@ services:
   #   volumes:
   #     - ~/dillinger/configs:/config
   #   labels:
-  #     - "traefik.http.routers.dillinger.rule=Host(`dillinger.xebyte.com`)"
+  #     - "traefik.http.routers.dillinger.rule=Host(`dillinger.xebyte.us`)"
   #     - "traefik.http.routers.dillinger.entrypoints=websecure"
   #     - "traefik.http.routers.dillinger.tls.certresolver=le"
   #     - "traefik.http.services.dillinger.loadbalancer.server.port=8080"
   #     - "traefik.http.routers.dillinger.middlewares=dillinger-auth"
   #     - "traefik.http.middlewares.dillinger-auth.basicauth.usersfile=/shared/.htpasswd"
 
-# Docker – A personal knowledge management and sharing system inspired by Roam Research, built on Visual Studio Code and GitHub.
+  # Docker – A personal knowledge management and sharing system inspired by Roam Research, built on Visual Studio Code and GitHub.
   # docker:
   #   image: lscr.io/linuxserver/code-server:latest
   #   container_name: docker
@@ -311,12 +670,12 @@ services:
   #     - /home/ben:/home/bethington
   #     - "~/docker/config:/config"
   #   labels:
-  #     - "traefik.http.routers.docker.rule=Host(`docker.xebyte.com`)"
+  #     - "traefik.http.routers.docker.rule=Host(`docker.xebyte.us`)"
   #     - "traefik.http.routers.docker.entrypoints=websecure"
   #     - "traefik.http.routers.docker.tls.certresolver=le"
   #     - "traefik.http.services.docker.loadbalancer.server.port=8443"
 
-# Dokuwiki - A simple to use and highly versatile Open Source wiki software that doesn't require a database.
+  # Dokuwiki - A simple to use and highly versatile Open Source wiki software that doesn't require a database.
   # dokuwiki:
   #   hostname: dokuwiki
   #   image: lscr.io/linuxserver/dokuwiki:latest
@@ -331,12 +690,12 @@ services:
   #   volumes:
   #     - ~/dokuwiki/appdata/config:/config
   #   labels:
-  #     - "traefik.http.routers.dokuwiki.rule=Host(`dokuwiki.xebyte.com`)"
+  #     - "traefik.http.routers.dokuwiki.rule=Host(`dokuwiki.xebyte.us`)"
   #     - "traefik.http.routers.dokuwiki.entrypoints=websecure"
   #     - "traefik.http.routers.dokuwiki.tls.certresolver=le"
   #     - "traefik.http.services.dokuwiki.loadbalancer.server.port=80"
 
-# Emulatorjs - In browser web based emulation portable to nearly any device for many retro consoles.
+  # Emulatorjs - In browser web based emulation portable to nearly any device for many retro consoles.
   # emulatorjs:
   #   hostname: emulatorjs
   #   image: lscr.io/linuxserver/emulatorjs:latest
@@ -354,12 +713,12 @@ services:
   #   ports:
   #     - 3000:3000
   #   labels:
-  #     - "traefik.http.routers.emulatorjs.rule=Host(`emulatorjs.xebyte.com`)"
+  #     - "traefik.http.routers.emulatorjs.rule=Host(`emulatorjs.xebyte.us`)"
   #     - "traefik.http.routers.emulatorjs.entrypoints=websecure"
   #     - "traefik.http.routers.emulatorjs.tls.certresolver=le"
   #     - "traefik.http.services.emulatorjs.loadbalancer.server.port=3000"
 
-# Excalidraw - Virtual whiteboard for sketching hand-drawn like diagrams
+  # Excalidraw - Virtual whiteboard for sketching hand-drawn like diagrams
   # excalidraw:
   #   hostname: excalidraw
   #   image: kiliandeca/excalidraw:latest
@@ -374,13 +733,12 @@ services:
   #   networks:
   #     - proxy
   #   labels:
-  #     - "traefik.http.routers.dillinger.rule=Host(`excalidraw.xebyte.com`)"
+  #     - "traefik.http.routers.dillinger.rule=Host(`excalidraw.xebyte.us`)"
   #     - "traefik.http.routers.dillinger.entrypoints=websecure"
   #     - "traefik.http.routers.dillinger.tls.certresolver=le"
   #     - "traefik.http.services.dillinger.loadbalancer.server.port=5000"
-      
 
-# Firefox - A free and open-source web browser that uses the Gecko layout engine.
+  # Firefox - A free and open-source web browser that uses the Gecko layout engine.
   # firefox:
   #   hostname: firefox
   #   image: lscr.io/linuxserver/firefox:latest
@@ -396,83 +754,83 @@ services:
   #     - ~/firefox/config:/config
   #   shm_size: "1gb"
   #   labels:
-  #     - "traefik.http.routers.firefox.rule=Host(`firefox.xebyte.com`)"
+  #     - "traefik.http.routers.firefox.rule=Host(`firefox.xebyte.us`)"
   #     - "traefik.http.routers.firefox.entrypoints=websecure"
   #     - "traefik.http.routers.firefox.tls.certresolver=le"
   #     - "traefik.http.services.firefox.loadbalancer.server.port=3000"
 
-# Ghost - Ghost is a free and open source blogging platform
-#   adanation:
-#     image: ghost:4-alpine
-#     depends_on:
-#       - adanation-mysql
-#     container_name: adanation
-#     restart: always
-#     volumes:
-#       - ~/adanation/data:/data
-#       - ~/shared:/shared
-#     environment:
-#       # see https://ghost.org/docs/config/#configuration-options
-#       TZ: ${TZ}
-#       PUID: ${PUID}
-#       PGID: ${PGID}
-#       database__client: mysql
-#       database__connection__host: adanation-mysql
-#       database__connection__port: 3306
-#       database__connection__user: bethington
-#       database__connection__password: ${PASS}
-#       database__connection__database: adanation
-#       url: https://adanation.org
-#     labels:
-#       - "traefik.backend=adanation"
-#       - "traefik.port=2368"
-#       - "traefik.frontend.rule=Host:adanation.org"
+  # Ghost - Ghost is a free and open source blogging platform
+  #   adanation:
+  #     image: ghost:4-alpine
+  #     depends_on:
+  #       - adanation-mysql
+  #     container_name: adanation
+  #     restart: always
+  #     volumes:
+  #       - ~/adanation/data:/data
+  #       - ~/shared:/shared
+  #     environment:
+  #       # see https://ghost.org/docs/config/#configuration-options
+  #       TZ: ${TZ}
+  #       PUID: ${PUID}
+  #       PGID: ${PGID}
+  #       database__client: mysql
+  #       database__connection__host: adanation-mysql
+  #       database__connection__port: 3306
+  #       database__connection__user: bethington
+  #       database__connection__password: ${PASS}
+  #       database__connection__database: adanation
+  #       url: https://adanation.org
+  #     labels:
+  #       - "traefik.backend=adanation"
+  #       - "traefik.port=2368"
+  #       - "traefik.frontend.rule=Host:adanation.org"
 
-# Github desktop -
-#   github-desktop:
-#     hostname: github
-#     image: lscr.io/linuxserver/github-desktop:latest
-#     container_name: github-desktop
-#     restart: always
-#     cap_add:
-#       - IPC_LOCK
-#     environment:
-#       TZ: ${TZ}
-#       PUID: ${PUID}
-#       PGID: ${PGID}
-#     volumes:
-#       - ~/github-desktop/config:/config
-#     shm_size: "1gb"
-#     labels:
-#       - "traefik.backend=github"
-#       - "traefik.port=3000"
-#       - "traefik.frontend.rule=Host:github.${DOMAINNAME}"
-#       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+  # Github desktop -
+  #   github-desktop:
+  #     hostname: github
+  #     image: lscr.io/linuxserver/github-desktop:latest
+  #     container_name: github-desktop
+  #     restart: always
+  #     cap_add:
+  #       - IPC_LOCK
+  #     environment:
+  #       TZ: ${TZ}
+  #       PUID: ${PUID}
+  #       PGID: ${PGID}
+  #     volumes:
+  #       - ~/github-desktop/config:/config
+  #     shm_size: "1gb"
+  #     labels:
+  #       - "traefik.backend=github"
+  #       - "traefik.port=3000"
+  #       - "traefik.frontend.rule=Host:github.${DOMAINNAME}"
+  #       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
-# GitLab -
-#   gitlab:
-#     hostname: gitlab
-#     image: gitlab/gitlab-ce:latest
-#     container_name: gitlab
-#     restart: always
-#     environment:
-#       TZ: ${TZ}
-#       PUID: ${PUID}
-#       PGID: ${PGID}
-#       GITLAB_OMNIBUS_CONFIG: |
-#         external_url "https://gitlab.${DOMAINNAME}"
-#     volumes:
-#       - "~/gitlab/config:/etc/gitlab"
-#       - "~/gitlab/logs:/var/log/gitlab"
-#       - "~/gitlab/data:/var/opt/gitlab"
-#     shm_size: "256m"
-#     labels:
-#       - "traefik.backend=gitlab"
-#       - "traefik.port=80"
-#       - "traefik.frontend.rule=Host:gitlab.${DOMAINNAME}"
-#       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+  # GitLab -
+  #   gitlab:
+  #     hostname: gitlab
+  #     image: gitlab/gitlab-ce:latest
+  #     container_name: gitlab
+  #     restart: always
+  #     environment:
+  #       TZ: ${TZ}
+  #       PUID: ${PUID}
+  #       PGID: ${PGID}
+  #       GITLAB_OMNIBUS_CONFIG: |
+  #         external_url "https://gitlab.${DOMAINNAME}"
+  #     volumes:
+  #       - "~/gitlab/config:/etc/gitlab"
+  #       - "~/gitlab/logs:/var/log/gitlab"
+  #       - "~/gitlab/data:/var/opt/gitlab"
+  #     shm_size: "256m"
+  #     labels:
+  #       - "traefik.backend=gitlab"
+  #       - "traefik.port=80"
+  #       - "traefik.frontend.rule=Host:gitlab.${DOMAINNAME}"
+  #       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
-# Grav - A Fast, Simple, and Flexible, file-based Web-platform.
+  # Grav - A Fast, Simple, and Flexible, file-based Web-platform.
   # grav:
   #   hostname: grav
   #   image: lscr.io/linuxserver/grav:latest
@@ -487,12 +845,12 @@ services:
   #   volumes:
   #     - ~/grav/appdata/config:/config
   #   labels:
-  #     - "traefik.http.routers.grav.rule=Host(`grav.xebyte.com`)"
+  #     - "traefik.http.routers.grav.rule=Host(`grav.xebyte.us`)"
   #     - "traefik.http.routers.grav.entrypoints=websecure"
   #     - "traefik.http.routers.grav.tls.certresolver=le"
   #     - "traefik.http.services.grav.loadbalancer.server.port=80"
 
-# Grocy -
+  # Grocy -
   # grocy:
   #   hostname: grocy
   #   image: lscr.io/linuxserver/grocy:latest
@@ -507,12 +865,12 @@ services:
   #   volumes:
   #     - ~/grocy/data:/config
   #   labels:
-  #     - "traefik.http.routers.grocy.rule=Host(`grocy.xebyte.com`)"
+  #     - "traefik.http.routers.grocy.rule=Host(`grocy.xebyte.us`)"
   #     - "traefik.http.routers.grocy.entrypoints=websecure"
   #     - "traefik.http.routers.grocy.tls.certresolver=le"
   #     - "traefik.http.services.grocy.loadbalancer.server.port=80"
 
-# HedgeDoc - A real-time, multi-platform collaborative markdown note editor.
+  # HedgeDoc - A real-time, multi-platform collaborative markdown note editor.
   # hedgedoc:
   #   hostname: hedgedoc
   #   image: lscr.io/linuxserver/hedgedoc:latest
@@ -536,12 +894,12 @@ services:
   #   volumes:
   #     - ~/hedgedoc/appdata:/config
   #   labels:
-  #     - "traefik.http.routers.hedgedoc.rule=Host(`hedgedoc.xebyte.com`)"
+  #     - "traefik.http.routers.hedgedoc.rule=Host(`hedgedoc.xebyte.us`)"
   #     - "traefik.http.routers.hedgedoc.entrypoints=websecure"
   #     - "traefik.http.routers.hedgedoc.tls.certresolver=le"
   #     - "traefik.http.services.hedgedoc.loadbalancer.server.port=3000"
 
-# Heimdall - A way to organise all those links to your most used web sites and web applications in a simple way.
+  # Heimdall - A way to organise all those links to your most used web sites and web applications in a simple way.
   # heimdall:
   #   hostname: heimdall
   #   image: lscr.io/linuxserver/heimdall:latest
@@ -556,82 +914,82 @@ services:
   #   volumes:
   #     - ~/heimdall/appdata/config:/config
   #   labels:
-  #     - "traefik.http.routers.heimdall.rule=Host(`heimdall.xebyte.com`)"
+  #     - "traefik.http.routers.heimdall.rule=Host(`heimdall.xebyte.us`)"
   #     - "traefik.http.routers.heimdall.entrypoints=websecure"
   #     - "traefik.http.routers.heimdall.tls.certresolver=le"
   #     - "traefik.http.services.heimdall.loadbalancer.server.port=80"
 
-# IPFS - A peer-to-peer hypermedia protocol designed to preserve and grow humanity's knowledge by making the web upgradeable, resilient, and more open.
-  ipfs:
-    hostname: ipfs
-    image: lscr.io/linuxserver/ipfs
-    container_name: ipfs
-    restart: always
-    volumes:
-      - ./ipfs/staging:/export
-      - ./ipfs/data:/data/ipfs
-      - ./ipfs/ipfs:/ipfs
-      - ./ipfs/ipns:/ipns
-    networks:
-      - proxy
-    ports:
-      # Swarm listens on all interfaces, so is remotely reachable.
-      - 4001:4001
-      # HTTP Gateway
-      - 8080:8080
-      # API port, which includes admin operations, so you probably don't want this remotely accessible.
-      - 5001:5001
-    labels:
-      - "traefik.http.routers.ipfs.rule=Host(`ipfs.xebyte.com`)"
-      - "traefik.http.routers.ipfs.entrypoints=websecure"
-      - "traefik.http.routers.ipfs.tls.certresolver=le"
-      - "traefik.http.services.ipfs.loadbalancer.server.port=8080"
+  # IPFS - A peer-to-peer hypermedia protocol designed to preserve and grow humanity's knowledge by making the web upgradeable, resilient, and more open.
+  # ipfs:
+  #   hostname: ipfs
+  #   image: lscr.io/linuxserver/ipfs
+  #   container_name: ipfs
+  #   restart: always
+  #   volumes:
+  #     - ./ipfs/staging:/export
+  #     - ./ipfs/data:/data/ipfs
+  #     - ./ipfs/ipfs:/ipfs
+  #     - ./ipfs/ipns:/ipns
+  #   networks:
+  #     - proxy
+  #   ports:
+  #     # Swarm listens on all interfaces, so is remotely reachable.
+  #     - 4001:4001
+  #     # HTTP Gateway
+  #     - 8080:8080
+  #     # API port, which includes admin operations, so you probably don't want this remotely accessible.
+  #     - 5001:5001
+  #   labels:
+  #     - "traefik.http.routers.ipfs.rule=Host(`ipfs.xebyte.us`)"
+  #     - "traefik.http.routers.ipfs.entrypoints=websecure"
+  #     - "traefik.http.routers.ipfs.tls.certresolver=le"
+  #     - "traefik.http.services.ipfs.loadbalancer.server.port=8080"
 
-# Kasm - A streaming platform for delivering browser-based access to desktops, applications, and web services.
-#   kasm:
-#     hostname: kasm
-#     image: lscr.io/linuxserver/kasm:latest
-#     container_name: kasm
-#     restart: always
-#     privileged: true
-#     environment:
-#       TZ: ${TZ}
-#       PUID: ${PUID}
-#       PGID: ${PGID}
-#       KASM_PORT: 80
-#     networks:
-#       - proxy
-#     volumes:
-#       - ~/kasm/data:/opt
-#       - ~/kasm/profiles:/profiles #optional
-#     labels:
-#       - "traefik.http.routers.kasm.rule=Host(`kasm.xebyte.com`)"
-#       - "traefik.http.routers.kasm.entrypoints=websecure"
-#       - "traefik.http.routers.kasm.tls.certresolver=le"
-#       - "traefik.http.services.kasm.loadbalancer.server.port=80"
+  # Kasm - A streaming platform for delivering browser-based access to desktops, applications, and web services.
+  #   kasm:
+  #     hostname: kasm
+  #     image: lscr.io/linuxserver/kasm:latest
+  #     container_name: kasm
+  #     restart: always
+  #     privileged: true
+  #     environment:
+  #       TZ: ${TZ}
+  #       PUID: ${PUID}
+  #       PGID: ${PGID}
+  #       KASM_PORT: 80
+  #     networks:
+  #       - proxy
+  #     volumes:
+  #       - ~/kasm/data:/opt
+  #       - ~/kasm/profiles:/profiles #optional
+  #     labels:
+  #       - "traefik.http.routers.kasm.rule=Host(`kasm.xebyte.us`)"
+  #       - "traefik.http.routers.kasm.entrypoints=websecure"
+  #       - "traefik.http.routers.kasm.tls.certresolver=le"
+  #       - "traefik.http.services.kasm.loadbalancer.server.port=80"
 
-# # Libreoffice - A free and powerful office suite.
-#   libreoffice:
-#     hostname: libreoffice
-#     image: lscr.io/linuxserver/libreoffice:latest
-#     container_name: libreoffice
-#     restart: always
-#     shm_size: "1gb"
-#     environment:
-#       TZ: ${TZ}
-#       PUID: ${PUID}
-#       PGID: ${PGID}
-#     networks:
-#       - proxy
-#     volumes:
-#       - ~/libreoffice/config:/config
-#     labels:
-#       - "traefik.http.routers.libreoffice.rule=Host(`libreoffice.xebyte.com`)"
-#       - "traefik.http.routers.libreoffice.entrypoints=websecure"
-#       - "traefik.http.routers.libreoffice.tls.certresolver=le"
-#       - "traefik.http.services.libreoffice.loadbalancer.server.port=3000"
+  # # Libreoffice - A free and powerful office suite.
+  #   libreoffice:
+  #     hostname: libreoffice
+  #     image: lscr.io/linuxserver/libreoffice:latest
+  #     container_name: libreoffice
+  #     restart: always
+  #     shm_size: "1gb"
+  #     environment:
+  #       TZ: ${TZ}
+  #       PUID: ${PUID}
+  #       PGID: ${PGID}
+  #     networks:
+  #       - proxy
+  #     volumes:
+  #       - ~/libreoffice/config:/config
+  #     labels:
+  #       - "traefik.http.routers.libreoffice.rule=Host(`libreoffice.xebyte.us`)"
+  #       - "traefik.http.routers.libreoffice.entrypoints=websecure"
+  #       - "traefik.http.routers.libreoffice.tls.certresolver=le"
+  #       - "traefik.http.services.libreoffice.loadbalancer.server.port=3000"
 
-# bedrock - A open source game server management panel designed to be easy to use and easy to install. PufferPanel supports Minecraft, Forge, Spigot, Sponge, Source Dedicated Servers, BungeeCord, PocketMine, Forge, and much more.
+  # bedrock - A open source game server management panel designed to be easy to use and easy to install. PufferPanel supports Minecraft, Forge, Spigot, Sponge, Source Dedicated Servers, BungeeCord, PocketMine, Forge, and much more.
   # bedrock:
   #   hostname: bedrock
   #   image: itzg/minecraft-bedrock-server:latest
@@ -654,16 +1012,16 @@ services:
   #     LEVEL_TYPE: DEFAULT
   #     MAX_PLAYERS: 20
   #     LEVEL_NAME: "Blood Moon"
-  #     LEVEL_SEED: "123456789"
+  #     LEVEL_SEED: "2666821736082644853"
   #   networks:
   #     - proxy
   #   labels:
-  #     - "traefik.http.routers.bedrock.rule=Host(`bedrock.xebyte.com`)"
+  #     - "traefik.http.routers.bedrock.rule=Host(`bedrock.xebyte.us`)"
   #     - "traefik.http.routers.bedrock.entrypoints=websecure"
   #     - "traefik.http.routers.bedrock.tls.certresolver=le"
   #     - "traefik.http.services.bedrock.loadbalancer.server.port=19132"
 
-# minecraft - A open source game server management panel designed to be easy to use and easy to install. PufferPanel supports Minecraft, Forge, Spigot, Sponge, Source Dedicated Servers, BungeeCord, PocketMine, Forge, and much more.
+  # minecraft - A open source game server management panel designed to be easy to use and easy to install. PufferPanel supports Minecraft, Forge, Spigot, Sponge, Source Dedicated Servers, BungeeCord, PocketMine, Forge, and much more.
   minecraft:
     hostname: minecraft
     image: itzg/minecraft-server:latest
@@ -685,25 +1043,22 @@ services:
       MEMORY: 2G
       INIT_MEMORY: 1G
       MAX_MEMORY: 4G
-      MOTD: "Welcome to the Blood Moon Minecraft Server!"
+      MOTD: "Welcome to the Silver Moon Minecraft Server!"
       SERVER_PORT: 25565
       SERVER_NAME: "Sapulpa Server"
       GAMEMODE: survival
       DIFFICULTY: hard
       LEVEL_TYPE: DEFAULT
       MAX_PLAYERS: 20
-      LEVEL_NAME: "Blood Moon"
-      LEVEL_SEED: "123456789"
+      LEVEL_NAME: "Silver Moon"
+      LEVEL_SEED: "2666821736082644853"
       VERSION: "latest"
     networks:
       - proxy
     labels:
-      - "traefik.http.routers.minecraft.rule=Host(`minecraft.xebyte.com`)"
-      - "traefik.http.routers.minecraft.entrypoints=websecure"
-      - "traefik.http.routers.minecraft.tls.certresolver=le"
-      - "traefik.http.services.minecraft.loadbalancer.server.port=8100"
+      - "traefik.enable=false"
 
-# Mysql Workbench - a unified visual tool for database architects, developers, and DBAs.
+  # Mysql Workbench - a unified visual tool for database architects, developers, and DBAs.
   # mysql-workbench:
   #   hostname: mysql-workbench
   #   image: lscr.io/linuxserver/mysql-workbench:latest
@@ -721,32 +1076,32 @@ services:
   #   volumes:
   #     - ~/mysql-workbench/config:/config
   #   labels:
-  #     - "traefik.http.routers.mysql-workbench.rule=Host(`mysql-workbench.xebyte.com`)"
+  #     - "traefik.http.routers.mysql-workbench.rule=Host(`mysql-workbench.xebyte.us`)"
   #     - "traefik.http.routers.mysql-workbench.entrypoints=websecure"
   #     - "traefik.http.routers.mysql-workbench.tls.certresolver=le"
   #     - "traefik.http.services.mysql-workbench.loadbalancer.server.port=3000"
 
-# # NextCloud – Your Own Cloud Storage
-  # nextcloud:
-  #   hostname: nextcloud
-  #   image: lscr.io/linuxserver/nextcloud:latest
-  #   container_name: nextcloud
-  #   environment:
-  #     TZ: ${TZ}
-  #     PUID: ${PUID}
-  #     PGID: ${PGID}
-  #   networks:
-  #     - proxy
-  #   volumes:
-  #     - ~/nextcloud/appdata:/config
-  #     - /mnt/backup/cloud:/data
-  #   labels:
-  #     - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.xebyte.com`)"
-  #     - "traefik.http.routers.nextcloud.entrypoints=websecure"
-  #     - "traefik.http.routers.nextcloud.tls.certresolver=le"
-  #     - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+  # NextCloud – Your Own Cloud Storage
+  nextcloud:
+    hostname: nextcloud
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      TZ: ${TZ}
+      PUID: ${PUID}
+      PGID: ${PGID}
+    networks:
+      - proxy
+    volumes:
+      - ~/nextcloud/appdata:/config
+      - /mnt/backup/cloud:/data
+    labels:
+      - "traefik.http.routers.nextcloud.rule=Host(`nextcloud.xebyte.us`)"
+      - "traefik.http.routers.nextcloud.entrypoints=websecure"
+      - "traefik.http.routers.nextcloud.tls.certresolver=le"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
 
-# Note – A personal knowledge management and sharing system inspired by Roam Research, built on Visual Studio Code and GitHub.
+  # Note – A personal knowledge management and sharing system inspired by Roam Research, built on Visual Studio Code and GitHub.
   # note:
   #   image: lscr.io/linuxserver/code-server:latest
   #   container_name: note
@@ -765,12 +1120,12 @@ services:
   #   volumes:
   #     - "~/note/config:/config"
   #   labels:
-  #     - "traefik.http.routers.note.rule=Host(`note.xebyte.com`)"
+  #     - "traefik.http.routers.note.rule=Host(`note.xebyte.us`)"
   #     - "traefik.http.routers.note.entrypoints=websecure"
   #     - "traefik.http.routers.note.tls.certresolver=le"
   #     - "traefik.http.services.note.loadbalancer.server.port=8443"
 
-# Obsidian - Docker as a container and access it via your web browser.
+  # Obsidian - Docker as a container and access it via your web browser.
   # obsidian:
   #   hostname: obsidian
   #   image: lscr.io/linuxserver/obsidian:latest
@@ -787,12 +1142,12 @@ services:
   #   volumes:
   #     - ~/obsidian/config:/config
   #   labels:
-  #     - "traefik.http.routers.obsidian.rule=Host(`obsidian.xebyte.com`)"
+  #     - "traefik.http.routers.obsidian.rule=Host(`obsidian.xebyte.us`)"
   #     - "traefik.http.routers.obsidian.entrypoints=websecure"
   #     - "traefik.http.routers.obsidian.tls.certresolver=le"
   #     - "traefik.http.services.obsidian.loadbalancer.server.port=3000"
 
-# # Obsidian - Docker as a container and access it via your web browser.
+  # # Obsidian - Docker as a container and access it via your web browser.
   # obsidian:
   #   hostname: obsidian
   #   image: 'ghcr.io/sytone/obsidian-remote:latest'
@@ -807,12 +1162,12 @@ services:
   #     - ~/obsidian/vaults:/vaults
   #     - ~/obsidian/config:/config
   #   labels:
-  #     - "traefik.http.routers.obsidian.rule=Host(`obsidian.xebyte.com`)"
+  #     - "traefik.http.routers.obsidian.rule=Host(`obsidian.xebyte.us`)"
   #     - "traefik.http.routers.obsidian.entrypoints=websecure"
   #     - "traefik.http.routers.obsidian.tls.certresolver=le"
   #     - "traefik.http.services.obsidian.loadbalancer.server.port=3000"
 
-# Open WebUI - A extensible, feature-rich, and user-friendly self-hosted AI interface designed to operate entirely offline.
+  # Open WebUI - A extensible, feature-rich, and user-friendly self-hosted AI interface designed to operate entirely offline.
   # openwebui:
   #   hostname: owui
   #   image: ghcr.io/open-webui/open-webui:latest
@@ -827,12 +1182,12 @@ services:
   #   volumes:
   #     - ~/open-webui:/app/backend/data
   #   labels:
-  #     - "traefik.http.routers.openwebui.rule=Host(`owui.xebyte.com`)"
+  #     - "traefik.http.routers.openwebui.rule=Host(`owui.xebyte.us`)"
   #     - "traefik.http.routers.openwebui.entrypoints=websecure"
   #     - "traefik.http.routers.openwebui.tls.certresolver=le"
   #     - "traefik.http.services.openwebui.loadbalancer.server.port=3000"
 
-# Openvscode - A version of VS Code that runs a server on a remote machine and allows access through a modern web browser.
+  # Openvscode - A version of VS Code that runs a server on a remote machine and allows access through a modern web browser.
   # openvscode-server:
   #   hostname: openvscode-server
   #   image: lscr.io/linuxserver/openvscode-server:latest
@@ -850,12 +1205,12 @@ services:
   #   volumes:
   #     - ~/openvscode/config:/config
   #   labels:
-  #     - "traefik.http.routers.openvscode-server.rule=Host(`openvscode.xebyte.com`)"
+  #     - "traefik.http.routers.openvscode-server.rule=Host(`openvscode.xebyte.us`)"
   #     - "traefik.http.routers.openvscode-server.entrypoints=websecure"
   #     - "traefik.http.routers.openvscode-server.tls.certresolver=le"
   #     - "traefik.http.services.openvscode-server.loadbalancer.server.port=8443"
 
-# Opera - a multi-platform web browser developed by its namesake company Opera.
+  # Opera - a multi-platform web browser developed by its namesake company Opera.
   # opera:
   #   hostname: opera
   #   image: lscr.io/linuxserver/opera:latest
@@ -871,7 +1226,7 @@ services:
   #   volumes:
   #     - ~/opera/config:/config
   #   labels:
-  #     - "traefik.http.routers.opera.rule=Host(`opera.xebyte.com`)"
+  #     - "traefik.http.routers.opera.rule=Host(`opera.xebyte.us`)"
   #     - "traefik.http.routers.opera.entrypoints=websecure"
   #     - "traefik.http.routers.opera.tls.certresolver=le"
   #     - "traefik.http.services.opera.loadbalancer.server.port=3000"
@@ -901,27 +1256,27 @@ services:
   #   volumes:
   #       - ./palworld:/palworld/
 
-# # Pod - Docker container for the VSCodium, Chromium, and Obsidian desktop applications
-#   pod:
-#     hostname: pod
-#     image: 'bethington/pod:latest'
-#     container_name: pod
-#     restart: always
-#     shm_size: "1gb"
-#     environment:
-#       TZ: ${TZ}
-#       PUID: ${PUID}
-#       PGID: ${PGID}
-#     volumes:
-#       - ~/pod/vaults:/vaults
-#       - ~/pod/config:/config
-#     labels:
-#       - "traefik.backend=pod"
-#       - "traefik.port=3000"
-#       - "traefik.frontend.rule=Host:pod.${DOMAINNAME}"
-#       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+  # # Pod - Docker container for the VSCodium, Chromium, and Obsidian desktop applications
+  #   pod:
+  #     hostname: pod
+  #     image: 'bethington/pod:latest'
+  #     container_name: pod
+  #     restart: always
+  #     shm_size: "1gb"
+  #     environment:
+  #       TZ: ${TZ}
+  #       PUID: ${PUID}
+  #       PGID: ${PGID}
+  #     volumes:
+  #       - ~/pod/vaults:/vaults
+  #       - ~/pod/config:/config
+  #     labels:
+  #       - "traefik.backend=pod"
+  #       - "traefik.port=3000"
+  #       - "traefik.frontend.rule=Host:pod.${DOMAINNAME}"
+  #       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
-# PufferPanel - A open source game server management panel designed to be easy to use and easy to install. PufferPanel supports Minecraft, Forge, Spigot, Sponge, Source Dedicated Servers, BungeeCord, PocketMine, Forge, and much more.
+  # PufferPanel - A open source game server management panel designed to be easy to use and easy to install. PufferPanel supports Minecraft, Forge, Spigot, Sponge, Source Dedicated Servers, BungeeCord, PocketMine, Forge, and much more.
   # pufferpanel:
   #   hostname: pufferpanel
   #   image: pufferpanel/pufferpanel:latest
@@ -942,12 +1297,12 @@ services:
   #   networks:
   #     - proxy
   #   labels:
-  #     - "traefik.http.routers.pufferpanel.rule=Host(`pufferpanel.xebyte.com`)"
+  #     - "traefik.http.routers.pufferpanel.rule=Host(`pufferpanel.xebyte.us`)"
   #     - "traefik.http.routers.pufferpanel.entrypoints=websecure"
   #     - "traefik.http.routers.pufferpanel.tls.certresolver=le"
   #     - "traefik.http.services.pufferpanel.loadbalancer.server.port=5657"
 
-# Rdesktop - Containers containing full desktop environments in many popular flavors for Alpine, Ubuntu, Arch, and Fedora accessible via RDP.
+  # Rdesktop - Containers containing full desktop environments in many popular flavors for Alpine, Ubuntu, Arch, and Fedora accessible via RDP.
   # rdesktop:
   #   hostname: rdesktop
   #   image: lscr.io/linuxserver/rdesktop:latest
@@ -966,12 +1321,12 @@ services:
   #     - ~/rdesktop/config:/config
   #   shm_size: "1gb"
   #   labels:
-  #     - "traefik.http.routers.rdesktop.rule=Host(`rdesktop.xebyte.com`)"
+  #     - "traefik.http.routers.rdesktop.rule=Host(`rdesktop.xebyte.us`)"
   #     - "traefik.http.routers.rdesktop.entrypoints=websecure"
   #     - "traefik.http.routers.rdesktop.tls.certresolver=le"
   #     - "traefik.http.services.rdesktop.loadbalancer.server.port=3389"
 
-# SmokePing - A deluxe latency measurement tool.
+  # SmokePing - A deluxe latency measurement tool.
   smokeping:
     hostname: smokeping
     image: lscr.io/linuxserver/smokeping:latest
@@ -987,40 +1342,48 @@ services:
       - ~/smokeping/config:/config
       - ~/smokeping/data:/data
     labels:
-      - "traefik.http.routers.smokeping.rule=Host(`smokeping.xebyte.com`)"
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.smokeping.rule=Host(`smokeping.xebyte.us`) || Host(`smokeping.xebyte.com`)"
       - "traefik.http.routers.smokeping.entrypoints=websecure"
       - "traefik.http.routers.smokeping.tls.certresolver=le"
+      - "traefik.http.routers.smokeping.tls.domains[0].main=smokeping.xebyte.us"
+      - "traefik.http.routers.smokeping.tls.domains[1].main=smokeping.xebyte.com"
       - "traefik.http.services.smokeping.loadbalancer.server.port=80"
+      # HTTP router with redirect
+      - "traefik.http.routers.smokeping-http.rule=Host(`smokeping.xebyte.us`) || Host(`smokeping.xebyte.com`)"
+      - "traefik.http.routers.smokeping-http.entrypoints=web"
+      - "traefik.http.routers.smokeping-http.middlewares=redirect-to-https@file"
 
-# # oobabooga - A text generation webui
-#   oobabooga:
-#     hostname: oobabooga
-#     image: atinoda/text-generation-webui:latest
-#     container_name: oobabooga
-#     restart: always
-#     environment:
-#       - EXTRA_LAUNCH_ARGS="--listen --verbose" # Custom launch args (e.g., --model MODEL_NAME)
-# #      - BUILD_EXTENSIONS_LIVE="silero_tts whisper_stt" # Install named extensions during every container launch. THIS WILL SIGNIFICANLTLY SLOW LAUNCH TIME.
-#     ports:
-#       - 7860:7860  # Default web port
-# #      - 5000:5000  # Default API port
-# #      - 5005:5005  # Default streaming port
-# #      - 5001:5001  # Default OpenAI API extension port
-#     volumes:
-#       - ./oobabooga/characters:/app/characters
-#       - ./oobabooga/loras:/app/loras
-#       - ./oobabooga/models:/app/models
-#       - ./oobabooga/presets:/app/presets
-#       - ./oobabooga/prompts:/app/prompts
-#       - ./oobabooga/training:/app/training
-#       - ./oobabooga/extensions:/app/extensions
-#     labels:
-#       - "traefik.backend=oobabooga"
-#       - "traefik.port=7860"
-#       - "traefik.frontend.rule=Host:oc.${DOMAINNAME}"
-#       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+  # # oobabooga - A text generation webui
+  #   oobabooga:
+  #     hostname: oobabooga
+  #     image: atinoda/text-generation-webui:latest
+  #     container_name: oobabooga
+  #     restart: always
+  #     environment:
+  #       - EXTRA_LAUNCH_ARGS="--listen --verbose" # Custom launch args (e.g., --model MODEL_NAME)
+  # #      - BUILD_EXTENSIONS_LIVE="silero_tts whisper_stt" # Install named extensions during every container launch. THIS WILL SIGNIFICANLTLY SLOW LAUNCH TIME.
+  #     ports:
+  #       - 7860:7860  # Default web port
+  # #      - 5000:5000  # Default API port
+  # #      - 5005:5005  # Default streaming port
+  # #      - 5001:5001  # Default OpenAI API extension port
+  #     volumes:
+  #       - ./oobabooga/characters:/app/characters
+  #       - ./oobabooga/loras:/app/loras
+  #       - ./oobabooga/models:/app/models
+  #       - ./oobabooga/presets:/app/presets
+  #       - ./oobabooga/prompts:/app/prompts
+  #       - ./oobabooga/training:/app/training
+  #       - ./oobabooga/extensions:/app/extensions
+  #     labels:
+  #       - "traefik.backend=oobabooga"
+  #       - "traefik.port=7860"
+  #       - "traefik.frontend.rule=Host:oc.${DOMAINNAME}"
+  #       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
-# Tikiwiki - The power of Tiki is the smart interaction of its components in an all-in-one-model
+  # Tikiwiki - The power of Tiki is the smart interaction of its components in an all-in-one-model
   tikiwiki:
     hostname: tikiwiki
     image: tikiwiki/tikiwiki:24.x
@@ -1034,20 +1397,28 @@ services:
       PGID: ${PGID}
       TIKI_DB_VERSION: 24
       TIKI_DB_HOST: tiki-mysql
-      TIKI_DB_USER: ${MYSQL_USER}
-      TIKI_DB_PASS: ${MYSQL_PASSWORD}
+      TIKI_DB_USER: ${TIKI_DB_USER}
+      TIKI_DB_PASS: ${TIKI_DB_PASS}
       TIKI_DB_NAME: tikiwiki
     networks:
       - proxy
     volumes:
       - ~/dokuwiki/appdata/config:/config
     labels:
-      - "traefik.http.routers.tikiwiki.rule=Host(`tikiwiki.xebyte.com`)"
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.tikiwiki.rule=Host(`tikiwiki.xebyte.us`) || Host(`tikiwiki.xebyte.com`)"
       - "traefik.http.routers.tikiwiki.entrypoints=websecure"
       - "traefik.http.routers.tikiwiki.tls.certresolver=le"
+      - "traefik.http.routers.tikiwiki.tls.domains[0].main=tikiwiki.xebyte.us"
+      - "traefik.http.routers.tikiwiki.tls.domains[1].main=tikiwiki.xebyte.com"
       - "traefik.http.services.tikiwiki.loadbalancer.server.port=80"
+      # HTTP router with redirect
+      - "traefik.http.routers.tikiwiki-http.rule=Host(`tikiwiki.xebyte.us`) || Host(`tikiwiki.xebyte.com`)"
+      - "traefik.http.routers.tikiwiki-http.entrypoints=web"
+      - "traefik.http.routers.tikiwiki-http.middlewares=redirect-to-https@file"
 
-# Webtop - Alpine, Ubuntu, Fedora, and Arch based containers containing full desktop environments in officially supported flavors accessible via any modern web browser.
+  # Webtop - Alpine, Ubuntu, Fedora, and Arch based containers containing full desktop environments in officially supported flavors accessible via any modern web browser.
   # ubuntu:
   #   hostname: ubuntu
   #   image: bethington/webtop:ubuntu-xfce
@@ -1065,12 +1436,12 @@ services:
   #   volumes:
   #     - ~/ubuntu/data:/config
   #   labels:
-  #     - "traefik.http.routers.ubuntu.rule=Host(`ubuntu.xebyte.com`)"
+  #     - "traefik.http.routers.ubuntu.rule=Host(`ubuntu.xebyte.us`)"
   #     - "traefik.http.routers.ubuntu.entrypoints=websecure"
   #     - "traefik.http.routers.ubuntu.tls.certresolver=le"
   #     - "traefik.http.services.ubuntu.loadbalancer.server.port=3000"
 
-# Valheim
+  # Valheim
   # valheim:
   #   hostname: valheim
   #   image: ghcr.io/lloesche/valheim-server
@@ -1081,35 +1452,35 @@ services:
   #     - sys_nice
   #   env_file:
   #     - ~/valheim/valheim.env
-  #   volumes: 
+  #   volumes:
   #     - ~/valheim/config:/config
   #     - ~/valheim/data:/opt/valheim
-  #   ports: 
+  #   ports:
   #     - "2456-2458:2456-2458/udp"
   #     - "9001:9001/tcp"
 
-# VScodium - A community-driven, freely-licensed binary distribution of Microsoft’s editor VS Code.
-#   vscodium:
-#     hostname: vscodium
-#     image: lscr.io/linuxserver/vscodium:latest
-#     container_name: vscodium
-#     restart: always
-#     cap_add:
-#       - IPC_LOCK
-#     shm_size: "1gb"
-#     environment:
-#       TZ: ${TZ}
-#       PUID: ${PUID}
-#       PGID: ${PGID}
-#     volumes:
-#       - ~/vscodium/config:/config
-#     labels:
-#       - "traefik.backend=vscodium"
-#       - "traefik.port=3000"
-#       - "traefik.frontend.rule=Host:vscodium.${DOMAINNAME}"
-#       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
+  # VScodium - A community-driven, freely-licensed binary distribution of Microsoft’s editor VS Code.
+  #   vscodium:
+  #     hostname: vscodium
+  #     image: lscr.io/linuxserver/vscodium:latest
+  #     container_name: vscodium
+  #     restart: always
+  #     cap_add:
+  #       - IPC_LOCK
+  #     shm_size: "1gb"
+  #     environment:
+  #       TZ: ${TZ}
+  #       PUID: ${PUID}
+  #       PGID: ${PGID}
+  #     volumes:
+  #       - ~/vscodium/config:/config
+  #     labels:
+  #       - "traefik.backend=vscodium"
+  #       - "traefik.port=3000"
+  #       - "traefik.frontend.rule=Host:vscodium.${DOMAINNAME}"
+  #       - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd"
 
-# ww – Apache HTTP Server is a free and open-source cross-platform web server software
+  # ww – Apache HTTP Server is a free and open-source cross-platform web server software
   ww:
     image: httpd:2.4
     container_name: ww
@@ -1126,15 +1497,20 @@ services:
       - ~/ww/data:/usr/local/apache2/htdocs/
       - ~/shared:/shared
     labels:
-      - "traefik.http.routers.ww.rule=Host(`ww.xebyte.com`)"
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.ww.rule=Host(`ww.xebyte.us`) || Host(`ww.xebyte.com`)"
       - "traefik.http.routers.ww.entrypoints=websecure"
       - "traefik.http.routers.ww.tls.certresolver=le"
       - "traefik.http.services.ww.loadbalancer.server.port=80"
-      # - "traefik.frontend.auth.basic.usersFile=/shared/.htpasswd" 
-      # - "traefik.http.routers.ww.middlewares=auth"
-      # - "traefik.http.middlewares.auth.basicauth.usersFile=/shared/.htpasswd"
+      # HTTP router with redirect
+      - "traefik.http.routers.ww-http.rule=Host(`ww.xebyte.us`) || Host(`ww.xebyte.com`)"
+      - "traefik.http.routers.ww-http.entrypoints=web"
+      - "traefik.http.routers.ww-http.middlewares=redirect-to-https@file"
+      # - "traefik.http.routers.ww.middlewares=ww-auth"
+      # - "traefik.http.middlewares.ww-auth.basicauth.usersFile=/shared/.htpasswd"
 
-# www – React is the library for web and native user interfaces. Build user interfaces out of individual pieces called components written in JavaScript.
+  # www – React is the library for web and native user interfaces. Build user interfaces out of individual pieces called components written in JavaScript.
   www:
     image: node:22-alpine
     container_name: www
@@ -1151,12 +1527,20 @@ services:
       - ~/shared:/shared
     command: "npm start"
     labels:
-      - "traefik.http.routers.www.rule=Host(`www.xebyte.com`)"
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.www.rule=Host(`www.xebyte.us`) || Host(`www.xebyte.com`)"
       - "traefik.http.routers.www.entrypoints=websecure"
       - "traefik.http.routers.www.tls.certresolver=le"
+      - "traefik.http.routers.www.tls.domains[0].main=www.xebyte.us"
+      - "traefik.http.routers.www.tls.domains[1].main=www.xebyte.com"
       - "traefik.http.services.www.loadbalancer.server.port=3000"
+      # HTTP router with redirect
+      - "traefik.http.routers.www-http.rule=Host(`www.xebyte.us`) || Host(`www.xebyte.com`)"
+      - "traefik.http.routers.www-http.entrypoints=web"
+      - "traefik.http.routers.www-http.middlewares=redirect-to-https@file"
 
-# Webcord - A pack of security and privacy hardenings, Discord features reimplementations, Electron / Chromium / Discord bugs workarounds, stylesheets, internal pages and wrapped https://discord.com page, designed to conform with ToS as much as it is possible (or hide the changes that might violate it from Discord's eyes).
+  # Webcord - A pack of security and privacy hardenings, Discord features reimplementations, Electron / Chromium / Discord bugs workarounds, stylesheets, internal pages and wrapped https://discord.com page, designed to conform with ToS as much as it is possible (or hide the changes that might violate it from Discord's eyes).
   # webcord:
   #   hostname: webcord
   #   image: lscr.io/linuxserver/webcord:latest
@@ -1172,12 +1556,12 @@ services:
   #   volumes:
   #     - ~/webcord/config:/config
   #   labels:
-  #     - "traefik.http.routers.webcord.rule=Host(`webcord.xebyte.com`)"
+  #     - "traefik.http.routers.webcord.rule=Host(`webcord.xebyte.us`)"
   #     - "traefik.http.routers.webcord.entrypoints=websecure"
   #     - "traefik.http.routers.webcord.tls.certresolver=le"
   #     - "traefik.http.services.webcord.loadbalancer.server.port=3000"
 
-# Webtop - Alpine, Ubuntu, Fedora, and Arch based containers containing full desktop environments in officially supported flavors accessible via any modern web browser.
+  # Webtop - Alpine, Ubuntu, Fedora, and Arch based containers containing full desktop environments in officially supported flavors accessible via any modern web browser.
   # webtop:
   #   hostname: webtop
   #   image: lscr.io/linuxserver/webtop:latest
@@ -1193,12 +1577,12 @@ services:
   #   volumes:
   #     - ~/webtop/data:/config
   #   labels:
-  #     - "traefik.http.routers.webtop.rule=Host(`webtop.xebyte.com`)"
+  #     - "traefik.http.routers.webtop.rule=Host(`webtop.xebyte.us`)"
   #     - "traefik.http.routers.webtop.entrypoints=websecure"
   #     - "traefik.http.routers.webtop.tls.certresolver=le"
   #     - "traefik.http.services.webtop.loadbalancer.server.port=3000"
 
-# WPS Office -
+  # WPS Office -
   # wps-office:
   #   hostname: wps-office
   #   image: lscr.io/linuxserver/wps-office:latest
@@ -1214,12 +1598,12 @@ services:
   #   volumes:
   #     - ~/wps-office/config:/config
   #   labels:
-  #     - "traefik.http.routers.wps-office.rule=Host(`wps-office.xebyte.com`)"
+  #     - "traefik.http.routers.wps-office.rule=Host(`wps-office.xebyte.us`)"
   #     - "traefik.http.routers.wps-office.entrypoints=websecure"
   #     - "traefik.http.routers.wps-office.tls.certresolver=le"
   #     - "traefik.http.services.wps-office.loadbalancer.server.port=3000"
 
-# Xbackbone -
+  # Xbackbone -
   # xbackbone:
   #   hostname: xbackbone
   #   image: lscr.io/linuxserver/xbackbone:latest
@@ -1235,15 +1619,14 @@ services:
   #   volumes:
   #     - ~/xbackbone/data:/config
   #   labels:
-  #     - "traefik.http.routers.xbackbone.rule=Host(`xbackbone.xebyte.com`)"
+  #     - "traefik.http.routers.xbackbone.rule=Host(`xbackbone.xebyte.us`)"
   #     - "traefik.http.routers.xbackbone.entrypoints=websecure"
   #     - "traefik.http.routers.xbackbone.tls.certresolver=le"
   #     - "traefik.http.services.xbackbone.loadbalancer.server.port=80"
 
+  ########## DATABASE SERVICES ###########
 
-########## DATABASE SERVICES ###########
-
-# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  # mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
   # hedgedoc-mysql:
   #   image: mysql:5.7
   #   container_name: hedgedoc-mysql
@@ -1261,7 +1644,7 @@ services:
   #     MYSQL_USER: bethington
   #     MYSQL_PASSWORD: ${PASS}
 
-# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  # mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
   # adanation-mysql:
   #   image: mysql:5.7
   #   container_name: adanation-mysql
@@ -1279,7 +1662,7 @@ services:
   #     MYSQL_USER: bethington
   #     MYSQL_PASSWORD: ${PASS}
 
-# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  # mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
   # cloud-mysql:
   #   image: mysql:5.7
   #   container_name: cloud-mysql
@@ -1297,139 +1680,136 @@ services:
   #     MYSQL_USER: bethington
   #     MYSQL_PASSWORD: ${PASS}
 
-# mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  # mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
   mysql:
     image: mysql:5.7
     container_name: mysql
     restart: always
     networks:
-      - default
+      - proxy
     volumes:
       - ~/mysql/data:/var/lib/mysql
       - ~/shared:/shared
     environment:
       MYSQL_ROOT_PASSWORD: ${PASS}
 
-# # pvpgn – MySQL is a widely used, open-source relational database management system (RDBMS).
-#   pvpgn:
-#     image: bethington/pvpgn:latest
-#     container_name: pvpgn
-#     restart: always
-#     ports:
-#       - 6112:6112
-#       - 4000:4000
-#     volumes:
-#       - ~/pvpgn/etc:/etc/pvpgn
-#       - ~/pvpgn/var:/var/pvpgn
+  # # pvpgn – MySQL is a widely used, open-source relational database management system (RDBMS).
+  #   pvpgn:
+  #     image: bethington/pvpgn:latest
+  #     container_name: pvpgn
+  #     restart: always
+  #     ports:
+  #       - 6112:6112
+  #       - 4000:4000
+  #     volumes:
+  #       - ~/pvpgn/etc:/etc/pvpgn
+  #       - ~/pvpgn/var:/var/pvpgn
 
-# tiki-mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
+  # tiki-mysql – MySQL is a widely used, open-source relational database management system (RDBMS).
   tiki-mysql:
     image: mariadb
     container_name: tiki-mysql
     restart: always
     networks:
-      - default
+      - proxy
     volumes:
       - ~/tiki-mysql/data:/var/lib/mysql
     environment:
       TZ: ${TZ}
-      PUID: ${PUID}
-      PGID: ${PGID}
       MYSQL_ROOT_PASSWORD: ${PASS}
       MYSQL_DATABASE: tikiwiki
-      MYSQL_USER: bethington
-      MYSQL_PASSWORD: ${PASS}
-
+      MYSQL_USER: ${TIKI_DB_USER}
+      MYSQL_PASSWORD: ${TIKI_DB_PASS}
 
 ######### GUIDEWIRE DOCUMENTATION ##########
 
 # gwbcd – Guidewire Billing Center Docs
-  # gwbcd:
-  #   image: httpd:2.4
-  #   container_name: gwbcd
-  #   hostname: gwbcd
-  #   restart: always
-  #   networks:
-  #     - proxy
-  #   volumes:
-  #     - ~/gwbcd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-  #     - ~/gwbcd/data:/usr/local/apache2/htdocs/
-  #     - ~/shared:/shared
-  #   labels:
-  #     - "traefik.http.routers.gwbcd.rule=Host(`gwbcd.xebyte.com`)"
-  #     - "traefik.http.routers.gwbcd.entrypoints=websecure"
-  #     - "traefik.http.routers.gwbcd.tls.certresolver=le"
-  #     - "traefik.http.services.gwbcd.loadbalancer.server.port=80"
+# gwbcd:
+#   image: httpd:2.4
+#   container_name: gwbcd
+#   hostname: gwbcd
+#   restart: always
+#   networks:
+#     - proxy
+#   volumes:
+#     - ~/gwbcd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+#     - ~/gwbcd/data:/usr/local/apache2/htdocs/
+#     - ~/shared:/shared
+#   labels:
+#     - "traefik.http.routers.gwbcd.rule=Host(`gwbcd.xebyte.us`)"
+#     - "traefik.http.routers.gwbcd.entrypoints=websecure"
+#     - "traefik.http.routers.gwbcd.tls.certresolver=le"
+#     - "traefik.http.services.gwbcd.loadbalancer.server.port=80"
 
 # gwccd – Guidewire Claims Center Docs
-  # gwccd:
-  #   image: httpd:2.4
-  #   container_name: gwccd
-  #   hostname: gwccd
-  #   restart: always
-  #   networks:
-  #     - proxy
-  #   volumes:
-  #     - ~/gwccd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-  #     - ~/gwccd/data:/usr/local/apache2/htdocs/
-  #     - ~/shared:/shared
-  #   labels:
-  #     - "traefik.http.routers.gwccd.rule=Host(`gwccd.xebyte.com`)"
-  #     - "traefik.http.routers.gwccd.entrypoints=websecure"
-  #     - "traefik.http.routers.gwccd.tls.certresolver=le"
-  #     - "traefik.http.services.gwccd.loadbalancer.server.port=80"
+# gwccd:
+#   image: httpd:2.4
+#   container_name: gwccd
+#   hostname: gwccd
+#   restart: always
+#   networks:
+#     - proxy
+#   volumes:
+#     - ~/gwccd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+#     - ~/gwccd/data:/usr/local/apache2/htdocs/
+#     - ~/shared:/shared
+#   labels:
+#     - "traefik.http.routers.gwccd.rule=Host(`gwccd.xebyte.us`)"
+#     - "traefik.http.routers.gwccd.entrypoints=websecure"
+#     - "traefik.http.routers.gwccd.tls.certresolver=le"
+#     - "traefik.http.services.gwccd.loadbalancer.server.port=80"
 
 # gwpcd – Guidewire Policy Center Docs
-  # gwpcd:
-  #   image: httpd:2.4
-  #   container_name: gwpcd
-  #   hostname: gwpcd
-  #   restart: always
-  #   networks:
-  #     - proxy
-  #   volumes:
-  #     - ~/gwpcd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-  #     - ~/gwpcd/data:/usr/local/apache2/htdocs/
-  #     - ~/shared:/shared
-  #   labels:
-  #     - "traefik.http.routers.gwpcd.rule=Host(`gwpcd.xebyte.com`)"
-  #     - "traefik.http.routers.gwpcd.entrypoints=websecure"
-  #     - "traefik.http.routers.gwpcd.tls.certresolver=le"
-  #     - "traefik.http.services.gwpcd.loadbalancer.server.port=80"
+# gwpcd:
+#   image: httpd:2.4
+#   container_name: gwpcd
+#   hostname: gwpcd
+#   restart: always
+#   networks:
+#     - proxy
+#   volumes:
+#     - ~/gwpcd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+#     - ~/gwpcd/data:/usr/local/apache2/htdocs/
+#     - ~/shared:/shared
+#   labels:
+#     - "traefik.http.routers.gwpcd.rule=Host(`gwpcd.xebyte.us`)"
+#     - "traefik.http.routers.gwpcd.entrypoints=websecure"
+#     - "traefik.http.routers.gwpcd.tls.certresolver=le"
+#     - "traefik.http.services.gwpcd.loadbalancer.server.port=80"
 
-  # whisper:
-  #   image: bethington/faster-whisper-server:latest
-  #   build:
-  #     dockerfile: Dockerfile
-  #     context: ~/whisper/.
-  #     platforms:
-  #       - linux/amd64
-  #   container_name: whisper
-  #   hostname: whisper
-  #   restart: unless-stopped
-  #   ports:
-  #     - 8000:8000
-  #   volumes:
-  #     - ~/whisper/huggingface:/root/.cache/huggingface
-  #   environment:
-  #     WHISPER__MODEL: Systran/faster-whisper-base.en
-  #   labels:
-  #     traefik.backend: whisper
-  #     traefik.port: 8000
-  #     traefik.frontend.rule: Host:stt.${DOMAINNAME}
-  #     traefik.frontend.auth.basic.usersFile: /shared/.htpasswd
+# whisper:
+#   image: bethington/faster-whisper-server:latest
+#   build:
+#     dockerfile: Dockerfile
+#     context: ~/whisper/.
+#     platforms:
+#       - linux/amd64
+#   container_name: whisper
+#   hostname: whisper
+#   restart: unless-stopped
+#   ports:
+#     - 8000:8000
+#   volumes:
+#     - ~/whisper/huggingface:/root/.cache/huggingface
+#   environment:
+#     WHISPER__MODEL: Systran/faster-whisper-base.en
+#   labels:
+#     traefik.backend: whisper
+#     traefik.port: 8000
+#     traefik.frontend.rule: Host:stt.${DOMAINNAME}
+#     traefik.frontend.auth.basic.usersFile: /shared/.htpasswd
 
 ######### DOCKER RELATED ##########
 
 # Watchtower - Automatic Update of Containers/Apps
-  # watchtower:
-  #   image: v2tec/watchtower
-  #   container_name: watchtower
-  #   hostname: watchtower
-  #   restart: unless-stopped
-  #   command: --schedule "0 0 23 * * SUN" --cleanup
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
+# watchtower:
+#   image: v2tec/watchtower
+#   container_name: watchtower
+#   hostname: watchtower
+#   restart: unless-stopped
+#   command: --schedule "0 0 23 * * SUN" --cleanup
+#   volumes:
+#     - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   proxy:
