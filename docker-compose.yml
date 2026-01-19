@@ -412,6 +412,38 @@ services:
       - "traefik.http.routers.portainer-http.entrypoints=web"
       - "traefik.http.routers.portainer-http.middlewares=redirect-to-https@file"
 
+  # pgAdmin - Web-based PostgreSQL administration tool
+  pgadmin:
+    container_name: pgadmin
+    hostname: pgadmin
+    image: dpage/pgadmin4:latest
+    restart: unless-stopped
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PASS}
+      - PGADMIN_DISABLE_POSTFIX=true
+    networks:
+      - proxy
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+      - ~/shared:/shared
+    labels:
+      - "traefik.enable=true"
+      # HTTPS router
+      - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.xebyte.us`) || Host(`pgadmin.xebyte.com`)"
+      - "traefik.http.routers.pgadmin.entrypoints=websecure"
+      - "traefik.http.routers.pgadmin.tls.certresolver=le"
+      - "traefik.http.routers.pgadmin.tls.domains[0].main=pgadmin.xebyte.us"
+      - "traefik.http.routers.pgadmin.tls.domains[1].main=pgadmin.xebyte.com"
+      - "traefik.http.services.pgadmin.loadbalancer.server.port=80"
+      # HTTP router with redirect
+      - "traefik.http.routers.pgadmin-http.rule=Host(`pgadmin.xebyte.us`) || Host(`pgadmin.xebyte.com`)"
+      - "traefik.http.routers.pgadmin-http.entrypoints=web"
+      - "traefik.http.routers.pgadmin-http.middlewares=redirect-to-https@file"
+
   # Watchtower - Automatically update running Docker containers
   watchtower:
     container_name: watchtower
@@ -1814,3 +1846,6 @@ services:
 networks:
   proxy:
     external: true
+
+volumes:
+  pgadmin-data:
