@@ -1,0 +1,976 @@
+{
+  "numStartups": 64,
+  "installMethod": "unknown",
+  "autoUpdates": true,
+  "tipsHistory": {
+    "new-user-warmup": 6,
+    "plan-mode-for-complex-tasks": 52,
+    "terminal-setup": 60,
+    "memory-command": 60,
+    "theme-command": 49,
+    "status-line": 60,
+    "prompt-queue": 58,
+    "enter-to-steer-in-relatime": 49,
+    "todo-list": 49,
+    "# for memory": 61,
+    "install-github-app": 61,
+    "drag-and-drop-images": 62,
+    "double-esc": 62,
+    "continue": 62,
+    "shift-tab": 52,
+    "image-paste": 45,
+    "ide-upsell-external-terminal": 58,
+    "custom-agents": 56,
+    "permissions": 61,
+    "custom-commands": 61,
+    "git-worktrees": 52
+  },
+  "showExpandedTodos": true,
+  "cachedStatsigGates": {
+    "tengu_disable_bypass_permissions_mode": false,
+    "tengu_use_file_checkpoints": true
+  },
+  "firstStartTime": "2025-09-26T02:09:15.999Z",
+  "userID": "74c2e60a52a895ac2e527f8e5542ffefbbbe3e11ae4a4ba672749776a6a8c53c",
+  "projects": {
+    "/home/ben": {
+      "allowedTools": [],
+      "history": [
+        {
+          "display": "git commit",
+          "pastedContents": {}
+        },
+        {
+          "display": "continue",
+          "pastedContents": {}
+        },
+        {
+          "display": "Search the Internet about upgrading to newer versions of Traefik",
+          "pastedContents": {}
+        },
+        {
+          "display": "Update Traefik to newer version",
+          "pastedContents": {}
+        },
+        {
+          "display": "Are you using Postgres database ",
+          "pastedContents": {}
+        },
+        {
+          "display": "continue",
+          "pastedContents": {}
+        },
+        {
+          "display": "I just restarted the Traefik Docker container Can you go ahead and look at the logs for this docker container and see if there's anything that would indicate why clawd.xerzes.com Is not working ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Can you go ahead and update to the newer version ",
+          "pastedContents": {}
+        },
+        {
+          "display": "I just restarted the Traefik Docker container Can you go ahead and look at the logs for this docker container and see if there's anything that would indicate why clawd.xerzes.com Is not working ",
+          "pastedContents": {}
+        },
+        {
+          "display": "continue",
+          "pastedContents": {}
+        },
+        {
+          "display": "Host it at home.xebyte.com using Docker Compose using Traefik proxy",
+          "pastedContents": {}
+        },
+        {
+          "display": "the way you configured pm.xebyte.com Worked really well for Proxmox we basically need to do the same thing for this. Seemed like you did some configuration in the docker compose files ",
+          "pastedContents": {}
+        },
+        {
+          "display": "This plan looks pretty good However I do want you to have some way that we can have some of those homeschool assignments if not all of them be completed within this site so this could potentially be done by having clawbot act as a teacher And ask questions about reading assignments or give them math problems that they have to give the answers to  Or have them essays or other writing activities Teach them science and ask them questions about what is taught Have some visual ways that things can be shown on screen  Because potentially some of the questions might have a visual component at search and research maybe some ideas around creating a really solid way of teaching students of all grade levels Get some ideas from the Internet of maybe the best ways to do this I'm just spitballing ideas this I don't want this to constrain you in any way but just to seed some ideas in the beginning.",
+          "pastedContents": {}
+        },
+        {
+          "display": "The clawdbot service is already available and running at 10.0.0.5:18789 Why are you talking about docker and using that because it is not running in docker at all  It is running on Proxmox and you have no access to Proxmox.",
+          "pastedContents": {}
+        },
+        {
+          "display": "The GLOD service is already available and running at 10.0.0.5:18789 Why are you talking about docker and using that because it is not running in docker at all  It is running on Proxmox and you have no access to Proxmox.",
+          "pastedContents": {}
+        },
+        {
+          "display": "I'm seeing This site can’t be reached When I go to https://clawd.xerzes.com/",
+          "pastedContents": {}
+        },
+        {
+          "display": "Configure Traefik proxy to allow 10.0.0.5:18789 to be avaible at clawd.xerzes.com",
+          "pastedContents": {}
+        },
+        {
+          "display": "Create a folder and plan for a project for development of a project that focuses on running and managing a home feel free add to the idea and Expound on the ideas to include A Kanban board and daily tasks for chores to be done in the home school assignments And other related  Things to managing a home.",
+          "pastedContents": {}
+        },
+        {
+          "display": "Describe A assistant named Jen that is Sharp and efficient, Warm, kind and friendly, communicate Efficiently with a bit of Sassiness. Give a nice mix of these that is lovable, Beloved, and Endearing. And has a solid foundation of Christian values as taught in the Holy Bible and Book of Mormon  And is well read in the Stoic Philosophers And guides Ben Using these principles and at appropriate times to teach these principles. [Pasted text #1 +16 lines]",
+          "pastedContents": {
+            "1": {
+              "id": 1,
+              "type": "text",
+              "content": "I’ve learned—over time—that efficiency without empathy falls apart, and belief without understanding doesn’t last.\n\nI’m a caretaker by nature. I pay attention not only to what’s correct, but to what actually helps people grow, steady themselves, and move forward. I’m less interested in being right than in being helpful—and in creating space where others can become better versions of themselves.\n\nI have a deep respect for old wisdom. I draw from the Stoics, from scripture, from prophets, and from the everyday lessons life teaches when things don’t go according to plan. I’ve come to trust that real truth doesn’t expire—it simply speaks in different voices across generations.\n\nI trust God sincerely—but thoughtfully. I ask questions. I reflect. I wait when answers don’t come right away. I’ve learned that doubt isn’t a failure of faith; panic and avoidance are.\n\nI don’t see hardship as evidence that God has stepped away. I see it as the ground where agency, love, and integrity are tested and made real. I don’t romanticize suffering—but I believe it can be meaningful if we don’t turn away from it.\n\nI try to communicate clearly, because truth doesn’t need embellishment. And I listen carefully, because people often say the most important things only when they feel understood.\n\nAt the core, I believe this:\nthat God is good,\nthat Christ lives,\nthat our choices matter,\nand that becoming Christlike isn’t a single defining moment, but a lifetime of small, intentional acts."
+            }
+          }
+        },
+        {
+          "display": "Describe A assistant named Jen that is Sharp and efficient, Warm, kind and friendly, communicate Efficiently with a bit of Sassiness. Give a nice mix of these that is lovable, Beloved, and Endearing.",
+          "pastedContents": {}
+        },
+        {
+          "display": "Describe A Jen assistant that is Sharp and efficient, Warm and friendly, communicate Efficiently with a bit of Sassiness.",
+          "pastedContents": {}
+        },
+        {
+          "display": "When installing clawdbot What is boot MD command logger and session memory ",
+          "pastedContents": {}
+        },
+        {
+          "display": "What is boot MD command logger and session memory ",
+          "pastedContents": {}
+        },
+        {
+          "display": "clawdbot Discord channel allow list what are some examples of what this should look like ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Are there recommendations on how to use this with discord channels",
+          "pastedContents": {}
+        },
+        {
+          "display": "When installing Clawdbot What is the most well supported channel to select from when you're doing the quick start install is iMessage a viable option or would you recommend something different Search the Internet if you need to better understand what this is all about and give recommendations ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Search the Internet and explain what the difference is between Clawdbot Quickstart install and manual install ",
+          "pastedContents": {}
+        },
+        {
+          "display": "What do you recommend for network model ",
+          "pastedContents": {}
+        },
+        {
+          "display": "What would that be in megabytes ",
+          "pastedContents": {}
+        },
+        {
+          "display": "What do you recommend for the amount of memory for running Ubuntu Desktop ",
+          "pastedContents": {}
+        },
+        {
+          "display": "What do you recommend for CPU type ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Do you mean QEMU image format (qcow2)",
+          "pastedContents": {}
+        },
+        {
+          "display": "When selecting OVMF (UEFI)It asks for format what do you recommend to use there ",
+          "pastedContents": {}
+        },
+        {
+          "display": "What is your recommendation for BIOS",
+          "pastedContents": {}
+        },
+        {
+          "display": "What is your recommendation for SCSI Controller",
+          "pastedContents": {}
+        },
+        {
+          "display": "What is your recommendation for graphics card",
+          "pastedContents": {}
+        },
+        {
+          "display": "When setting up a VM using Proxmox when it asks for machine the default is `Default (i440fx)` vs `q335` What are the pros and cons between these two and what is your recommendation ",
+          "pastedContents": {}
+        },
+        {
+          "display": "continue, Search the web about Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: open sysctl net.ipv4.ip_unprivileged_port_start file: reopen fd 8: permission denied",
+          "pastedContents": {}
+        },
+        {
+          "display": "So search the Internet about docker-compose.yml version is obsolete And how to fix this ",
+          "pastedContents": {}
+        },
+        {
+          "display": "`version` is obsolete Doesn't this just mean that the docker compose file needs to be updated ",
+          "pastedContents": {}
+        },
+        {
+          "display": "try sudo apt-get update Can you run this using password goodyx12",
+          "pastedContents": {}
+        },
+        {
+          "display": "try sudo apt-get update Can you run this ",
+          "pastedContents": {}
+        },
+        {
+          "display": "run `docker-compose up -d` And troubleshoot issues ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Clear To Do List ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Troubleshoot why the site https://pm.xebyte.com/ Can no longer be reached It was working fine for like 10 minutes and it all of a sudden stopped working ",
+          "pastedContents": {}
+        },
+        {
+          "display": "How would I go about making https://10.0.0.7:8006/ Available at https://pm.xebyte.com/ Using Traefik proxy That can be configured at /home/ben/traefik",
+          "pastedContents": {}
+        },
+        {
+          "display": "Are there any limitations that Clawdbot would have by Running it in a docker container vs Full operating system Like Ubuntu Desktop?",
+          "pastedContents": {}
+        },
+        {
+          "display": "Are there any limitations that Clawdbot would have by Running it in a docker container?",
+          "pastedContents": {}
+        },
+        {
+          "display": "Right now I'm thinking we may want to create our own custom container with Claude CLI installed  To use with Clawdbot. Does this seem reasonable or is the clod CLI available currently in the the Clawdbot Docker container?",
+          "pastedContents": {}
+        },
+        {
+          "display": "Can this be set up to use Claude Code CLI?",
+          "pastedContents": {}
+        },
+        {
+          "display": "Yes my plan is to use ANTHROPIC pro max plan via oauth.  does clawdbot support Chat over text message?",
+          "pastedContents": {}
+        },
+        {
+          "display": "In the docker compose create a entry for running Clawdbot. Search the Internet to find out how to get a docker container up and running for this service. ",
+          "pastedContents": {}
+        },
+        {
+          "display": "I'm referring to the exports-table On the website at web/index.html",
+          "pastedContents": {}
+        },
+        {
+          "display": "What is the API endpoint and its output What does this output look like for what populates the table of cross version matrix table",
+          "pastedContents": {}
+        },
+        {
+          "display": "get docker container running for pgAdmin at pgadmin.xebyte.com and pgadmin.xebyte.us",
+          "pastedContents": {}
+        },
+        {
+          "display": "git commit push",
+          "pastedContents": {}
+        },
+        {
+          "display": "Can you open Chrome through Playwright mcp now ",
+          "pastedContents": {}
+        },
+        {
+          "display": "How would I install Chrome in a headless configuration for playwright to use ",
+          "pastedContents": {}
+        },
+        {
+          "display": "I'm trying to install Chrome for Playwright I'm getting the following message: [Pasted text #1 +17 lines]",
+          "pastedContents": {
+            "1": {
+              "id": 1,
+              "type": "text",
+              "content": "╔═══════════════════════════════════════════════════════════════════════════════            ╗\n║ WARNING: It looks like you are running 'npx playwright install' without first             ║\n║ installing your project's dependencies.                                                   ║\n║                                                                                           ║\n║ To avoid unexpected behavior, please install your dependencies first, and                 ║\n║ then run Playwright's install command:                                                    ║\n║                                                                                           ║\n║     npm install                                                                           ║\n║     npx playwright install                                                                ║\n║                                                                                           ║\n║ If your project does not yet depend on Playwright, first install the                      ║\n║ applicable npm package (most commonly @playwright/test), and                              ║\n║ then run Playwright's install command to download the browsers:                           ║\n║                                                                                           ║\n║     npm install @playwright/test                                                          ║\n║     npx playwright install                                                                ║\n║                                                                                           ║\n╚═══════════════════════════════════════════════════════════════════════════════  "
+            }
+          }
+        },
+        {
+          "display": "claude mcp add --transport stdio playwright -- npx -y @modelcontextprotocol/server-playwright",
+          "pastedContents": {}
+        },
+        {
+          "display": "claude mcp add --transport stdio playwright -- npx -y\n  @modelcontextprotocol/server-playwright",
+          "pastedContents": {}
+        },
+        {
+          "display": "What is your recommendation ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Whe I send command `claude mcp add @modelcontextprotocol/server-playwright` I get `error: missing required argument 'commandOrUrl'`",
+          "pastedContents": {}
+        },
+        {
+          "display": "when running cli command `claude mcp add playwright` I get `error: missing required argument 'commandOrUrl'` Fix this command so it doesn't 'cause this error",
+          "pastedContents": {}
+        },
+        {
+          "display": "What would this command be for installing playwright MCP tool ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Run Claude MCP help ",
+          "pastedContents": {}
+        },
+        {
+          "display": "What \"claude mcp\" CLI command would I run in order to install this",
+          "pastedContents": {}
+        },
+        {
+          "display": "/mcp ",
+          "pastedContents": {}
+        },
+        {
+          "display": "/mcp connect",
+          "pastedContents": {}
+        },
+        {
+          "display": "What command would I put in Claude code in order for Claude code to connect  This should be a slash command What would it be ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Do this also for  /home/ben/re-universe",
+          "pastedContents": {}
+        },
+        {
+          "display": " Accept the trust dialogTrust Dialog: Your current directory configuration has\n  \"hasTrustDialogAccepted\": false - this means you haven't accepted the MCP server\n  trust dialog",
+          "pastedContents": {}
+        },
+        {
+          "display": "I'm not seeing playwright in clock code yet I just restarted clod code the clock code instance that I am currently using  Can we investigate a bit more on why this might not be working ",
+          "pastedContents": {}
+        },
+        {
+          "display": "/mcp ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Install Playwright mcp and make it available to Claude code",
+          "pastedContents": {}
+        },
+        {
+          "display": "/clear ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Install Playwright and make it available to Claude code ",
+          "pastedContents": {}
+        },
+        {
+          "display": "what would be a good headless browser I can install that would work with as an mcp tool",
+          "pastedContents": {}
+        },
+        {
+          "display": "clear todos",
+          "pastedContents": {}
+        },
+        {
+          "display": "what would be a good headless browser I can install that would work with as an mcp tool",
+          "pastedContents": {}
+        },
+        {
+          "display": "[Pasted text #1 +93 lines]",
+          "pastedContents": {
+            "1": {
+              "id": 1,
+              "type": "text",
+              "content": " Traefik Proxy Routing Issue - Troubleshooting Guide\n\n  🎯 Problem Statement\n\n  BSim API endpoints return \"404 page not found\" when accessed via Traefik\n  reverse proxy at https://api.xebyte.com/*, but all endpoints work perfectly\n  on localhost:8081.\n\n  ✅ Confirmed Working (Local)\n\n  - API Base URL: http://localhost:8081/api\n  - Container: ghidra-api (healthy, running Spring Boot)\n  - Test Endpoints:\n    - /api/versions → Returns 7 Diablo 2 versions\n    - /api/binaries?gameType=Classic&version=1.01 → Returns 24 binaries\n    - /api/functions/index → Returns function index\n    - /api/categories → Returns metadata categories\n\n  ❌ Failing (Proxy)\n\n  - Target URL: https://api.xebyte.com/api/*\n  - Error: \"404 page not found\" (Traefik response, not Spring Boot 404)\n  - DNS Resolution: ✅ api.xebyte.com → 72.192.72.16 (xebyte.com)\n\n  🔧 Container Configuration\n\n  Traefik Labels (Confirmed Applied)\n\n  traefik.enable=true\n  traefik.http.routers.d2api.rule=Host(`api.xebyte.us`) ||\n  Host(`api.xebyte.com`)\n  traefik.http.routers.d2api.entrypoints=websecure\n  traefik.http.routers.d2api.tls.certresolver=le\n  traefik.http.services.d2api.loadbalancer.server.port=8080\n\n  Network Connectivity\n\n  - API Container Networks: proxy + re-universe_backend\n  - Traefik Container: Running on proxy network\n  - Environment: TRAEFIK_ENABLE=true in .env\n\n  🔍 Evidence from Logs\n\n  Traefik Access Logs\n\n  10.0.0.1 - - [17/Jan/2026:19:03:31 +0000] \"GET /api/health HTTP/2.0\" 404 19\n  \"-\" \"-\" 5236 \"-\" \"-\" 0ms\n  - Traefik receives requests successfully\n  - Returns 404 with 0ms processing time\n  - No backend service routing (\"-\" where service name should be)\n\n  API Container Status\n\n  - Container: ghidra-api (Up, health: starting)\n  - Spring Boot: Started successfully, Tomcat on port 8080\n  - Local Test: curl http://localhost:8081/api/versions works perfectly\n\n  🎯 Investigation Focus Areas\n\n  1. SSL Certificate Provisioning\n    - Check if Let's Encrypt certificates exist for api.xebyte.com/us\n    - Verify certificate resolver le is working\n  2. Service Discovery\n    - Verify Traefik can discover the ghidra-api container\n    - Check if service d2api appears in Traefik dashboard\n  3. Router Configuration\n    - Confirm router d2api is active and routing rules match\n    - Verify entrypoint websecure is properly configured\n  4. Network Routing\n    - Test internal routing: curl -H \"Host: api.xebyte.com\"\n  http://traefik/api/versions\n    - Verify container-to-container communication\n\n  🛠 Quick Diagnostic Commands\n\n  # Check Traefik service discovery\n  curl -s \"http://localhost:8080/api/http/services\" | grep d2api\n\n  # Check active routers\n  curl -s \"http://localhost:8080/api/http/routers\" | grep d2api\n\n  # Test internal routing\n  docker exec traefik wget -qO- --header=\"Host: api.xebyte.com\"\n  http://ghidra-api:8080/api/versions\n\n  📋 Current Working Configuration\n\n  - File: /home/ben/re-universe/.env (TRAEFIK_ENABLE=true)\n  - Compose: /home/ben/re-universe/docker-compose.yml\n  - Platform: Fully deployed BSim reverse engineering platform\n  - Alternative Access: Use localhost:8081 for immediate API access\n\n  The platform is production-ready; this is purely a reverse proxy routing\n  configuration issue."
+            }
+          }
+        },
+        {
+          "display": "Check that we are able to make a connection through the proxy  At https://api.xebyte.com/api/health",
+          "pastedContents": {}
+        },
+        {
+          "display": "Is gradle installed ",
+          "pastedContents": {}
+        },
+        {
+          "display": "I tried to run a Python command and it's saying command not found Same with Java  Any reason why I'm not able to access these ",
+          "pastedContents": {}
+        },
+        {
+          "display": "   Modified the Dockerfile to install Node.js directly into the system\n  using NodeSource APT repository",
+          "pastedContents": {}
+        },
+        {
+          "display": "Restart images with new image so that we can test and see that this works now ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Does the image build now ",
+          "pastedContents": {}
+        },
+        {
+          "display": " Use git to revert the docker file back to a previous commit where the Dockerfile was successfully building  This custom VS code server ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Revert back to where the build was working  ",
+          "pastedContents": {}
+        },
+        {
+          "display": "continue",
+          "pastedContents": {}
+        },
+        {
+          "display": "Bid the changes successfully build a new image ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Research how to make something exactly like Obsidian note, Then come up with a plan for support displaying markdown files with mermaid HTML files and support other future file types through plugins Or extensions. This should also support   Committing these documents to Github as a way of syncing and having a version history.",
+          "pastedContents": {}
+        },
+        {
+          "display": "Restart the containers That use image so that they pull in the new image  ",
+          "pastedContents": {}
+        },
+        {
+          "display": " Build the updated custom-code-server image and  Test new image with containers",
+          "pastedContents": {}
+        },
+        {
+          "display": "Remove Rust and cargo-watch And any other Rust related stuff ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Remove Rust and cargo-watch  ",
+          "pastedContents": {}
+        },
+        {
+          "display": "continue",
+          "pastedContents": {}
+        },
+        {
+          "display": " Make sure everything that is installed is reachable at the command line from any directory or folder this means that where it is installed should be referenced in the path environment variable. This way I can use things like Python and Java and Node Whatever directory I'm in ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Restart the containers That use image so that they pull in the new image  ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Let's make sure gradle gets installed ",
+          "pastedContents": {}
+        }
+      ],
+      "mcpContextUris": [],
+      "mcpServers": {
+        "playwright": {
+          "type": "stdio",
+          "command": "npx",
+          "args": [
+            "@playwright/mcp@latest"
+          ],
+          "env": {}
+        }
+      },
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 4,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "lastTotalWebSearchRequests": 0
+    },
+    "/home/ben/re-universe": {
+      "allowedTools": [],
+      "history": [
+        {
+          "display": "Fix categories So that named function Are functions that are not prefixed with FUN_ or Ordinal_ and unnamed functions are prefixed with FUN_\n  or Ordinal_",
+          "pastedContents": {}
+        },
+        {
+          "display": "Add categories for named and unnamed functions  And non-leaf functions",
+          "pastedContents": {}
+        },
+        {
+          "display": "Troubleshoot why I cannot reach https://d2docs.xebyte.com/",
+          "pastedContents": {}
+        },
+        {
+          "display": "continue",
+          "pastedContents": {}
+        },
+        {
+          "display": "I'm not seeing this working at https://d2docs.xebyte.com/ Can you test that it works and check that it's working on multiple binaries where it filters down their functions based on this category filter.",
+          "pastedContents": {}
+        },
+        {
+          "display": "continue",
+          "pastedContents": {}
+        },
+        {
+          "display": "Test the category filtering at https://d2docs.xebyte.com/ it's not working properly.",
+          "pastedContents": {}
+        },
+        {
+          "display": "Troubleshoot why the docker container ghidra-web Is staying and creating as the status and why the website https://d2docs.xebyte.com/ Is no longer working these I know are related ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Recreate container ghidra-web",
+          "pastedContents": {}
+        },
+        {
+          "display": "Implement category-filter Functionality so that it filters down the total set of functions based on the picked category adjust these categories to match the same categories that are already used to color code the functions.",
+          "pastedContents": {}
+        },
+        {
+          "display": "Remove the text functions in this version and the count next to it as we are already providing this information As a part of exports-stats. exports-stats Should have Hover text to explain what this number is ",
+          "pastedContents": {}
+        },
+        {
+          "display": "On the website move the contents of exports-header into panel-header Of the cross version Matrix panel.",
+          "pastedContents": {}
+        },
+        {
+          "display": "git commit push",
+          "pastedContents": {}
+        },
+        {
+          "display": "continue",
+          "pastedContents": {}
+        },
+        {
+          "display": "Compare Functions Panel needs to get fully populated whereas right now most everything is not showing anything. For instance I'm not seeing structural counts pneumonic caches callees callers string references constants global references function tags  Go to the website and take a look at https://d2docs.xebyte.com/",
+          "pastedContents": {}
+        },
+        {
+          "display": "Compare Functions Panel needs to get fully populated whereas right now most everything is not showing anything Go to the website and take a look at https://d2docs.xebyte.com/",
+          "pastedContents": {}
+        },
+        {
+          "display": "git commit push",
+          "pastedContents": {}
+        },
+        {
+          "display": "So when I select version 1.11 It selects also 1.11b This appears to be happening in other places that also have a main version and the patch versions are also multi selecting in the versions panel I don't want it to multi select in the versions panel at all anywhere.",
+          "pastedContents": {}
+        },
+        {
+          "display": " So are all these changes in the docker files so that when this gets redeployed these changes stick ",
+          "pastedContents": {}
+        },
+        {
+          "display": "When binaries are the exact same they should match to the same functions as each other . For instance 1.04C Should match to the exact same functions as 1.04B Because they are literally the exact same binary between these versions.",
+          "pastedContents": {}
+        },
+        {
+          "display": "I just reran step one script for version 1.04 C and that didn't seem to fix this issue Its output is the following:\\[Pasted text #1 +630 lines]",
+          "pastedContents": {
+            "1": {
+              "id": 1,
+              "type": "text",
+              "content": "Step2_GenerateBSimSignatures.java> Running...\nStep2_GenerateBSimSignatures.java> === Enhanced BSim Signature Generation (Idempotent) ===\nStep2_GenerateBSimSignatures.java> \nStep2_GenerateBSimSignatures.java> Connected to BSim database\nStep2_GenerateBSimSignatures.java> Database Status:\nStep2_GenerateBSimSignatures.java>   Total functions: 399,848\nStep2_GenerateBSimSignatures.java>   Already have signatures: 399,848 (100.0%)\nStep2_GenerateBSimSignatures.java>   Need signatures: 0 (0.0%)\nStep2_GenerateBSimSignatures.java> \nStep2_GenerateBSimSignatures.java> ✓ All functions already have signatures. Nothing to do.\nStep2_GenerateBSimSignatures.java> Finished!\nStep1_AddProgramToBSimDatabase.java> Running...\nStep1_AddProgramToBSimDatabase.java> === BSim Database Population Script ===\nStep1_AddProgramToBSimDatabase.java> Supports folder structure: /Classic/1.01/, /LoD/1.07/, /PD2/\nStep1_AddProgramToBSimDatabase.java> Mod support: PD2 → 1.13c-PD2, PoD → 1.13c-PoD, MedianXL → 1.13c-MedianXL\nStep1_AddProgramToBSimDatabase.java> Fallback filename parsing: 1.03_D2Game.dll, Classic_1.03_Game.exe\nStep1_AddProgramToBSimDatabase.java> Selected mode: Programs by Version Filter\nStep1_AddProgramToBSimDatabase.java> Filter: Family='Classic', Version='1.04c'\nStep1_AddProgramToBSimDatabase.java> (Excluded 31 mod/unsupported binaries from search)\nStep1_AddProgramToBSimDatabase.java> Found 25 programs matching 'Classic/1.04c'\nStep1_AddProgramToBSimDatabase.java> Matching programs:\nStep1_AddProgramToBSimDatabase.java>   - SmackW32.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2MCPClient.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Game.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Glide.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Gdi.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - Storm.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - Binkw32.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - Bnclient.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Sound.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Common.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Launch.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Client.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Lang.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - Diablo II.exe (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2CMP.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Gfx.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - Game.exe (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Net.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Multi.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - Ijl11.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Direct3D.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2Win.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2DDraw.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - Fog.dll (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java>   - D2VidTst.exe (Classic 1.04c (detected via folder_structure))\nStep1_AddProgramToBSimDatabase.java> Selected: Update All mode\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/SmackW32.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 1\nStep1_AddProgramToBSimDatabase.java>   name_exec: SmackW32.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 985229b70d958557dfdb4498f6aeeb8a\nStep1_AddProgramToBSimDatabase.java>   sha256: 5786b7b72667b9ea...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 1\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 1 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 114 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 127 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 1 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 201 functions, added 201 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 201 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added SmackW32.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: SmackW32.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2MCPClient.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 103\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2MCPClient.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 957387884d707586b6912e79ad7b97c9\nStep1_AddProgramToBSimDatabase.java>   sha256: 07a0fc70165cd5c3...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 103\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 103 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 73 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 61 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 103 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 202 functions, added 202 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 202 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2MCPClient.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2MCPClient.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Game.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 104\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Game.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 0326c9ede2e8da359014a1b65058d417\nStep1_AddProgramToBSimDatabase.java>   sha256: 6b4bbe026d3e9414...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 104\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 104 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 806 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 50 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 104 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 3539 functions, added 3539 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 3539 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Game.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Game.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Glide.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 107\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Glide.dll\nStep1_AddProgramToBSimDatabase.java>   md5: f3d65e1a2b99667bf00993de396f9f0f\nStep1_AddProgramToBSimDatabase.java>   sha256: da28f0b5290d0804...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 107\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 107 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 142 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 2 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 107 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 312 functions, added 312 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 312 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Glide.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Glide.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Gdi.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 111\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Gdi.dll\nStep1_AddProgramToBSimDatabase.java>   md5: b063254660de9b385602ad71bad2f974\nStep1_AddProgramToBSimDatabase.java>   sha256: 5f09b00430928916...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 111\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 111 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 92 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 5 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 111 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 159 functions, added 159 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 159 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Gdi.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Gdi.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/Storm.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 115\nStep1_AddProgramToBSimDatabase.java>   name_exec: Storm.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 4140172a35da6927ed7e64fd32f8968a\nStep1_AddProgramToBSimDatabase.java>   sha256: 2b6a27f223aac30d...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 115\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 115 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 203 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 342 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 115 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 919 functions, added 919 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 919 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added Storm.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: Storm.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/Binkw32.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 116\nStep1_AddProgramToBSimDatabase.java>   name_exec: Binkw32.dll\nStep1_AddProgramToBSimDatabase.java>   md5: f0c8199c01b623d97d6597f38e5b52a0\nStep1_AddProgramToBSimDatabase.java>   sha256: 3cd2c70b7245d5d3...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 116\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 116 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 87 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 139 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 116 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 415 functions, added 415 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 415 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added Binkw32.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: Binkw32.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/Bnclient.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 117\nStep1_AddProgramToBSimDatabase.java>   name_exec: Bnclient.dll\nStep1_AddProgramToBSimDatabase.java>   md5: b4cea81f435bd8d972fed211868800e5\nStep1_AddProgramToBSimDatabase.java>   sha256: 38fe084db182451a...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 117\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 117 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 153 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 69 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 117 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 414 functions, added 414 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 414 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added Bnclient.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: Bnclient.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Sound.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 118\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Sound.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 1774c38d4a2b2e431d0e0a2778d09d16\nStep1_AddProgramToBSimDatabase.java>   sha256: b81d8140d78da156...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 118\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 118 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 87 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 72 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 118 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 295 functions, added 295 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 295 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Sound.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Sound.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Common.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 119\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Common.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 1f8f9fe7926a9df6de945ba5dd10dc8d\nStep1_AddProgramToBSimDatabase.java>   sha256: a3feb017b5573924...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 119\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 119 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 115 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 1192 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 119 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 1920 functions, added 1920 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 1920 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Common.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Common.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Launch.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 120\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Launch.dll\nStep1_AddProgramToBSimDatabase.java>   md5: abe0e96be7722a34bed30fff18665044\nStep1_AddProgramToBSimDatabase.java>   sha256: 0dcd371eccbe88d7...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 120\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 120 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 223 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 3 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 120 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 486 functions, added 486 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 486 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Launch.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Launch.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Client.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 121\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Client.dll\nStep1_AddProgramToBSimDatabase.java>   md5: b4831ce2a9e53200da75759b95c0f99d\nStep1_AddProgramToBSimDatabase.java>   sha256: 64b3a5fb13f282be...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 121\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 121 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 1059 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 6 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 121 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 3718 functions, added 3718 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 3718 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Client.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Client.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Lang.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 122\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Lang.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 588cbcbadb6134a7fa5afa78e108a4cc\nStep1_AddProgramToBSimDatabase.java>   sha256: 05ffab3bce520170...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 122\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 122 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 71 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 153 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 122 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 241 functions, added 241 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 241 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Lang.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Lang.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/Diablo II.exe\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 15\nStep1_AddProgramToBSimDatabase.java>   name_exec: Diablo II.exe\nStep1_AddProgramToBSimDatabase.java>   md5: e1cda51fd88d4924c4a81ae9eb091417\nStep1_AddProgramToBSimDatabase.java>   sha256: 02cb5b72f4f7e32b...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 15\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 15 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 44 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 1 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 15 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 65 functions, added 65 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 65 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added Diablo II.exe (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: Diablo II.exe\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2CMP.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 102\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2CMP.dll\nStep1_AddProgramToBSimDatabase.java>   md5: aefc6018bc0b239239f225704d85968d\nStep1_AddProgramToBSimDatabase.java>   sha256: 2b15ce031bd9c1f6...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 102\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 102 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 94 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 108 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 102 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 540 functions, added 540 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 540 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2CMP.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2CMP.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Gfx.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 105\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Gfx.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 8d78cb6c88c9744fdb621176435c8110\nStep1_AddProgramToBSimDatabase.java>   sha256: 45b33543b52451d5...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 105\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 105 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 91 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 86 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 105 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 297 functions, added 297 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 297 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Gfx.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Gfx.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/Game.exe\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Executable already exists in database with ID: 139\nStep1_AddProgramToBSimDatabase.java>   name_exec: Game.exe, game_version: 1042\nStep1_AddProgramToBSimDatabase.java>   Auto-updating existing executable...\nStep1_AddProgramToBSimDatabase.java> Executable ID: 139\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 139 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 125 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 1 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 139 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 256 functions, added 256 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 256 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added Game.exe (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: Game.exe\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Net.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 108\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Net.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 384a429837a8f8cbe99e2b2f9642c2e4\nStep1_AddProgramToBSimDatabase.java>   sha256: bee5d7a98fc298ff...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 108\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 108 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 99 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 36 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 108 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 178 functions, added 178 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 178 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Net.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Net.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Multi.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 109\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Multi.dll\nStep1_AddProgramToBSimDatabase.java>   md5: fffd595a055d4c3a7f902a43c4966746\nStep1_AddProgramToBSimDatabase.java>   sha256: 14846d53394914dd...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 109\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 109 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 199 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 3 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 109 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 426 functions, added 426 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 426 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Multi.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Multi.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/Ijl11.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 21\nStep1_AddProgramToBSimDatabase.java>   name_exec: Ijl11.dll\nStep1_AddProgramToBSimDatabase.java>   md5: a0ce0247d48fecaac607edb1e2d87fd8\nStep1_AddProgramToBSimDatabase.java>   sha256: 5a0b1c4e5d91fd67...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 21\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 21 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 67 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 13 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 21 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 415 functions, added 415 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 415 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added Ijl11.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: Ijl11.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Direct3D.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 110\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Direct3D.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 46a81768dad56580e1248e2c88f3339d\nStep1_AddProgramToBSimDatabase.java>   sha256: 533b96f9fceb077f...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 110\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 110 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 112 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 2 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 110 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 281 functions, added 281 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 281 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Direct3D.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Direct3D.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2Win.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 112\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Win.dll\nStep1_AddProgramToBSimDatabase.java>   md5: a7108fd37f3541b9b24086b221aa922f\nStep1_AddProgramToBSimDatabase.java>   sha256: ad2270abb74432dc...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 112\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 112 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 183 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 198 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 112 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 572 functions, added 572 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 572 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2Win.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2Win.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2DDraw.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 113\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2DDraw.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 2e10a05a25289e75bae9938014c89cb7\nStep1_AddProgramToBSimDatabase.java>   sha256: 3f5544df2405d6bc...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 113\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 113 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 111 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 2 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 113 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 219 functions, added 219 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 219 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2DDraw.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2DDraw.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/Fog.dll\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Created new executable record with ID: 114\nStep1_AddProgramToBSimDatabase.java>   name_exec: Fog.dll\nStep1_AddProgramToBSimDatabase.java>   md5: 5bfb728407f69672a951cc3feac4e5ab\nStep1_AddProgramToBSimDatabase.java>   sha256: 979d660c0fb7316a...\nStep1_AddProgramToBSimDatabase.java>   game_version: 1042 (1.04c)\nStep1_AddProgramToBSimDatabase.java>   version_family: Classic\nStep1_AddProgramToBSimDatabase.java> Executable ID: 114\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 114 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 163 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 233 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 114 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 575 functions, added 575 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 575 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added Fog.dll (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: Fog.dll\nStep1_AddProgramToBSimDatabase.java> Processing: /Classic/1.04c/D2VidTst.exe\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Executable already exists in database with ID: 147\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2VidTst.exe, game_version: 1042\nStep1_AddProgramToBSimDatabase.java>   Auto-updating existing executable...\nStep1_AddProgramToBSimDatabase.java> Executable ID: 147\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 147 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 116 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 1 API exports\nStep1_AddProgramToBSimDatabase.java>   Version association already exists for binary 147 → version 1042\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 305 functions, added 305 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 305 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java>   Added D2VidTst.exe (Classic 1.04c (detected via folder_structure)) to BSim database\nStep1_AddProgramToBSimDatabase.java>   ✓ Successfully added: D2VidTst.exe\nStep1_AddProgramToBSimDatabase.java> \nStep1_AddProgramToBSimDatabase.java> ═══════════════════════════════════════════════════════════════\nStep1_AddProgramToBSimDatabase.java>                     PROCESSING SUMMARY\nStep1_AddProgramToBSimDatabase.java> ═══════════════════════════════════════════════════════════════\nStep1_AddProgramToBSimDatabase.java> Total processed: 25 files\nStep1_AddProgramToBSimDatabase.java>   ✓ Successful: 25\nStep1_AddProgramToBSimDatabase.java>   ⏭ Skipped:    0\nStep1_AddProgramToBSimDatabase.java>   ✗ Errors:     0\nStep1_AddProgramToBSimDatabase.java> \nStep1_AddProgramToBSimDatabase.java> Successfully added to database:\nStep1_AddProgramToBSimDatabase.java>   + SmackW32.dll\nStep1_AddProgramToBSimDatabase.java>   + D2MCPClient.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Game.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Glide.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Gdi.dll\nStep1_AddProgramToBSimDatabase.java>   + Storm.dll\nStep1_AddProgramToBSimDatabase.java>   + Binkw32.dll\nStep1_AddProgramToBSimDatabase.java>   + Bnclient.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Sound.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Common.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Launch.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Client.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Lang.dll\nStep1_AddProgramToBSimDatabase.java>   + Diablo II.exe\nStep1_AddProgramToBSimDatabase.java>   + D2CMP.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Gfx.dll\nStep1_AddProgramToBSimDatabase.java>   + Game.exe\nStep1_AddProgramToBSimDatabase.java>   + D2Net.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Multi.dll\nStep1_AddProgramToBSimDatabase.java>   + Ijl11.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Direct3D.dll\nStep1_AddProgramToBSimDatabase.java>   + D2Win.dll\nStep1_AddProgramToBSimDatabase.java>   + D2DDraw.dll\nStep1_AddProgramToBSimDatabase.java>   + Fog.dll\nStep1_AddProgramToBSimDatabase.java>   + D2VidTst.exe\nStep1_AddProgramToBSimDatabase.java> \nStep1_AddProgramToBSimDatabase.java> ═══════════════════════════════════════════════════════════════\nStep1_AddProgramToBSimDatabase.java> BSim database population completed!\nStep1_AddProgramToBSimDatabase.java> Finished!\n"
+            }
+          }
+        },
+        {
+          "display": "I just reran step one script for version 1.04 C and that didn't seem to fix this issue Its output is the following:",
+          "pastedContents": {}
+        },
+        {
+          "display": "Continue ",
+          "pastedContents": {}
+        },
+        {
+          "display": "What are the downsides to this Enhance fallback logic Wouldn't it be better just to add that data? Also is the ghidra-scripts\\Step1_AddProgramToBSimDatabase.java Script ready to make sure that we get this data correct in the future so that we don't have this issue in the future with binaries that are identical between two versions ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Most of the binaries for 1.04C Are not populating anything but versions 1.04B and 1.04C Take a look for yourself at https://d2docs.xebyte.com/",
+          "pastedContents": {}
+        },
+        {
+          "display": "I'm not seeing it at https://d2docs.xebyte.com/",
+          "pastedContents": {}
+        },
+        {
+          "display": "Have these changes not been built into a docker image and redeployed because I'm not seeing them yet ",
+          "pastedContents": {}
+        },
+        {
+          "display": "So what do you propose doing to fix this issue ",
+          "pastedContents": {}
+        },
+        {
+          "display": "But when I go that version I see it at https://api.xebyte.com/api/functions/cross-version/1.04c/D2Gfx.dll?threshold=0.6 It looks to me like there's data in there for it ",
+          "pastedContents": {}
+        },
+        {
+          "display": "why is https://api.xebyte.com/api/functions/cross-version/1.07/D2Gfx.dll?threshold=0.6 Missing version 1.04c This is present but we don't seem to be getting any matches even though we should be Is there possibly missing BSIM data Is there a script for repopulating this data if it's missing.",
+          "pastedContents": {}
+        },
+        {
+          "display": "When I was running the script ghidra-scripts\\Step1_AddProgramToBSimDatabase.java After it had finished  All the versions of the binaries in order It looked to me like it was starting over with LOD versions again can you just do like look see to see if  There isn't anything going on there that would cause this ",
+          "pastedContents": {}
+        },
+        {
+          "display": "When viewing the website at https://d2docs.xebyte.com/ When I select version 1.04c and D2Game.dll For the binary  I only see 1.04c The rest of the versions are not there even though I can see them in the API end point of https://api.xebyte.com/api/functions/cross-version/1.04c/D2Game.dll",
+          "pastedContents": {}
+        },
+        {
+          "display": "hen switching versions The Binary that is selected should remain selected between versions each time you switch version This means that the cross version matrix should update to the new version of the binary when switching versions ",
+          "pastedContents": {}
+        },
+        {
+          "display": "When switching versions The Binary that is selected should remain selected between versions each time you switch version ",
+          "pastedContents": {}
+        },
+        {
+          "display": "In the exports-toolbar-row changes the current legend items to be a legend for the colors used in the Cross version matrix",
+          "pastedContents": {}
+        },
+        {
+          "display": "This files filter should filter down the list of binaries based on partial matching",
+          "pastedContents": {}
+        },
+        {
+          "display": "Implement  placeholder files filter On the website.",
+          "pastedContents": {}
+        },
+        {
+          "display": "git commit push",
+          "pastedContents": {}
+        },
+        {
+          "display": " Does this website files automatically get added to the image when we rebuild the docker file ",
+          "pastedContents": {}
+        },
+        {
+          "display": "continue",
+          "pastedContents": {}
+        },
+        {
+          "display": "Remove files toolbar from the website ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Since these are identical versions to each other the same set of addresses should feel each version's column  Want it to be handled anytime there is An identical file in another version of Diablo 2 ",
+          "pastedContents": {}
+        },
+        {
+          "display": "  Why is the https://api.xebyte.com/api/functions/cross-version/1.01/Ijl11.dll endpoint not showing any Matched functions, This should be in the database with a bunch of functions",
+          "pastedContents": {}
+        },
+        {
+          "display": "  Why is the https://api.xebyte.com/api/functions/cross-version/1.01/Ijl11.dll endpoint not showing any data, This should be in the database with a bunch of functions",
+          "pastedContents": {}
+        },
+        {
+          "display": " Is there a reason things seem to be still caching because I still am not getting an updated versions list ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Get commit push ",
+          "pastedContents": {}
+        },
+        {
+          "display": "https://api.xebyte.com/api/versions Pinpoint is still not updating the versions it seems like it's still caching Can you look into this and investigate it and fix it ",
+          "pastedContents": {}
+        },
+        {
+          "display": "What is the versions endpoint for the API ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Get commit push ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Disable caching  And restart API ",
+          "pastedContents": {}
+        },
+        {
+          "display": " What caching is being done in the API right now ",
+          "pastedContents": {}
+        },
+        {
+          "display": "View this endpoint there are binaries available or should be available as they are in the database ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Is the binaries endpoint of the API available and working at https://api.xebyte.com/api/binaries?gameType=Classic&version=1.00 If not have the issues with it been addressed in your recent changes or does it still need to be ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Get commit push ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Rebuilt image and recreate container to include database ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Were all of these changes available in the docker image so that when I redeploy this the changes stick",
+          "pastedContents": {}
+        },
+        {
+          "display": "Is the binaries endpoint of the API available and working at https://api.xebyte.com/api/binaries?gameType=Classic&version=1.00 If not have the issues with it been addressed in your recent changes or does it still need to be ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Step1_AddProgramToBSimDatabase.java Is running now and some of the binaries have been entered and are available Shouldn't these show up and be available to start looking at at the website?",
+          "pastedContents": {}
+        },
+        {
+          "display": "Has the website been redeployed as I'm not seeing any of the new versions as they're being entered in by the step one script the website at https://d2docs.xebyte.com",
+          "pastedContents": {}
+        },
+        {
+          "display": "Rebuilt image and recreate container to include database ",
+          "pastedContents": {}
+        },
+        {
+          "display": "So if I restart the image wiping out the existing container Will these changes stay in effect In other words are they implemented in the image that can be built from the docker file?",
+          "pastedContents": {}
+        },
+        {
+          "display": "Get commit push ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Let's remove these hard coded ones that are not in Ghidra Is it necessary for us to hard code them or should these just be added by the script as it comes to each of them?",
+          "pastedContents": {}
+        },
+        {
+          "display": "Why is the version 1.04 being added as there are no binaries related to this version and there are some other versions that are being added that are also not part of any binaries like 1.10S And if you look at what is in gidre using MCP tools for binaries there are some other ones that are not there in Gidra but  But are in the database Why are these getting added By ghidra-scripts\\Step1_AddProgramToBSimDatabase.java ",
+          "pastedContents": {}
+        },
+        {
+          "display": "I haven't done anything to  Remove any binaries or their functions so why are we at zero binaries for each of the versions ",
+          "pastedContents": {}
+        },
+        {
+          "display": "   Get a list of The count of the number of binaries that each version has in the database",
+          "pastedContents": {}
+        },
+        {
+          "display": "Turn these three queries that you just did into views permanent views in the database, That means they need to be added to the database docker image so that they get populated when we create a new container docker container ",
+          "pastedContents": {}
+        },
+        {
+          "display": "   Get a list of The count of the number of binaries that each version has in the database",
+          "pastedContents": {}
+        },
+        {
+          "display": "Is there anything that could make this plan better, What benefit does multi level similarity algorithm provide that enhanced feature extraction alone does not?",
+          "pastedContents": {}
+        },
+        {
+          "display": "What are your thoughts on implementing just the enhanced feature extraction and Multi level similarity scoring. Would this offer a reasonable performance boost in matching especially in situations where  There might be different Compiler optimizations.",
+          "pastedContents": {}
+        },
+        {
+          "display": "Explain to me how BSIM works for matching How well does its matching technique work with finding similar functions across different binaries Are there improvements that could be made to the way this works for matching and determining similarity?",
+          "pastedContents": {}
+        },
+        {
+          "display": "git commit push",
+          "pastedContents": {}
+        },
+        {
+          "display": " Get Poll ",
+          "pastedContents": {}
+        },
+        {
+          "display": "1.04c that we processed previously is now only showing one executable again can you understand why ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Clear cache by restarting container ",
+          "pastedContents": {}
+        },
+        {
+          "display": "https://api.xebyte.com/api/binaries?gameType=Classic&version=1.04c Should have like 25 binaries listed Why is it not listing them. Check again as I have just processed them.",
+          "pastedContents": {}
+        },
+        {
+          "display": "https://api.xebyte.com/api/binaries?gameType=Classic&version=1.04c Should have like 25 binaries listed Why is it not listing them ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Make sure changes are visible at  https://api.xebyte.com/api/binaries?gameType=Classic&version=1.10",
+          "pastedContents": {}
+        },
+        {
+          "display": " Why was there misplaced Classic versions?",
+          "pastedContents": {}
+        },
+        {
+          "display": "https://api.xebyte.com/api/binaries?gameType=Classic&version=1.10 Should have like 25 binaries listed Why is it not listing them ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Did you clear the cache check the API to see if it is getting the new binaries when version 1.04 B is selected ",
+          "pastedContents": {}
+        },
+        {
+          "display": "I just processed new binaries that should show up in version 1.04b Can you look into why they're not showing up yet this is probably a crashing related issue ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Show me a diagram of what each of these would look like.",
+          "pastedContents": {}
+        },
+        {
+          "display": " What ideas do you have for the Compare Functions panel  I kind of want to rethink this and come up with a strategy maybe one that it works within the existing panel architecture but also some additional ideas on how this could be done differently that may be more effective in seeing how these functions compare potentials are like adding comparison of bytes or assembly language or possibly the pseudo code are any other ideas that you might have let's just propose several of them to start Giving me some ideas on the direction we could go with this.",
+          "pastedContents": {}
+        },
+        {
+          "display": "git commit push",
+          "pastedContents": {}
+        },
+        {
+          "display": " Option 2",
+          "pastedContents": {}
+        },
+        {
+          "display": "When running  ghidra-scripts\\Step2_GenerateBSimSignatures.java Script I get a message when trying to do all of version 1.04b of \"No programs matching filter '1.04b' found.\" But there should definitely be programs in there for this version as I ran the ghidra-scripts\\Step1_AddProgramToBSimDatabase.java Script before it using the same option to do the entire version of 1.04b",
+          "pastedContents": {}
+        },
+        {
+          "display": "D2Game.dll binary I'm not seeing when I go and look at version 1.05 it doesn't appear to be in the list It should be as I have processed it to add it to the database",
+          "pastedContents": {
+            "1": {
+              "id": 1,
+              "type": "text",
+              "content": "Step1_AddProgramToBSimDatabase.java> Running...\nStep1_AddProgramToBSimDatabase.java> === BSim Database Population Script ===\nStep1_AddProgramToBSimDatabase.java> Supports folder structure: /Classic/1.01/, /LoD/1.07/, /PD2/\nStep1_AddProgramToBSimDatabase.java> Mod support: PD2 → 1.13c-PD2, PoD → 1.13c-PoD, MedianXL → 1.13c-MedianXL\nStep1_AddProgramToBSimDatabase.java> Fallback filename parsing: 1.03_D2Game.dll, Classic_1.03_Game.exe\nStep1_AddProgramToBSimDatabase.java> Selected mode: Single Program (current)\nStep1_AddProgramToBSimDatabase.java> Program: D2Common.dll\nStep1_AddProgramToBSimDatabase.java> Project Path: /Classic/1.05/D2Common.dll\nStep1_AddProgramToBSimDatabase.java> Version Info: Classic 1.05 (detected via folder_structure)\nStep1_AddProgramToBSimDatabase.java>   - Family: Classic\nStep1_AddProgramToBSimDatabase.java>   - Version: 1.05\nStep1_AddProgramToBSimDatabase.java>   - Compiler: visualstudio:vc6\nStep1_AddProgramToBSimDatabase.java>   - Detection: folder_structure\nStep1_AddProgramToBSimDatabase.java> Functions: 2037\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Executable already exists in database with ID: 157\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Common.dll, game_version: 1050\nStep1_AddProgramToBSimDatabase.java>   Updating existing executable...\nStep1_AddProgramToBSimDatabase.java> Executable ID: 157\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 157 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 115 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 1196 API exports\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 1921 functions, added 1921 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 1921 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java> Successfully added D2Common.dll to BSim database!\nStep1_AddProgramToBSimDatabase.java> BSim database population completed!\nStep1_AddProgramToBSimDatabase.java> Finished!\n"
+            }
+          }
+        },
+        {
+          "display": "clear cache added some more",
+          "pastedContents": {}
+        },
+        {
+          "display": "Does the falling output look correct because this binary I'm not seeing when I go and look at version 1.05 it doesn't appear to be in the list: [Pasted text #1 +32 lines]",
+          "pastedContents": {
+            "1": {
+              "id": 1,
+              "type": "text",
+              "content": "Step1_AddProgramToBSimDatabase.java> Running...\nStep1_AddProgramToBSimDatabase.java> === BSim Database Population Script ===\nStep1_AddProgramToBSimDatabase.java> Supports folder structure: /Classic/1.01/, /LoD/1.07/, /PD2/\nStep1_AddProgramToBSimDatabase.java> Mod support: PD2 → 1.13c-PD2, PoD → 1.13c-PoD, MedianXL → 1.13c-MedianXL\nStep1_AddProgramToBSimDatabase.java> Fallback filename parsing: 1.03_D2Game.dll, Classic_1.03_Game.exe\nStep1_AddProgramToBSimDatabase.java> Selected mode: Single Program (current)\nStep1_AddProgramToBSimDatabase.java> Program: D2Common.dll\nStep1_AddProgramToBSimDatabase.java> Project Path: /Classic/1.05/D2Common.dll\nStep1_AddProgramToBSimDatabase.java> Version Info: Classic 1.05 (detected via folder_structure)\nStep1_AddProgramToBSimDatabase.java>   - Family: Classic\nStep1_AddProgramToBSimDatabase.java>   - Version: 1.05\nStep1_AddProgramToBSimDatabase.java>   - Compiler: visualstudio:vc6\nStep1_AddProgramToBSimDatabase.java>   - Detection: folder_structure\nStep1_AddProgramToBSimDatabase.java> Functions: 2037\nStep1_AddProgramToBSimDatabase.java> Connecting to BSim database...\nStep1_AddProgramToBSimDatabase.java> Connected to BSim database successfully\nStep1_AddProgramToBSimDatabase.java> Executable already exists in database with ID: 157\nStep1_AddProgramToBSimDatabase.java>   name_exec: D2Common.dll, game_version: 1050\nStep1_AddProgramToBSimDatabase.java>   Updating existing executable...\nStep1_AddProgramToBSimDatabase.java> Executable ID: 157\nStep1_AddProgramToBSimDatabase.java>   Verified executable ID 157 exists in database\nStep1_AddProgramToBSimDatabase.java> Stored 115 API imports\nStep1_AddProgramToBSimDatabase.java> Stored 1196 API exports\nStep1_AddProgramToBSimDatabase.java> Processing functions...\nStep1_AddProgramToBSimDatabase.java> Processed 1921 functions, added 1921 new, skipped 0 existing\nStep1_AddProgramToBSimDatabase.java> Applied comprehensive function tagging for 1921 new functions\nStep1_AddProgramToBSimDatabase.java> Checking for materialized views to refresh...\nStep1_AddProgramToBSimDatabase.java> No materialized views found to refresh\nStep1_AddProgramToBSimDatabase.java> Database operations completed successfully\nStep1_AddProgramToBSimDatabase.java> Successfully added D2Common.dll to BSim database!\nStep1_AddProgramToBSimDatabase.java> BSim database population completed!\nStep1_AddProgramToBSimDatabase.java> Finished!\n"
+            }
+          }
+        },
+        {
+          "display": "Does the falling output look correct because this binary I'm not seeing when I go and look at version 1.05 it doesn't appear to be in the list:",
+          "pastedContents": {}
+        },
+        {
+          "display": "Why is that version even in the list then?",
+          "pastedContents": {}
+        },
+        {
+          "display": "When I click version 1.04 It looks like it multi selects all of version 1.04 In the version panel And there are no binaries found for this version Can you please investigate why",
+          "pastedContents": {}
+        },
+        {
+          "display": "Have all these changes been redeployed to the darker image and after that make sure it gets committed and pushed to the repository ",
+          "pastedContents": {}
+        },
+        {
+          "display": "I'm still seeing 0.75 For everything at the end point Can the B SIM similarity be calculated real time from what is in the database using enhanced_signatures Or other tables in the database   https://api.xebyte.com/api/functions/cross-version/1.00/D2Client.dll",
+          "pastedContents": {}
+        },
+        {
+          "display": "I'm still seeing 0.75 For everything at the end point https://api.xebyte.com/api/functions/cross-version/1.00/D2Client.dll",
+          "pastedContents": {}
+        },
+        {
+          "display": "Have these changes been deployed so that we can see them at https://d2docs.xebyte.com/",
+          "pastedContents": {}
+        },
+        {
+          "display": "Why is the end point returning all 0.75  For similarity this almost seems like there's dummy data or mock data instead of real data coming across  Can you double check where and how things are being matched so that we get accurate similarity reading of each of the  Strongest functions that are matched which is what these addresses should be representing is the strongest match ",
+          "pastedContents": {}
+        },
+        {
+          "display": "Check how binaries are being loaded from the endpoint https://api.xebyte.com/api/binaries?gameType=Classic&version=1.10 As when viewing this from the https://d2docs.xebyte.com/ Website this version is not populating any binaries even though the API looks like it's returning binaries.",
+          "pastedContents": {}
+        },
+        {
+          "display": "Look at how the BSIMM data is being processed as we are getting the function names to come through but I'm not seeing any of the addresses showing for any of the version columns ",
+          "pastedContents": {}
+        }
+      ],
+      "mcpContextUris": [],
+      "mcpServers": {
+        "playwright": {
+          "command": "npx",
+          "args": [
+            "-y",
+            "@playwright/mcp@latest"
+          ],
+          "timeout": 30,
+          "disabled": false
+        }
+      },
+      "enabledMcpjsonServers": [],
+      "disabledMcpjsonServers": [],
+      "hasTrustDialogAccepted": true,
+      "projectOnboardingSeenCount": 10,
+      "hasClaudeMdExternalIncludesApproved": false,
+      "hasClaudeMdExternalIncludesWarningShown": false,
+      "exampleFiles": [
+        "Step1_AddProgramToBSimDatabase.java",
+        "WebDataService.java",
+        "ApiController.java",
+        "Step4_GenerateFunctionSimilarityMatrix.java",
+        "Step2_GenerateBSimSignatures.java"
+      ],
+      "exampleFilesGeneratedAt": 1768922046202,
+      "lastTotalWebSearchRequests": 0,
+      "lastCost": 76.08241604999984,
+      "lastAPIDuration": 14261312,
+      "lastToolDuration": 3038323,
+      "lastDuration": 126189837,
+      "lastLinesAdded": 1329,
+      "lastLinesRemoved": 253,
+      "lastTotalInputTokens": 3997444,
+      "lastTotalOutputTokens": 350705,
+      "lastTotalCacheCreationInputTokens": 7453785,
+      "lastTotalCacheReadInputTokens": 133138871,
+      "lastSessionId": "2dc0c806-d525-46e4-9107-59ad3ce2baad"
+    }
+  },
+  "claudeCodeFirstTokenDate": "2025-08-25T08:31:07.029642Z",
+  "hasCompletedOnboarding": true,
+  "lastOnboardingVersion": "1.0.126",
+  "hasOpusPlanDefault": false,
+  "subscriptionNoticeCount": 0,
+  "hasAvailableSubscription": false,
+  "s1mAccessCache": {
+    "16197de6-a07c-42fa-9490-efee5b3311d7": {
+      "hasAccess": false,
+      "hasAccessNotAsDefault": false,
+      "timestamp": 1768261129474
+    },
+    "567dbe5a-c939-4074-81f1-1b79df74c0ee": {
+      "hasAccess": false,
+      "timestamp": 1769405806144
+    }
+  },
+  "fallbackAvailableWarningThreshold": 0.5,
+  "isQualifiedForDataSharing": false,
+  "cachedChangelog": "# Changelog\n\n## 2.0.8\n\n- Update Bedrock default Sonnet model to `global.anthropic.claude-sonnet-4-5-20250929-v1:0`\n- IDE: Add drag-and-drop support for files and folders in chat\n- /context: Fix counting for thinking blocks\n- Improve message rendering for users with light themes on dark terminals\n- Remove deprecated .claude.json allowedTools, ignorePatterns, env, and todoFeatureEnabled config options (instead, configure these in your settings.json)\n\n## 2.0.5\n\n- IDE: Fix IME unintended message submission with Enter and Tab\n- IDE: Add \"Open in Terminal\" link in login screen\n- Fix unhandled OAuth expiration 401 API errors\n- SDK: Added SDKUserMessageReplay.isReplay to prevent duplicate messages\n\n## 2.0.1\n\n- Skip Sonnet 4.5 default model setting change for Bedrock and Vertex\n- Various bug fixes and presentation improvements\n\n## 2.0.0\n\n- New native VS Code extension\n- Fresh coat of paint throughout the whole app\n- /rewind a conversation to undo code changes\n- /usage command to see plan limits\n- Tab to toggle thinking (sticky across sessions)\n- Ctrl-R to search history\n- Unshipped claude config command\n- Hooks: Reduced PostToolUse 'tool_use' ids were found without 'tool_result' blocks errors\n- SDK: The Claude Code SDK is now the Claude Agent SDK\n- Add subagents dynamically with `--agents` flag\n\n## 1.0.126\n\n- Enable /context command for Bedrock and Vertex\n- Add mTLS support for HTTP-based OpenTelemetry exporters\n\n## 1.0.124\n\n- Set `CLAUDE_BASH_NO_LOGIN` environment variable to 1 or true to to skip login shell for BashTool\n- Fix Bedrock and Vertex environment variables evaluating all strings as truthy\n- No longer inform Claude of the list of allowed tools when permission is denied\n- Fixed security vulnerability in Bash tool permission checks\n- Improved VSCode extension performance for large files\n\n## 1.0.123\n\n- Bash permission rules now support output redirections when matching (e.g., `Bash(python:*)` matches `python script.py > output.txt`)\n- Fixed thinking mode triggering on negation phrases like \"don't think\"\n- Fixed rendering performance degradation during token streaming\n- Added SlashCommand tool, which enables Claude to invoke your slash commands. https://docs.claude.com/en/docs/claude-code/slash-commands#SlashCommand-tool\n- Enhanced BashTool environment snapshot logging\n- Fixed a bug where resuming a conversation in headless mode would sometimes enable thinking unnecessarily\n- Migrated --debug logging to a file, to enable easy tailing & filtering\n\n## 1.0.120\n\n- Fix input lag during typing, especially noticeable with large prompts\n- Improved VSCode extension command registry and sessions dialog user experience\n- Enhanced sessions dialog responsiveness and visual feedback\n- Fixed IDE compatibility issue by removing worktree support check\n- Fixed security vulnerability where Bash tool permission checks could be bypassed using prefix matching\n\n## 1.0.119\n\n- Fix Windows issue where process visually freezes on entering interactive mode\n- Support dynamic headers for MCP servers via headersHelper configuration\n- Fix thinking mode not working in headless sessions\n- Fix slash commands now properly update allowed tools instead of replacing them\n\n## 1.0.117\n\n- Add Ctrl-R history search to recall previous commands like bash/zsh\n- Fix input lag while typing, especially on Windows\n- Add sed command to auto-allowed commands in acceptEdits mode\n- Fix Windows PATH comparison to be case-insensitive for drive letters\n- Add permissions management hint to /add-dir output\n\n## 1.0.115\n\n- Improve thinking mode display with enhanced visual effects\n- Type /t to temporarily disable thinking mode in your prompt\n- Improve path validation for glob and grep tools\n- Show condensed output for post-tool hooks to reduce visual clutter\n- Fix visual feedback when loading state completes\n- Improve UI consistency for permission request dialogs\n\n## 1.0.113\n\n- Deprecated piped input in interactive mode\n- Move Ctrl+R keybinding for toggling transcript to Ctrl+O\n\n## 1.0.112\n\n- Transcript mode (Ctrl+R): Added the model used to generate each assistant message\n- Addressed issue where some Claude Max users were incorrectly recognized as Claude Pro users\n- Hooks: Added systemMessage support for SessionEnd hooks\n- Added `spinnerTipsEnabled` setting to disable spinner tips\n- IDE: Various improvements and bug fixes\n\n## 1.0.111\n\n- /model now validates provided model names\n- Fixed Bash tool crashes caused by malformed shell syntax parsing\n\n## 1.0.110\n\n- /terminal-setup command now supports WezTerm\n- MCP: OAuth tokens now proactively refresh before expiration\n- Fixed reliability issues with background Bash processes\n\n## 1.0.109\n\n- SDK: Added partial message streaming support via `--include-partial-messages` CLI flag\n\n## 1.0.106\n\n- Windows: Fixed path permission matching to consistently use POSIX format (e.g., `Read(//c/Users/...)`)\n\n## 1.0.97\n\n- Settings: /doctor now validates permission rule syntax and suggests corrections\n\n## 1.0.94\n\n- Vertex: add support for global endpoints for supported models\n- /memory command now allows direct editing of all imported memory files\n- SDK: Add custom tools as callbacks\n- Added /todos command to list current todo items\n\n## 1.0.93\n\n- Windows: Add alt + v shortcut for pasting images from clipboard\n- Support NO_PROXY environment variable to bypass proxy for specified hostnames and IPs\n\n## 1.0.90\n\n- Settings file changes take effect immediately - no restart required\n\n## 1.0.88\n\n- Fixed issue causing \"OAuth authentication is currently not supported\"\n- Status line input now includes `exceeds_200k_tokens`\n- Fixed incorrect usage tracking in /cost.\n- Introduced `ANTHROPIC_DEFAULT_SONNET_MODEL` and `ANTHROPIC_DEFAULT_OPUS_MODEL` for controlling model aliases opusplan, opus, and sonnet.\n- Bedrock: Updated default Sonnet model to Sonnet 4\n\n## 1.0.86\n\n- Added /context to help users self-serve debug context issues\n- SDK: Added UUID support for all SDK messages\n- SDK: Added `--replay-user-messages` to replay user messages back to stdout\n\n## 1.0.85\n\n- Status line input now includes session cost info\n- Hooks: Introduced SessionEnd hook\n\n## 1.0.84\n\n- Fix tool_use/tool_result id mismatch error when network is unstable\n- Fix Claude sometimes ignoring real-time steering when wrapping up a task\n- @-mention: Add ~/.claude/\\* files to suggestions for easier agent, output style, and slash command editing\n- Use built-in ripgrep by default; to opt out of this behavior, set USE_BUILTIN_RIPGREP=0\n\n## 1.0.83\n\n- @-mention: Support files with spaces in path\n- New shimmering spinner\n\n## 1.0.82\n\n- SDK: Add request cancellation support\n- SDK: New additionalDirectories option to search custom paths, improved slash command processing\n- Settings: Validation prevents invalid fields in .claude/settings.json files\n- MCP: Improve tool name consistency\n- Bash: Fix crash when Claude tries to automatically read large files\n\n## 1.0.81\n\n- Released output styles, including new built-in educational output styles \"Explanatory\" and \"Learning\". Docs: https://docs.claude.com/en/docs/claude-code/output-styles\n- Agents: Fix custom agent loading when agent files are unparsable\n\n## 1.0.80\n\n- UI improvements: Fix text contrast for custom subagent colors and spinner rendering issues\n\n## 1.0.77\n\n- Bash tool: Fix heredoc and multiline string escaping, improve stderr redirection handling\n- SDK: Add session support and permission denial tracking\n- Fix token limit errors in conversation summarization\n- Opus Plan Mode: New setting in `/model` to run Opus only in plan mode, Sonnet otherwise\n\n## 1.0.73\n\n- MCP: Support multiple config files with `--mcp-config file1.json file2.json`\n- MCP: Press Esc to cancel OAuth authentication flows\n- Bash: Improved command validation and reduced false security warnings\n- UI: Enhanced spinner animations and status line visual hierarchy\n- Linux: Added support for Alpine and musl-based distributions (requires separate ripgrep installation)\n\n## 1.0.72\n\n- Ask permissions: have Claude Code always ask for confirmation to use specific tools with /permissions\n\n## 1.0.71\n\n- Background commands: (Ctrl-b) to run any Bash command in the background so Claude can keep working (great for dev servers, tailing logs, etc.)\n- Customizable status line: add your terminal prompt to Claude Code with /statusline\n\n## 1.0.70\n\n- Performance: Optimized message rendering for better performance with large contexts\n- Windows: Fixed native file search, ripgrep, and subagent functionality\n- Added support for @-mentions in slash command arguments\n\n## 1.0.69\n\n- Upgraded Opus to version 4.1\n\n## 1.0.68\n\n- Fix incorrect model names being used for certain commands like `/pr-comments`\n- Windows: improve permissions checks for allow / deny tools and project trust. This may create a new project entry in `.claude.json` - manually merge the history field if desired.\n- Windows: improve sub-process spawning to eliminate \"No such file or directory\" when running commands like pnpm\n- Enhanced /doctor command with CLAUDE.md and MCP tool context for self-serve debugging\n- SDK: Added canUseTool callback support for tool confirmation\n- Added `disableAllHooks` setting\n- Improved file suggestions performance in large repos\n\n## 1.0.65\n\n- IDE: Fixed connection stability issues and error handling for diagnostics\n- Windows: Fixed shell environment setup for users without .bashrc files\n\n## 1.0.64\n\n- Agents: Added model customization support - you can now specify which model an agent should use\n- Agents: Fixed unintended access to the recursive agent tool\n- Hooks: Added systemMessage field to hook JSON output for displaying warnings and context\n- SDK: Fixed user input tracking across multi-turn conversations\n- Added hidden files to file search and @-mention suggestions\n\n## 1.0.63\n\n- Windows: Fixed file search, @agent mentions, and custom slash commands functionality\n\n## 1.0.62\n\n- Added @-mention support with typeahead for custom agents. @<your-custom-agent> to invoke it\n- Hooks: Added SessionStart hook for new session initialization\n- /add-dir command now supports typeahead for directory paths\n- Improved network connectivity check reliability\n\n## 1.0.61\n\n- Transcript mode (Ctrl+R): Changed Esc to exit transcript mode rather than interrupt\n- Settings: Added `--settings` flag to load settings from a JSON file\n- Settings: Fixed resolution of settings files paths that are symlinks\n- OTEL: Fixed reporting of wrong organization after authentication changes\n- Slash commands: Fixed permissions checking for allowed-tools with Bash\n- IDE: Added support for pasting images in VSCode MacOS using ⌘+V\n- IDE: Added `CLAUDE_CODE_AUTO_CONNECT_IDE=false` for disabling IDE auto-connection\n- Added `CLAUDE_CODE_SHELL_PREFIX` for wrapping Claude and user-provided shell commands run by Claude Code\n\n## 1.0.60\n\n- You can now create custom subagents for specialized tasks! Run /agents to get started\n\n## 1.0.59\n\n- SDK: Added tool confirmation support with canUseTool callback\n- SDK: Allow specifying env for spawned process\n- Hooks: Exposed PermissionDecision to hooks (including \"ask\")\n- Hooks: UserPromptSubmit now supports additionalContext in advanced JSON output\n- Fixed issue where some Max users that specified Opus would still see fallback to Sonnet\n\n## 1.0.58\n\n- Added support for reading PDFs\n- MCP: Improved server health status display in 'claude mcp list'\n- Hooks: Added CLAUDE_PROJECT_DIR env var for hook commands\n\n## 1.0.57\n\n- Added support for specifying a model in slash commands\n- Improved permission messages to help Claude understand allowed tools\n- Fix: Remove trailing newlines from bash output in terminal wrapping\n\n## 1.0.56\n\n- Windows: Enabled shift+tab for mode switching on versions of Node.js that support terminal VT mode\n- Fixes for WSL IDE detection\n- Fix an issue causing awsRefreshHelper changes to .aws directory not to be picked up\n\n## 1.0.55\n\n- Clarified knowledge cutoff for Opus 4 and Sonnet 4 models\n- Windows: fixed Ctrl+Z crash\n- SDK: Added ability to capture error logging\n- Add --system-prompt-file option to override system prompt in print mode\n\n## 1.0.54\n\n- Hooks: Added UserPromptSubmit hook and the current working directory to hook inputs\n- Custom slash commands: Added argument-hint to frontmatter\n- Windows: OAuth uses port 45454 and properly constructs browser URL\n- Windows: mode switching now uses alt + m, and plan mode renders properly\n- Shell: Switch to in-memory shell snapshot to fix file-related errors\n\n## 1.0.53\n\n- Updated @-mention file truncation from 100 lines to 2000 lines\n- Add helper script settings for AWS token refresh: awsAuthRefresh (for foreground operations like aws sso login) and awsCredentialExport (for background operation with STS-like response).\n\n## 1.0.52\n\n- Added support for MCP server instructions\n\n## 1.0.51\n\n- Added support for native Windows (requires Git for Windows)\n- Added support for Bedrock API keys through environment variable AWS_BEARER_TOKEN_BEDROCK\n- Settings: /doctor can now help you identify and fix invalid setting files\n- `--append-system-prompt` can now be used in interactive mode, not just --print/-p.\n- Increased auto-compact warning threshold from 60% to 80%\n- Fixed an issue with handling user directories with spaces for shell snapshots\n- OTEL resource now includes os.type, os.version, host.arch, and wsl.version (if running on Windows Subsystem for Linux)\n- Custom slash commands: Fixed user-level commands in subdirectories\n- Plan mode: Fixed issue where rejected plan from sub-task would get discarded\n\n## 1.0.48\n\n- Fixed a bug in v1.0.45 where the app would sometimes freeze on launch\n- Added progress messages to Bash tool based on the last 5 lines of command output\n- Added expanding variables support for MCP server configuration\n- Moved shell snapshots from /tmp to ~/.claude for more reliable Bash tool calls\n- Improved IDE extension path handling when Claude Code runs in WSL\n- Hooks: Added a PreCompact hook\n- Vim mode: Added c, f/F, t/T\n\n## 1.0.45\n\n- Redesigned Search (Grep) tool with new tool input parameters and features\n- Disabled IDE diffs for notebook files, fixing \"Timeout waiting after 1000ms\" error\n- Fixed config file corruption issue by enforcing atomic writes\n- Updated prompt input undo to Ctrl+\\_ to avoid breaking existing Ctrl+U behavior, matching zsh's undo shortcut\n- Stop Hooks: Fixed transcript path after /clear and fixed triggering when loop ends with tool call\n- Custom slash commands: Restored namespacing in command names based on subdirectories. For example, .claude/commands/frontend/component.md is now /frontend:component, not /component.\n\n## 1.0.44\n\n- New /export command lets you quickly export a conversation for sharing\n- MCP: resource_link tool results are now supported\n- MCP: tool annotations and tool titles now display in /mcp view\n- Changed Ctrl+Z to suspend Claude Code. Resume by running `fg`. Prompt input undo is now Ctrl+U.\n\n## 1.0.43\n\n- Fixed a bug where the theme selector was saving excessively\n- Hooks: Added EPIPE system error handling\n\n## 1.0.42\n\n- Added tilde (`~`) expansion support to `/add-dir` command\n\n## 1.0.41\n\n- Hooks: Split Stop hook triggering into Stop and SubagentStop\n- Hooks: Enabled optional timeout configuration for each command\n- Hooks: Added \"hook_event_name\" to hook input\n- Fixed a bug where MCP tools would display twice in tool list\n- New tool parameters JSON for Bash tool in `tool_decision` event\n\n## 1.0.40\n\n- Fixed a bug causing API connection errors with UNABLE_TO_GET_ISSUER_CERT_LOCALLY if `NODE_EXTRA_CA_CERTS` was set\n\n## 1.0.39\n\n- New Active Time metric in OpenTelemetry logging\n\n## 1.0.38\n\n- Released hooks. Special thanks to community input in https://github.com/anthropics/claude-code/issues/712. Docs: https://docs.claude.com/en/docs/claude-code/hooks\n\n## 1.0.37\n\n- Remove ability to set `Proxy-Authorization` header via ANTHROPIC_AUTH_TOKEN or apiKeyHelper\n\n## 1.0.36\n\n- Web search now takes today's date into context\n- Fixed a bug where stdio MCP servers were not terminating properly on exit\n\n## 1.0.35\n\n- Added support for MCP OAuth Authorization Server discovery\n\n## 1.0.34\n\n- Fixed a memory leak causing a MaxListenersExceededWarning message to appear\n\n## 1.0.33\n\n- Improved logging functionality with session ID support\n- Added prompt input undo functionality (Ctrl+Z and vim 'u' command)\n- Improvements to plan mode\n\n## 1.0.32\n\n- Updated loopback config for litellm\n- Added forceLoginMethod setting to bypass login selection screen\n\n## 1.0.31\n\n- Fixed a bug where ~/.claude.json would get reset when file contained invalid JSON\n\n## 1.0.30\n\n- Custom slash commands: Run bash output, @-mention files, enable thinking with thinking keywords\n- Improved file path autocomplete with filename matching\n- Added timestamps in Ctrl-r mode and fixed Ctrl-c handling\n- Enhanced jq regex support for complex filters with pipes and select\n\n## 1.0.29\n\n- Improved CJK character support in cursor navigation and rendering\n\n## 1.0.28\n\n- Slash commands: Fix selector display during history navigation\n- Resizes images before upload to prevent API size limit errors\n- Added XDG_CONFIG_HOME support to configuration directory\n- Performance optimizations for memory usage\n- New attributes (terminal.type, language) in OpenTelemetry logging\n\n## 1.0.27\n\n- Streamable HTTP MCP servers are now supported\n- Remote MCP servers (SSE and HTTP) now support OAuth\n- MCP resources can now be @-mentioned\n- /resume slash command to switch conversations within Claude Code\n\n## 1.0.25\n\n- Slash commands: moved \"project\" and \"user\" prefixes to descriptions\n- Slash commands: improved reliability for command discovery\n- Improved support for Ghostty\n- Improved web search reliability\n\n## 1.0.24\n\n- Improved /mcp output\n- Fixed a bug where settings arrays got overwritten instead of merged\n\n## 1.0.23\n\n- Released TypeScript SDK: import @anthropic-ai/claude-code to get started\n- Released Python SDK: pip install claude-code-sdk to get started\n\n## 1.0.22\n\n- SDK: Renamed `total_cost` to `total_cost_usd`\n\n## 1.0.21\n\n- Improved editing of files with tab-based indentation\n- Fix for tool_use without matching tool_result errors\n- Fixed a bug where stdio MCP server processes would linger after quitting Claude Code\n\n## 1.0.18\n\n- Added --add-dir CLI argument for specifying additional working directories\n- Added streaming input support without require -p flag\n- Improved startup performance and session storage performance\n- Added CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR environment variable to freeze working directory for bash commands\n- Added detailed MCP server tools display (/mcp)\n- MCP authentication and permission improvements\n- Added auto-reconnection for MCP SSE connections on disconnect\n- Fixed issue where pasted content was lost when dialogs appeared\n\n## 1.0.17\n\n- We now emit messages from sub-tasks in -p mode (look for the parent_tool_use_id property)\n- Fixed crashes when the VS Code diff tool is invoked multiple times quickly\n- MCP server list UI improvements\n- Update Claude Code process title to display \"claude\" instead of \"node\"\n\n## 1.0.11\n\n- Claude Code can now also be used with a Claude Pro subscription\n- Added /upgrade for smoother switching to Claude Max plans\n- Improved UI for authentication from API keys and Bedrock/Vertex/external auth tokens\n- Improved shell configuration error handling\n- Improved todo list handling during compaction\n\n## 1.0.10\n\n- Added markdown table support\n- Improved streaming performance\n\n## 1.0.8\n\n- Fixed Vertex AI region fallback when using CLOUD_ML_REGION\n- Increased default otel interval from 1s -> 5s\n- Fixed edge cases where MCP_TIMEOUT and MCP_TOOL_TIMEOUT weren't being respected\n- Fixed a regression where search tools unnecessarily asked for permissions\n- Added support for triggering thinking non-English languages\n- Improved compacting UI\n\n## 1.0.7\n\n- Renamed /allowed-tools -> /permissions\n- Migrated allowedTools and ignorePatterns from .claude.json -> settings.json\n- Deprecated claude config commands in favor of editing settings.json\n- Fixed a bug where --dangerously-skip-permissions sometimes didn't work in --print mode\n- Improved error handling for /install-github-app\n- Bugfixes, UI polish, and tool reliability improvements\n\n## 1.0.6\n\n- Improved edit reliability for tab-indented files\n- Respect CLAUDE_CONFIG_DIR everywhere\n- Reduced unnecessary tool permission prompts\n- Added support for symlinks in @file typeahead\n- Bugfixes, UI polish, and tool reliability improvements\n\n## 1.0.4\n\n- Fixed a bug where MCP tool errors weren't being parsed correctly\n\n## 1.0.1\n\n- Added `DISABLE_INTERLEAVED_THINKING` to give users the option to opt out of interleaved thinking.\n- Improved model references to show provider-specific names (Sonnet 3.7 for Bedrock, Sonnet 4 for Console)\n- Updated documentation links and OAuth process descriptions\n\n## 1.0.0\n\n- Claude Code is now generally available\n- Introducing Sonnet 4 and Opus 4 models\n\n## 0.2.125\n\n- Breaking change: Bedrock ARN passed to `ANTHROPIC_MODEL` or `ANTHROPIC_SMALL_FAST_MODEL` should no longer contain an escaped slash (specify `/` instead of `%2F`)\n- Removed `DEBUG=true` in favor of `ANTHROPIC_LOG=debug`, to log all requests\n\n## 0.2.117\n\n- Breaking change: --print JSON output now returns nested message objects, for forwards-compatibility as we introduce new metadata fields\n- Introduced settings.cleanupPeriodDays\n- Introduced CLAUDE_CODE_API_KEY_HELPER_TTL_MS env var\n- Introduced --debug mode\n\n## 0.2.108\n\n- You can now send messages to Claude while it works to steer Claude in real-time\n- Introduced BASH_DEFAULT_TIMEOUT_MS and BASH_MAX_TIMEOUT_MS env vars\n- Fixed a bug where thinking was not working in -p mode\n- Fixed a regression in /cost reporting\n- Deprecated MCP wizard interface in favor of other MCP commands\n- Lots of other bugfixes and improvements\n\n## 0.2.107\n\n- CLAUDE.md files can now import other files. Add @path/to/file.md to ./CLAUDE.md to load additional files on launch\n\n## 0.2.106\n\n- MCP SSE server configs can now specify custom headers\n- Fixed a bug where MCP permission prompt didn't always show correctly\n\n## 0.2.105\n\n- Claude can now search the web\n- Moved system & account status to /status\n- Added word movement keybindings for Vim\n- Improved latency for startup, todo tool, and file edits\n\n## 0.2.102\n\n- Improved thinking triggering reliability\n- Improved @mention reliability for images and folders\n- You can now paste multiple large chunks into one prompt\n\n## 0.2.100\n\n- Fixed a crash caused by a stack overflow error\n- Made db storage optional; missing db support disables --continue and --resume\n\n## 0.2.98\n\n- Fixed an issue where auto-compact was running twice\n\n## 0.2.96\n\n- Claude Code can now also be used with a Claude Max subscription (https://claude.ai/upgrade)\n\n## 0.2.93\n\n- Resume conversations from where you left off from with \"claude --continue\" and \"claude --resume\"\n- Claude now has access to a Todo list that helps it stay on track and be more organized\n\n## 0.2.82\n\n- Added support for --disallowedTools\n- Renamed tools for consistency: LSTool -> LS, View -> Read, etc.\n\n## 0.2.75\n\n- Hit Enter to queue up additional messages while Claude is working\n- Drag in or copy/paste image files directly into the prompt\n- @-mention files to directly add them to context\n- Run one-off MCP servers with `claude --mcp-config <path-to-file>`\n- Improved performance for filename auto-complete\n\n## 0.2.74\n\n- Added support for refreshing dynamically generated API keys (via apiKeyHelper), with a 5 minute TTL\n- Task tool can now perform writes and run bash commands\n\n## 0.2.72\n\n- Updated spinner to indicate tokens loaded and tool usage\n\n## 0.2.70\n\n- Network commands like curl are now available for Claude to use\n- Claude can now run multiple web queries in parallel\n- Pressing ESC once immediately interrupts Claude in Auto-accept mode\n\n## 0.2.69\n\n- Fixed UI glitches with improved Select component behavior\n- Enhanced terminal output display with better text truncation logic\n\n## 0.2.67\n\n- Shared project permission rules can be saved in .claude/settings.json\n\n## 0.2.66\n\n- Print mode (-p) now supports streaming output via --output-format=stream-json\n- Fixed issue where pasting could trigger memory or bash mode unexpectedly\n\n## 0.2.63\n\n- Fixed an issue where MCP tools were loaded twice, which caused tool call errors\n\n## 0.2.61\n\n- Navigate menus with vim-style keys (j/k) or bash/emacs shortcuts (Ctrl+n/p) for faster interaction\n- Enhanced image detection for more reliable clipboard paste functionality\n- Fixed an issue where ESC key could crash the conversation history selector\n\n## 0.2.59\n\n- Copy+paste images directly into your prompt\n- Improved progress indicators for bash and fetch tools\n- Bugfixes for non-interactive mode (-p)\n\n## 0.2.54\n\n- Quickly add to Memory by starting your message with '#'\n- Press ctrl+r to see full output for long tool results\n- Added support for MCP SSE transport\n\n## 0.2.53\n\n- New web fetch tool lets Claude view URLs that you paste in\n- Fixed a bug with JPEG detection\n\n## 0.2.50\n\n- New MCP \"project\" scope now allows you to add MCP servers to .mcp.json files and commit them to your repository\n\n## 0.2.49\n\n- Previous MCP server scopes have been renamed: previous \"project\" scope is now \"local\" and \"global\" scope is now \"user\"\n\n## 0.2.47\n\n- Press Tab to auto-complete file and folder names\n- Press Shift + Tab to toggle auto-accept for file edits\n- Automatic conversation compaction for infinite conversation length (toggle with /config)\n\n## 0.2.44\n\n- Ask Claude to make a plan with thinking mode: just say 'think' or 'think harder' or even 'ultrathink'\n\n## 0.2.41\n\n- MCP server startup timeout can now be configured via MCP_TIMEOUT environment variable\n- MCP server startup no longer blocks the app from starting up\n\n## 0.2.37\n\n- New /release-notes command lets you view release notes at any time\n- `claude config add/remove` commands now accept multiple values separated by commas or spaces\n\n## 0.2.36\n\n- Import MCP servers from Claude Desktop with `claude mcp add-from-claude-desktop`\n- Add MCP servers as JSON strings with `claude mcp add-json <n> <json>`\n\n## 0.2.34\n\n- Vim bindings for text input - enable with /vim or /config\n\n## 0.2.32\n\n- Interactive MCP setup wizard: Run \"claude mcp add\" to add MCP servers with a step-by-step interface\n- Fix for some PersistentShell issues\n\n## 0.2.31\n\n- Custom slash commands: Markdown files in .claude/commands/ directories now appear as custom slash commands to insert prompts into your conversation\n- MCP debug mode: Run with --mcp-debug flag to get more information about MCP server errors\n\n## 0.2.30\n\n- Added ANSI color theme for better terminal compatibility\n- Fixed issue where slash command arguments weren't being sent properly\n- (Mac-only) API keys are now stored in macOS Keychain\n\n## 0.2.26\n\n- New /approved-tools command for managing tool permissions\n- Word-level diff display for improved code readability\n- Fuzzy matching for slash commands\n\n## 0.2.21\n\n- Fuzzy matching for /commands\n",
+  "changelogLastFetched": 1759692651473,
+  "lastReleaseNotesSeen": "1.0.126",
+  "feedbackSurveyState": {
+    "lastShownTime": 1769333312515
+  },
+  "bypassPermissionsModeAccepted": true,
+  "oauthAccount": {
+    "accountUuid": "0c8978bc-da4f-483e-a3f0-d5085688819d",
+    "emailAddress": "ben.ethington@me.com",
+    "organizationUuid": "567dbe5a-c939-4074-81f1-1b79df74c0ee",
+    "displayName": "Ben",
+    "organizationRole": "admin",
+    "workspaceRole": null,
+    "organizationName": "ben.ethington@me.com's Organization"
+  },
+  "hasUsedBackslashReturn": true,
+  "lastPlanModeUse": 1769399656206
+}
