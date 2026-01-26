@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   ######### FRONTENDS ##########
 
@@ -6,7 +5,7 @@ services:
   traefik:
     container_name: traefik
     hostname: traefik
-    image: traefik:v3.4
+    image: traefik:v3.3
     restart: unless-stopped
     environment:
       - PUID=${PUID}
@@ -33,7 +32,8 @@ services:
       - "--entrypoints.websecure.http.tls=true"
 
       # Attach the static configuration tls.yaml file that contains the tls configuration settings
-      - "--providers.file.filename=/dynamic/tls.yaml"
+      - "--providers.file.directory=/dynamic"
+      - "--providers.file.watch=true"
 
       # Providers
       - "--providers.docker=true"
@@ -49,6 +49,7 @@ services:
       - "--log.level=INFO"
       - "--accesslog=true"
       - "--metrics.prometheus=true"
+      - "--serversTransport.insecureSkipVerify=true"
 
       # ACME Let's Encrypt Configuration
       - "--certificatesresolvers.le.acme.email=benaminde@gmail.com"
@@ -1753,95 +1754,96 @@ services:
       MYSQL_USER: ${TIKI_DB_USER}
       MYSQL_PASSWORD: ${TIKI_DB_PASS}
 
-######### GUIDEWIRE DOCUMENTATION ##########
+  ######### GUIDEWIRE DOCUMENTATION ##########
 
-# gwbcd – Guidewire Billing Center Docs
-# gwbcd:
-#   image: httpd:2.4
-#   container_name: gwbcd
-#   hostname: gwbcd
-#   restart: always
-#   networks:
-#     - proxy
-#   volumes:
-#     - ~/gwbcd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-#     - ~/gwbcd/data:/usr/local/apache2/htdocs/
-#     - ~/shared:/shared
-#   labels:
-#     - "traefik.http.routers.gwbcd.rule=Host(`gwbcd.xebyte.us`)"
-#     - "traefik.http.routers.gwbcd.entrypoints=websecure"
-#     - "traefik.http.routers.gwbcd.tls.certresolver=le"
-#     - "traefik.http.services.gwbcd.loadbalancer.server.port=80"
+  # gwbcd – Guidewire Billing Center Docs
+  # gwbcd:
+  #   image: httpd:2.4
+  #   container_name: gwbcd
+  #   hostname: gwbcd
+  #   restart: always
+  #   networks:
+  #     - proxy
+  #   volumes:
+  #     - ~/gwbcd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+  #     - ~/gwbcd/data:/usr/local/apache2/htdocs/
+  #     - ~/shared:/shared
+  #   labels:
+  #     - "traefik.http.routers.gwbcd.rule=Host(`gwbcd.xebyte.us`)"
+  #     - "traefik.http.routers.gwbcd.entrypoints=websecure"
+  #     - "traefik.http.routers.gwbcd.tls.certresolver=le"
+  #     - "traefik.http.services.gwbcd.loadbalancer.server.port=80"
 
-# gwccd – Guidewire Claims Center Docs
-# gwccd:
-#   image: httpd:2.4
-#   container_name: gwccd
-#   hostname: gwccd
-#   restart: always
-#   networks:
-#     - proxy
-#   volumes:
-#     - ~/gwccd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-#     - ~/gwccd/data:/usr/local/apache2/htdocs/
-#     - ~/shared:/shared
-#   labels:
-#     - "traefik.http.routers.gwccd.rule=Host(`gwccd.xebyte.us`)"
-#     - "traefik.http.routers.gwccd.entrypoints=websecure"
-#     - "traefik.http.routers.gwccd.tls.certresolver=le"
-#     - "traefik.http.services.gwccd.loadbalancer.server.port=80"
+  # gwccd – Guidewire Claims Center Docs
+  # gwccd:
+  #   image: httpd:2.4
+  #   container_name: gwccd
+  #   hostname: gwccd
+  #   restart: always
+  #   networks:
+  #     - proxy
+  #   volumes:
+  #     - ~/gwccd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+  #     - ~/gwccd/data:/usr/local/apache2/htdocs/
+  #     - ~/shared:/shared
+  #   labels:
+  #     - "traefik.http.routers.gwccd.rule=Host(`gwccd.xebyte.us`)"
+  #     - "traefik.http.routers.gwccd.entrypoints=websecure"
+  #     - "traefik.http.routers.gwccd.tls.certresolver=le"
+  #     - "traefik.http.services.gwccd.loadbalancer.server.port=80"
 
-# gwpcd – Guidewire Policy Center Docs
-# gwpcd:
-#   image: httpd:2.4
-#   container_name: gwpcd
-#   hostname: gwpcd
-#   restart: always
-#   networks:
-#     - proxy
-#   volumes:
-#     - ~/gwpcd/httpd.conf:/usr/local/apache2/conf/httpd.conf
-#     - ~/gwpcd/data:/usr/local/apache2/htdocs/
-#     - ~/shared:/shared
-#   labels:
-#     - "traefik.http.routers.gwpcd.rule=Host(`gwpcd.xebyte.us`)"
-#     - "traefik.http.routers.gwpcd.entrypoints=websecure"
-#     - "traefik.http.routers.gwpcd.tls.certresolver=le"
-#     - "traefik.http.services.gwpcd.loadbalancer.server.port=80"
+  # gwpcd – Guidewire Policy Center Docs
+  # gwpcd:
+  #   image: httpd:2.4
+  #   container_name: gwpcd
+  #   hostname: gwpcd
+  #   restart: always
+  #   networks:
+  #     - proxy
+  #   volumes:
+  #     - ~/gwpcd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+  #     - ~/gwpcd/data:/usr/local/apache2/htdocs/
+  #     - ~/shared:/shared
+  #   labels:
+  #     - "traefik.http.routers.gwpcd.rule=Host(`gwpcd.xebyte.us`)"
+  #     - "traefik.http.routers.gwpcd.entrypoints=websecure"
+  #     - "traefik.http.routers.gwpcd.tls.certresolver=le"
+  #     - "traefik.http.services.gwpcd.loadbalancer.server.port=80"
 
-# whisper:
-#   image: bethington/faster-whisper-server:latest
-#   build:
-#     dockerfile: Dockerfile
-#     context: ~/whisper/.
-#     platforms:
-#       - linux/amd64
-#   container_name: whisper
-#   hostname: whisper
-#   restart: unless-stopped
-#   ports:
-#     - 8000:8000
-#   volumes:
-#     - ~/whisper/huggingface:/root/.cache/huggingface
-#   environment:
-#     WHISPER__MODEL: Systran/faster-whisper-base.en
-#   labels:
-#     traefik.backend: whisper
-#     traefik.port: 8000
-#     traefik.frontend.rule: Host:stt.${DOMAINNAME}
-#     traefik.frontend.auth.basic.usersFile: /shared/.htpasswd
+  # whisper:
+  #   image: bethington/faster-whisper-server:latest
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ~/whisper/.
+  #     platforms:
+  #       - linux/amd64
+  #   container_name: whisper
+  #   hostname: whisper
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8000:8000
+  #   volumes:
+  #     - ~/whisper/huggingface:/root/.cache/huggingface
+  #   environment:
+  #     WHISPER__MODEL: Systran/faster-whisper-base.en
+  #   labels:
+  #     traefik.backend: whisper
+  #     traefik.port: 8000
+  #     traefik.frontend.rule: Host:stt.${DOMAINNAME}
+  #     traefik.frontend.auth.basic.usersFile: /shared/.htpasswd
 
-######### DOCKER RELATED ##########
+  ######### DOCKER RELATED ##########
 
-# Watchtower - Automatic Update of Containers/Apps
-# watchtower:
-#   image: v2tec/watchtower
-#   container_name: watchtower
-#   hostname: watchtower
-#   restart: unless-stopped
-#   command: --schedule "0 0 23 * * SUN" --cleanup
-#   volumes:
-#     - /var/run/docker.sock:/var/run/docker.sock
+  # Watchtower - Automatic Update of Containers/Apps
+  # watchtower:
+  #   image: v2tec/watchtower
+  #   container_name: watchtower
+  #   hostname: watchtower
+  #   restart: unless-stopped
+  #   command: --schedule "0 0 23 * * SUN" --cleanup
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+
 
 networks:
   proxy:
