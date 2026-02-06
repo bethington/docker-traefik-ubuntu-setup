@@ -5,7 +5,7 @@ services:
   traefik:
     container_name: traefik
     hostname: traefik
-    image: traefik:v3.3
+    image: traefik:v3.6.1
     restart: unless-stopped
     environment:
       - PUID=${PUID}
@@ -13,6 +13,7 @@ services:
       - TZ=${TZ}
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
       - CF_ZONE_API_TOKEN=${CF_ZONE_API_TOKEN}
+      - DOCKER_API_VERSION=1.44
     ports:
       - "80:80"
       - "443:443"
@@ -39,6 +40,7 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=proxy"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
 
       # API & Dashboard
       - "--api=true"
