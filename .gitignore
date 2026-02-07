@@ -21,3 +21,7 @@ re-universe/
 quivr/
 templates/
 variables.env
+# Environment files with secrets
+.env
+.env.*
+!.env.example
