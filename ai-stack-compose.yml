@@ -1,0 +1,208 @@
+version: '3.8'
+
+# GPU-Accelerated AI Stack for RTX 3060
+# Complete voice AI pipeline: TTS + STT + LLM
+# Expected VRAM usage: ~7-9GB total / 12GB available
+
+services:
+  # VibeVoice - Text-to-Speech (~2GB VRAM)
+  vibevoice:
+    image: eworkerinc/vibevoice
+    container_name: vibevoice
+    hostname: vibevoice
+    restart: unless-stopped
+    runtime: nvidia
+    ports:
+      - "8765:8745"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - ENABLE_LARGE=false
+      - ENABLE_1_5B=true
+      - CUDA_CACHE_DISABLE=0
+      - VIBEVOICE_ATTN_IMPL=flash_attention_2
+      - VIBEVOICE_INFERENCE_STEPS=5
+      - TORCH_CUDNN_V8_API_ENABLED=1
+      - CUDNN_BENCHMARK=1
+      - MODEL_DEVICE=cuda
+      - OPTIMIZE_FOR_SPEED=1
+    # healthcheck:
+      #   test: ["CMD", "curl", "-f", "http://localhost:8765/health"]
+      #   interval: 30s
+      #   timeout: 10s
+      #   retries: 3
+    networks:
+      - ai-network
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vibevoice.rule=Host(`tts.xebyte.us`) || Host(`tts.xebyte.com`)"
+      - "traefik.http.routers.vibevoice.entrypoints=websecure"
+      - "traefik.http.routers.vibevoice.tls.certresolver=le"
+      - "traefik.http.routers.vibevoice.tls.domains[0].main=tts.xebyte.us"
+      - "traefik.http.routers.vibevoice.tls.domains[1].main=tts.xebyte.com"
+      - "traefik.http.services.vibevoice.loadbalancer.server.port=8745"
+
+      # HTTP router for redirect
+      - "traefik.http.routers.vibevoice-http.rule=Host(`tts.xebyte.us`) || Host(`tts.xebyte.com`)"
+      - "traefik.http.routers.vibevoice-http.entrypoints=web"
+      - "traefik.http.routers.vibevoice-http.middlewares=redirect-to-https@file"
+
+  # Whisper ASR - Speech-to-Text (~1GB VRAM)
+  whisper:
+    image: onerahmet/openai-whisper-asr-webservice:latest-gpu
+    container_name: whisper-asr
+    hostname: whisper-asr
+    restart: unless-stopped
+    runtime: nvidia
+    ports:
+      - "9000:9000"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - ASR_MODEL=base
+      - ASR_ENGINE=openai_whisper
+    # healthcheck:
+      #   test: ["CMD", "curl", "-f", "http://localhost:9000/docs"]
+      #   interval: 30s
+      #   timeout: 10s
+      #   retries: 3
+    networks:
+      - ai-network
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whisper.rule=Host(`stt.xebyte.us`) || Host(`stt.xebyte.com`)"
+      - "traefik.http.routers.whisper.entrypoints=websecure"
+      - "traefik.http.routers.whisper.tls.certresolver=le"
+      - "traefik.http.routers.whisper.tls.domains[0].main=stt.xebyte.us"
+      - "traefik.http.routers.whisper.tls.domains[1].main=stt.xebyte.com"
+      - "traefik.http.services.whisper.loadbalancer.server.port=9000"
+
+      # HTTP router for redirect
+      - "traefik.http.routers.whisper-http.rule=Host(`stt.xebyte.us`) || Host(`stt.xebyte.com`)"
+      - "traefik.http.routers.whisper-http.entrypoints=web"
+      - "traefik.http.routers.whisper-http.middlewares=redirect-to-https@file"
+
+  # Ollama - Large Language Models (~4-6GB VRAM)
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    hostname: ollama
+    restart: unless-stopped
+    runtime: nvidia
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - OLLAMA_HOST=0.0.0.0
+    # healthcheck:
+      #   test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      #   interval: 30s
+      #   timeout: 10s
+      #   retries: 3
+    networks:
+      - ai-network
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ollama.rule=Host(`llm.xebyte.us`) || Host(`llm.xebyte.com`)"
+      - "traefik.http.routers.ollama.entrypoints=websecure"
+      - "traefik.http.routers.ollama.tls.certresolver=le"
+      - "traefik.http.routers.ollama.tls.domains[0].main=llm.xebyte.us"
+      - "traefik.http.routers.ollama.tls.domains[1].main=llm.xebyte.com"
+      - "traefik.http.services.ollama.loadbalancer.server.port=11434"
+
+      # HTTP router for redirect
+      - "traefik.http.routers.ollama-http.rule=Host(`llm.xebyte.us`) || Host(`llm.xebyte.com`)"
+      - "traefik.http.routers.ollama-http.entrypoints=web"
+      - "traefik.http.routers.ollama-http.middlewares=redirect-to-https@file"
+
+  # Open WebUI - Frontend for Ollama
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    hostname: open-webui
+    restart: unless-stopped
+    ports:
+      - "8082:8080"
+    volumes:
+      - open_webui_data:/app/backend/data
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - WEBUI_SECRET_KEY=your-secret-key-here
+    depends_on:
+      - ollama
+    networks:
+      - ai-network
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.webui.rule=Host(`ai.xebyte.us`) || Host(`ai.xebyte.com`)"
+      - "traefik.http.routers.webui.entrypoints=websecure"
+      - "traefik.http.routers.webui.tls.certresolver=le"
+      - "traefik.http.routers.webui.tls.domains[0].main=ai.xebyte.us"
+      - "traefik.http.routers.webui.tls.domains[1].main=ai.xebyte.com"
+      - "traefik.http.services.webui.loadbalancer.server.port=8080"
+
+      # HTTP router for redirect
+      - "traefik.http.routers.webui-http.rule=Host(`ai.xebyte.us`) || Host(`ai.xebyte.com`)"
+      - "traefik.http.routers.webui-http.entrypoints=web"
+      - "traefik.http.routers.webui-http.middlewares=redirect-to-https@file"
+
+  # Unified AI Interface - Custom Frontend
+  ai-interface:
+    build: ./ai-interface
+    container_name: ai-interface
+    hostname: ai-interface
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - WHISPER_API_URL=https://stt.xebyte.com
+      - OLLAMA_API_URL=https://llm.xebyte.com
+      - TTS_API_URL=https://tts.xebyte.com
+    networks:
+      - ai-network
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ai-interface.rule=Host(`voice.xebyte.us`) || Host(`voice.xebyte.com`)"
+      - "traefik.http.routers.ai-interface.entrypoints=websecure"
+      - "traefik.http.routers.ai-interface.tls.certresolver=le"
+      - "traefik.http.routers.ai-interface.tls.domains[0].main=voice.xebyte.us"
+      - "traefik.http.routers.ai-interface.tls.domains[1].main=voice.xebyte.com"
+      - "traefik.http.services.ai-interface.loadbalancer.server.port=3000"
+
+      # HTTP router for redirect
+      - "traefik.http.routers.ai-interface-http.rule=Host(`voice.xebyte.us`) || Host(`voice.xebyte.com`)"
+      - "traefik.http.routers.ai-interface-http.entrypoints=web"
+      - "traefik.http.routers.ai-interface-http.middlewares=redirect-to-https@file"
+
+  # GPU Monitoring Dashboard
+  gpu-monitor:
+    image: utkuozdemir/nvidia_gpu_exporter:1.2.0
+    container_name: gpu-monitor
+    hostname: gpu-monitor
+    restart: unless-stopped
+    runtime: nvidia
+    ports:
+      - "9835:9835"
+    networks:
+      - ai-network
+      - proxy
+    command: ['--web.listen-address=:9835']
+
+volumes:
+  ollama_data:
+    driver: local
+  open_webui_data:
+    driver: local
+
+networks:
+  ai-network:
+    driver: bridge
+    name: ai-network
+  proxy:
+    external: true
