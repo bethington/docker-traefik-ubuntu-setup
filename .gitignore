@@ -27,6 +27,8 @@ templates/
 variables.env
 # Runtime logs
 7dtd-start.log
+# Machine-local Claude Code config (contains account metadata)
+.claude.json
 # Environment files with secrets
 .env
 .env.*
