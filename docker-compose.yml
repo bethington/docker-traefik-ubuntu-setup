@@ -452,8 +452,6 @@ services:
     image: actualbudget/actual-server:latest
     container_name: budget
     restart: unless-stopped
-    ports:
-      - "5006:5006"
     volumes:
       - ./budget/data:/data
     environment:
