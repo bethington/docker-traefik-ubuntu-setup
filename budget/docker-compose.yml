@@ -21,13 +21,15 @@ services:
       - "traefik.http.middlewares.budget-headers.headers.customresponseheaders.Cross-Origin-Opener-Policy=same-origin"
       - "traefik.http.middlewares.budget-headers.headers.customresponseheaders.Cross-Origin-Embedder-Policy=require-corp"
       # HTTPS router
-      - "traefik.http.routers.budget.rule=Host(`budget.xebyte.com`)"
+      - "traefik.http.routers.budget.rule=Host(`budget.xebyte.us`) || Host(`budget.xebyte.com`)"
       - "traefik.http.routers.budget.entrypoints=websecure"
       - "traefik.http.routers.budget.tls.certresolver=le"
+      - "traefik.http.routers.budget.tls.domains[0].main=budget.xebyte.us"
+      - "traefik.http.routers.budget.tls.domains[1].main=budget.xebyte.com"
       - "traefik.http.routers.budget.service=budget"
       - "traefik.http.routers.budget.middlewares=budget-headers"
       # HTTP router with redirect to HTTPS
-      - "traefik.http.routers.budget-http.rule=Host(`budget.xebyte.com`)"
+      - "traefik.http.routers.budget-http.rule=Host(`budget.xebyte.us`) || Host(`budget.xebyte.com`)"
       - "traefik.http.routers.budget-http.entrypoints=web"
       - "traefik.http.routers.budget-http.middlewares=redirect-to-https@file"
 
